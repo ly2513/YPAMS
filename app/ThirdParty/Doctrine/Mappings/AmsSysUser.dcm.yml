@@ -1,0 +1,115 @@
+AmsSysUser:
+    type: entity
+    table: ams_sys_user
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        pid:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 父级ID
+                default: '0'
+        name:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                comment: 姓名
+                default: ''
+        password:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+                comment: 密码
+                default: ''
+        headImg:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+                comment: 头像
+                default: Static/images/head.png
+            column: head_img
+        status:
+            type: boolean
+            nullable: false
+            options:
+                comment: '1: 激活2：禁用'
+                default: '1'
+        token:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+                comment: 标识
+                default: ''
+        createTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 创建时间
+                default: '0'
+            column: create_time
+        updateTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 更新时间
+                default: '0'
+            column: update_time
+        loginTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 登录时间
+                default: '0'
+            column: login_time
+        createBy:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 创建人
+                default: '0'
+            column: create_by
+        updateBy:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 更新人
+                default: '0'
+            column: update_by
+        isDelete:
+            type: boolean
+            nullable: false
+            options:
+                comment: '是否删除 0: 正常 1: 已删除'
+                default: '0'
+            column: is_delete
+        phone:
+            type: string
+            nullable: false
+            length: 11
+            options:
+                fixed: false
+                comment: 手机号码
+                default: ''
+    lifecycleCallbacks: {  }

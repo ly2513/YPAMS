@@ -1,0 +1,59 @@
+.ant-pagination-total-text {
+    line-height: 28px;
+    float: left;
+    display: inline-block;
+    vertical-align: middle;
+    height: 28px;
+    line-height: 28px;
+    margin-right: 8px;
+    color: #768696;
+}
+.pagination > li > a{
+    border-radius: 1px !important;
+    border: none !important;
+    background-color: #f2f5fb !important;
+    margin-right: 8px !important;
+    cursor: pointer !important;
+    color: #2f4050 !important;
+}
+.pagination > li > a:hover {
+    color: #13c19f !important;
+}
+.pagination > .active > a {
+    background-color: #1ab394 !important;
+    color: #fff !important;
+    border-radius: 3px !important;
+}
+.pagination > select {
+    display: inline-block;
+    color: #2f4050;
+    background-color: #f2f5fb;
+    border: none;
+    padding: 4px 10px;
+    line-height: 1.42857;
+    height: 26px;
+    margin-right: 8px;
+    outline: none;
+}
+.pagination > select > option {
+    border: 0;
+    outline: none;
+}
+.pagination > .quick-jumper {
+    color: #2f4050;
+}
+.pagination > .quick-jumper > input {
+    border: none;
+    background-color: #f2f5fb;
+    line-height: 1.42857;
+    height: 26px;
+    text-align: center;
+    cursor: text;
+    transition: all .3s;
+    width: 50px;
+    border-radius: 3px !important;
+    outline: none;
+}
+.pagination > .quick-jumper > input:focus {
+    border: #fff;
+}

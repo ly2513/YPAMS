@@ -1,0 +1,98 @@
+#!/usr/bin/env php
+<?php
+/**
+ * User: yongli
+ * Date: 17/4/19
+ * Time: 17:57
+ * Email: yong.li@szypwl.com
+ * Copyright: 深圳优品未来科技有限公司
+ */
+/**
+ * YP框架的系统工具包,注意此工具包需要 Symfony2/Console、Doctrine2支持
+ *
+ */
+// 拒绝运行时调用php-cgi
+if (substr(php_sapi_name(), 0, 3) == 'cgi') {
+    die('运行php-cgi时不支持CLI工具。它需要php-cli函数！' . "\n\n");
+}
+
+// 设定时区
+date_default_timezone_set('PRC');
+
+// 定义环境常量
+define('ENVIRONMENT', isset($_SERVER['YP_ENV']) ? $_SERVER['YP_ENV'] : 'prod');
+
+// 定义根目录
+define('ROOT_PATH', __DIR__ . DIRECTORY_SEPARATOR);
+
+// 定义应用路径
+define('APP_PATH', rtrim(ROOT_PATH . 'app', '/') . DIRECTORY_SEPARATOR);
+
+// 日志目录
+define('CACHE_PATH', rtrim(ROOT_PATH . 'cache', '/') . DIRECTORY_SEPARATOR);
+
+// 定义框架路径
+defined('SYSTEM_PATH') ? : define('SYSTEM_PATH', rtrim(ROOT_PATH . 'system', '/') . DIRECTORY_SEPARATOR);
+
+// 加载 Illuminate\Console Doctrine Eloquent
+require ROOT_PATH . 'vendor/autoload.php';
+
+// 注册 Doctrine2 类库自动加载
+function do_doctrine_load($className) {
+    $className = str_replace('\\', '/', $className);
+    $path = APP_PATH . 'ThirdParty/Doctrine/Entity/' . $className . '.php';
+    if (!file_exists($path)) { // 加载配置文件
+        $path = APP_PATH  . $className . '.php';
+    }
+    // 加载文件
+    if (file_exists($path)) {
+        require $path;
+    }
+
+}
+
+spl_autoload_register('do_doctrine_load');
+
+//  加载队列任务文件
+require APP_PATH . 'ThirdParty/Queue/autoload.php';
+
+//加载 Doctrine 以及 Doctrine 的 DB连接
+$doctrine  = new \Config\Doctrine();
+$helperSet = new \Symfony\Component\Console\Helper\HelperSet(
+    [
+        'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($doctrine->em->getConnection()),
+        'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($doctrine->em),
+    ]
+);
+
+// 加载命令行工具
+$app = new \Symfony\Component\Console\Application('YP框架命令行工具', 'v1.0(stable)');
+$app->setCatchExceptions(true);
+$app->setHelperSet($helperSet);
+
+// 开始注册所需命令
+$artisans = [
+    // Doctrine 命令
+    new \Console\Doctrine\ConvertMappingCommand(),
+    new \Console\Doctrine\GenerateEntitiesCommand(),
+    new \Console\Doctrine\UpdateCommand(),
+    // Thrift 命令
+    new \Console\Thrift\CreateCommand(),
+    new \Console\Thrift\GenCommand(),
+    new \Console\Thrift\WorkCommand(),
+    // migrations 命令
+//    new \Console\Database\CreateCommand(),
+//    new \Console\Database\MigrateCommand(),
+//    new \Console\Database\MigrateMakeCommand(),
+//    new \Console\Database\RefreshCommand(),
+//    new \Console\Database\ResetCommand(),
+//    new \Console\Database\RollbackCommand(),
+//    new \Console\Database\StatusCommand(),
+    // 队列命令
+    new \Console\Queue\CreateCommand(),
+    new \Console\Queue\ListenCommand(),
+    new \Console\Queue\ListFailedCommand(),
+    new \Console\Queue\WorkQueueCommand(),
+];
+$app->addCommands($artisans);
+$app->run();

@@ -1,0 +1,36 @@
+{
+    "name": "ly2513/ypwl",
+    "require": {
+        "php": "~7.0",
+        "illuminate/database": "*",
+        "justinrainbow/json-schema": "^5.2",
+        "twig/twig": "2.3.*",
+        "phpoffice/phpexcel": "1.8.*",
+        "phpoffice/phpspreadsheet": "*",
+        "kint-php/kint": "*",
+        "phpmailer/phpmailer": "5.2.*",
+        "doctrine/orm": "^2.5",
+        "symfony/yaml": "*",
+        "symfony/console": "~2.0",
+        "packaged/thrift": "0.10.*",
+        "php-amqplib/php-amqplib": "2.6.*",
+        "ly2513/yp-queue": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "liyong",
+            "email": "yong.li@szypwl.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "YP\\": "system/"
+        }
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.phpcomposer.com"
+        }
+    }
+}

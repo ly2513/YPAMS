@@ -1,0 +1,105 @@
+AmsSysMenus:
+    type: entity
+    table: ams_sys_menus
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 菜单ID
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        pid:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 菜单父ID
+        icon:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 菜单图标
+                default: ''
+        name:
+            type: string
+            nullable: false
+            length: 100
+            options:
+                fixed: false
+                comment: 菜单名称
+                default: ''
+        level:
+            type: boolean
+            nullable: false
+            options:
+                comment: 菜单层级
+                default: '1'
+        url:
+            type: string
+            nullable: false
+            length: 255
+            options:
+                fixed: false
+                comment: 菜单路由
+                default: ''
+        description:
+            type: string
+            nullable: false
+            length: 500
+            options:
+                fixed: false
+                comment: 菜单描述
+                default: ''
+        sort:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 菜单排序
+                default: '0'
+        createTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 创建时间
+                default: '0'
+            column: create_time
+        updateTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 更新时间
+                default: '0'
+            column: update_time
+        createBy:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 创建人
+                default: '0'
+            column: create_by
+        updateBy:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+                comment: 更新人
+                default: '0'
+            column: update_by
+        isDelete:
+            type: boolean
+            nullable: false
+            options:
+                comment: '是否删除 '
+                default: '0'
+            column: is_delete
+    lifecycleCallbacks: {  }
