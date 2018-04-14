@@ -5,5 +5,4 @@ composer.lock
 cache/Logs/
 cache/Session/
 cache/Twig/
-app/Views/Twig/
 .DS_Store
