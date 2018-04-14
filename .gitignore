@@ -6,3 +6,4 @@ cache/Logs/
 cache/Session/
 cache/Twig/
 .DS_Store
+app/Config/Database.php
