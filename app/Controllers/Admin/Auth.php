@@ -55,6 +55,8 @@ class Auth extends Controller
         $this->checkLogin();
         $session = Services::session();
         $this->userInfo = $session->get('userInfo');
+        $this->assign('c', $this->controller);
+        $this->assign('a', $this->method);
     }
 
     /**

@@ -64,6 +64,7 @@ class Login extends \YP\Core\YP_Controller
             'is_manager' => $isManager,
         ];
         $session->set('userInfo', $userInfo);
+        $session->set('uid', $userData['id']);
         // 登录成功
         call_back(0);
     }

@@ -28,17 +28,13 @@ class User extends Auth
             'nickname',
             'name',
             'status',
-            'rid',
             'create_time',
             'login_time'
         ])->get()->toArray();
         foreach ($userList as $key => $value) {
-            $userList[$key]['rid']         = $value['rid'] == 1 ? '系统' : '';
             $userList[$key]['create_time'] = date('Y-m-d', $value['create_time']);
             $userList[$key]['login_time']  = date('Y-m-d', $value['login_time']);
         }
-        $this->assign('c', $this->controller);
-        $this->assign('a', $this->method);
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('data', $userList);
         $this->display();

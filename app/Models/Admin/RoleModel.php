@@ -17,5 +17,5 @@ namespace Admin;
  */
 class RoleModel extends \YP\Core\YP_Model
 {
-    protected $table = 'ams_role';
+    protected $table = 'ams_sys_roles';
 }
