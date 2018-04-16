@@ -30,11 +30,16 @@ class User extends Auth
             'status',
             'create_time',
             'login_time'
+        ])->with([
+            'getRole' => function ($query) {
+                $query->select('name', 'id');
+            }
         ])->get()->toArray();
         foreach ($userList as $key => $value) {
             $userList[$key]['create_time'] = date('Y-m-d', $value['create_time']);
             $userList[$key]['login_time']  = date('Y-m-d', $value['login_time']);
         }
+        P($userList);die;
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('data', $userList);
         $this->display();

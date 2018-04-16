@@ -3645,7 +3645,9 @@ img.circle-border {
 .breadcrumb {
   background-color: #ffffff;
   padding: 0;
-  margin-bottom: 0;
+  /*margin-bottom: 0;*/
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 .breadcrumb > li a {
   color: inherit;
@@ -7715,11 +7717,15 @@ body.md-skin {
     padding: 30px 0 40px;
   }
 }
+
 .md-skin .page-heading {
   border-bottom: none !important;
   border-top: 0;
   padding: 0 10px 20px 10px;
   box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.34), 0 0px 6px 0px rgba(0, 0, 0, 0.14);
+}
+.page-heading{
+  padding: 0 10px 8px 10px;
 }
 .md-skin .full-height-layout .page-heading {
   border-bottom: 1px solid #e7eaec !important;

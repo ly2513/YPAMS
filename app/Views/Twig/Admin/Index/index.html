@@ -1,4 +1,106 @@
-{% extends "Admin/Public/layout.html" %}
+{% extends "Admin/Public/base.html" %}
+
+
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <!--<h2>会员管理</h2>-->
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">权限管理</a>
+            </li>
+            <li class="active">
+                <strong>账号管理</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>账号管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <form role="form" class="form-inline" style="display:inline-block;width:100%">
+                        <div class="col-md-12" style="float:right">
+                            <span style="float:left;line-height:30px;">筛选条件： </span>
+                            <div class="col-md-4">
+                                <input type="text" name="name" placeholder="昵称，真实姓名或手机号" id="" class="form-control" value="{{condition}}">
+                            </div>
+                            <!--<div class="col-md-1 pull-right">
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal5"><i class="fa fa-plus-circle"></i> 添加品牌
+                                </button>
+                            </div>-->
+                        </div>
+                    </form>
+                </div>
+                <!-- 搜索  、筛选 -->
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>昵称</th>
+                            <th>姓名</th>
+                            <th>角色</th>
+                            <th>状态</th>
+                            <th>注册时间</th>
+                            <th>最近登录时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for k,v in data %}
+                        <tr>
+                            <td>{{ v.id }}</td>
+                            <td>{{ v.nickname }}</td>
+                            <td>{{ v.realname }}</td>
+                            <td>{{ v.phone }}</td>
+                            <td>{{ v.subscribe_time | date('Y-m-d H:i:s')}}</td>
+                            <td class="text-right">
+                                <a type="button" class="btn btn-info btn-sm" href="/Admin/Member/edit/{{ v.id }}">
+                                    <i class="fa fa-edit"></i>编辑
+                                </a>
+                                <a type="button" class="btn btn-primary btn-sm" href="/Admin/Member/memberCollect/{{ v.id }}">
+                                    <i class="fa fa-heart-o" aria-hidden="true"></i> 收藏
+                                </a>
+                                <a type="button" class="btn btn-danger btn-sm" href="/Admin/Member/memberOrder/{{ v.id }}">
+                                    <i class="fa fa-diamond"></i> 订单
+                                </a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td style="text-align: center" colspan="6">暂无数据</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        <!-- 分页 -->
+                        <tfoot>
+                        <tr>
+                            <td colspan="6" style="padding-top:30px;">
+                                {{ page | raw }}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block foot %}
+
+
+{% endblock %}
 
 
 
