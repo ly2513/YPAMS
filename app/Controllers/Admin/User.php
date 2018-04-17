@@ -8,11 +8,12 @@
  */
 namespace App\Controllers\Admin;
 
+use Admin\RoleModel;
 use Admin\UserModel;
 
 /**
  * Class User 用户管理
- * 
+ *
  * @package App\Controllers\Admin
  */
 class User extends Auth
@@ -31,15 +32,22 @@ class User extends Auth
             'create_time',
             'login_time'
         ])->with([
-            'getRole' => function ($query) {
-                $query->select('name', 'id');
+            'getUserRole' => function ($query) {
+                $query->select('id', 'uid', 'rid')->whereStatus(0);
             }
         ])->get()->toArray();
-        foreach ($userList as $key => $value) {
-            $userList[$key]['create_time'] = date('Y-m-d', $value['create_time']);
-            $userList[$key]['login_time']  = date('Y-m-d', $value['login_time']);
+        if (!$userList) {
+            call_back(0);
         }
-        P($userList);die;
+        foreach ($userList as $key => &$value) {
+            $rid  = array_column($value['get_user_role'], 'rid');
+            $role = RoleModel::select(['id', 'name'])->whereIn('id', $rid)->whereStatus(1)->get()->toArray();
+            $role_name = $role ? implode(',', array_column($role, 'name')) : '';
+            $value['role_name']   = $role_name;
+            $value['create_time'] = date('Y-m-d', $value['create_time']);
+            $value['login_time']  = date('Y-m-d', $value['login_time']);
+            unset($value['get_user_role']);
+        }
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('data', $userList);
         $this->display();
