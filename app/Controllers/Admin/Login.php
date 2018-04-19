@@ -41,12 +41,19 @@ class Login extends \YP\Core\YP_Controller
         $username  = $this->request->getPost('username');
         $password  = $this->request->getPost('password');
         $isManager = $this->request->getPost('is_manager') ?? false;
-        $isReg     = UserModel::whereRaw('phone = "' . $username . '"')->where('status', 1)->select([
+        $isReg     = UserModel::select([
                 'id',
-                'phone',
-                'password',
                 'name',
-            ])->first() ?? false;
+                'password',
+                'nickname',
+            ])->whereName($username)->whereStatus(1)->get()->toArray();
+        P($isReg);
+        P(UserModel::select([
+            'id',
+            'name',
+            'password',
+            'nickname',
+        ])->whereName($username)->whereStatus(1)->toSql());
         if (!$isReg) {
             call_back(2, '', '用户不存在或未授权!');
         }
@@ -60,7 +67,7 @@ class Login extends \YP\Core\YP_Controller
         //  设置session
         $userInfo = [
             'uid'        => $userData['id'],
-            'phone'      => $userData['phone'],
+            'name'       => $userData['name'],
             'is_manager' => $isManager,
         ];
         $session->set('userInfo', $userInfo);
