@@ -41,23 +41,16 @@ class Login extends \YP\Core\YP_Controller
         $username  = $this->request->getPost('username');
         $password  = $this->request->getPost('password');
         $isManager = $this->request->getPost('is_manager') ?? false;
-        $isReg     = UserModel::select([
+        $userData     = UserModel::select([
                 'id',
                 'name',
                 'password',
                 'nickname',
             ])->whereName($username)->whereStatus(1)->get()->toArray();
-        P($isReg);
-        P(UserModel::select([
-            'id',
-            'name',
-            'password',
-            'nickname',
-        ])->whereName($username)->whereStatus(1)->toSql());
-        if (!$isReg) {
-            call_back(2, '', '用户不存在或未授权!');
+        $userData = $userData ? $userData[0] : [];
+        if (!$userData) {
+            call_back(2, '', '用户不存在或被禁用!');
         }
-        $userData = $isReg->toArray();
         // 验证密码
         if (!password_verify(md5($password), $userData['password'])) {
             call_back(2, '', '密码或用户名错误!');
