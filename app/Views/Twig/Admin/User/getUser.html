@@ -28,11 +28,11 @@
                             <div class="col-md-4">
                                 <input type="text" name="name" placeholder="昵称，真实姓名或手机号" id="" class="form-control" value="{{condition}}">
                             </div>
-                            <!--<div class="col-md-1 pull-right">
+                            <div class="col-md-1 pull-right">
                                 <button type="button" class="btn btn-success" data-toggle="modal"
-                                        data-target="#myModal5"><i class="fa fa-plus-circle"></i> 添加品牌
+                                        data-target="#myModal5"><i class="fa fa-plus-circle"></i> 添加账号
                                 </button>
-                            </div>-->
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -94,6 +94,90 @@
     </div>
 </div>
 
+
+<!-- 添加品牌框 -->
+<div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">添加品牌</h4>
+            </div>
+            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+                <form method="post" class="m-t-md" name="brand_add">
+                    <small class="font-bold"><strong style="color:#333"> |</strong> 基本信息</small>
+                    <table class=" table table-stripped" data-page-size="15">
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">品牌名称</td>
+                            <td><input type="text" class="form-control col-md-4" name="name" placeholder="请输入品牌名称"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return add();">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑品牌框 -->
+<div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">编辑品牌</h4>
+            </div>
+            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+                <form method="post" class="m-t-md" name="brand_update">
+                    <input type="hidden" name="id">
+                    <small class="font-bold"><strong style="color:#333"> |</strong> 基本信息</small>
+                    <table class=" table table-stripped" data-page-size="15">
+                        <tbody>
+                        <tr>
+                            <td class="col-md-3">品牌名称</td>
+                            <td><input type="text" class="form-control col-md-4" name="name" placeholder="请输入品牌名称"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return update();">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除提示框 -->
+<div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body col-md-12" style="padding:0px 30px;">
+                <h5 style="text-align: center;padding:5%;display: block;">确定要删除吗?</h5>
+                <input type="hidden" name="id">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return del();">确定</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}
 
