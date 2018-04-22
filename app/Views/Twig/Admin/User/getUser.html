@@ -1,5 +1,8 @@
 {% extends "Admin/Public/base.html" %}
-
+{% block header %}
+<link href="/Static/css/plugins/chosen/chosen.css" rel="stylesheet">
+<link href="/Static/css/plugins/iCheck/custom.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
@@ -42,8 +45,8 @@
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>账号</th>
                             <th>昵称</th>
-                            <th>姓名</th>
                             <th>角色</th>
                             <th>状态</th>
                             <th>注册时间</th>
@@ -55,8 +58,8 @@
                         {% for k,v in data %}
                         <tr>
                             <td>{{ v.id }}</td>
-                            <td>{{ v.nickname }}</td>
                             <td>{{ v.name }}</td>
+                            <td>{{ v.nickname }}</td>
                             <td>{{ v.role_name }}</td>
                             <td>{{ v.status }}</td>
                             <td>{{ v.create_time | date('Y-m-d H:i:s')}}</td>
@@ -95,26 +98,58 @@
 </div>
 
 
-<!-- 添加品牌框 -->
+<!-- 添加账号框 -->
 <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md modal-lg" style="top:13%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <h4 class="modal-title">添加品牌</h4>
+                <h4 class="modal-title">添加账号</h4>
             </div>
-            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+            <div class="modal-body">
                 <form method="post" class="m-t-md" name="brand_add">
-                    <small class="font-bold"><strong style="color:#333"> |</strong> 基本信息</small>
-                    <table class=" table table-stripped" data-page-size="15">
-                        <tbody>
-                        <tr>
-                            <td class="col-md-3">品牌名称</td>
-                            <td><input type="text" class="form-control col-md-4" name="name" placeholder="请输入品牌名称"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">账号</label>
+                        <div class="controls col-md-6" >
+                            <input type="text" placeholder="请输入账号" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">昵称</label>
+                        <div class="controls col-md-6" >
+                            <input type="email" placeholder="请输入昵称" name="nickname" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">角色</label>
+                        <div class="controls col-md-6" >
+                            <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
+
+                                <option value="1">管理员</option>
+                                <option value="2">运营</option>
+                                <option value="3">销售</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">状态</label>
+                        <div class="controls col-md-6" >
+                            <div class="i-checks">
+                                <label style="padding-top: 5px;width: 100px;cursor: pointer;">
+                                    <input type="radio" checked="" value="1" name="status"> <i></i> 开启
+                                </label>
+                            </div>
+                            <div class="i-checks">
+                                <label  style="padding-top: 5px;width: 100px;cursor: pointer;">
+                                    <input type="radio"  value="2" name="status"> <i></i> 禁用
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
 
@@ -183,8 +218,183 @@
 
 
 {% block foot %}
+<script src="/Static/js/plugins/iCheck/icheck.min.js"></script>
+<script src="/Static/js/plugins/chosen/chosen.jquery.js"></script>
 
+<script>
 
+    $(document).ready(function () {
+         // ****************** 初始化select *******************
+         $('.chosen-container').css({'width': 100 + '%'});
+
+         // ****************** 初始化单选按钮 ******************
+         $('.i-checks').iCheck({
+            radioClass: 'iradio_square-green',
+        });
+
+    });
+
+    var config = {
+        '.chosen-select'           : {},
+        '.chosen-select-deselect'  : {allow_single_deselect:true},
+        '.chosen-select-no-single' : {disable_search_threshold:10},
+        '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+        '.chosen-select-width'     : {width:"95%"}
+    }
+
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+
+    // ****************** 添加账号 ******************
+    function add() {
+        var name = $("form[name='brand_add']").find("input[name='name']").val();
+        var nickname = $("form[name='brand_add']").find("input[name='nickname']").val();
+        var role_id = $("form[name='brand_add']").find("select[name='role_id[]']").val();
+        var status = $("form[name='brand_add']").find("input[name='status']").val();
+        if ($.trim(name) == '') {
+            $().toastmessage('showErrorToast', '账号不能为空！');
+            return false;
+        }
+        if ($.trim(nickname) == '') {
+            $().toastmessage('showErrorToast', '账昵称不能为空！');
+            return false;
+        }
+        if ($.trim(role_id) == '') {
+            $().toastmessage('showErrorToast', '请分配角色！');
+            return false;
+        }
+
+        if ($.trim(status) == '') {
+            $().toastmessage('showErrorToast', '请选择状态！');
+            return false;
+        }
+        var data = $("form[name='brand_add']").serialize();
+        $.ajax({
+            url: "/Admin/User/add",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "保存成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+    // ******************* 显示编辑信息 **************
+    function getInfo(obj) {
+        var id = $(obj).attr('id');
+        $.ajax({
+            url: "/Goods/Brand/getBrandInfo/" + id,
+            type: "POST",
+            dataType: 'json',
+            success: function (re) {
+                if (re.code === 0) {
+                    if (re.data) {
+                        $("#myModal1").find("input[name='id']").val(re.data.id);
+                        $("#myModal1").find("input[name='name']").val(re.data.name);
+                        $("#myModal1").modal();
+                    } else {
+
+                    }
+
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+    // ****************** 编辑品牌 ******************
+    function update() {
+        var name = $("form[name='brand_update']").find("input[name='name']").val();
+        if ($.trim(name) == '') {
+            $().toastmessage('showErrorToast', '品牌名称不能为空！');
+            return false;
+        }
+        var data = $("form[name='brand_update']").serialize();
+        $.ajax({
+            url: "/Goods/Brand/update",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "保存成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+    // ******************** 显示删除提示框 ************
+    function deleteBrand(obj) {
+        var id = $(obj).attr('id');
+        $("#myModal2").modal();
+        $("#myModal2").find("input[name='id']").val(id);
+
+    }
+
+    // ************************* 删除品牌 ********************
+    function del() {
+        var id = $("#myModal2").find("input[name='id']").val();
+        $.ajax({
+            url: "/Goods/Brand/delete/" + id,
+            type: "POST",
+            dataType: 'json',
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "删除成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+
+    }
+</script>
+<!--{{parent()}}-->
 {% endblock %}
 
 

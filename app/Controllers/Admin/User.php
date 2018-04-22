@@ -10,6 +10,7 @@ namespace App\Controllers\Admin;
 
 use Admin\RoleModel;
 use Admin\UserModel;
+use Admin\UserRoleModel;
 
 /**
  * Class User 用户管理
@@ -40,9 +41,10 @@ class User extends Auth
             call_back(0);
         }
         foreach ($userList as $key => &$value) {
-            $rid  = array_column($value['get_user_role'], 'rid');
-            $role = RoleModel::select(['id', 'name'])->whereIn('id', $rid)->whereStatus(1)->get()->toArray();
-            $role_name = $role ? implode(',', array_column($role, 'name')) : '';
+            $rid                  = array_column($value['get_user_role'], 'rid');
+            $role                 = RoleModel::select(['id', 'name'])->whereIn('id',
+                $rid)->whereStatus(1)->get()->toArray();
+            $role_name            = $role ? implode(',', array_column($role, 'name')) : '';
             $value['role_name']   = $role_name;
             $value['create_time'] = date('Y-m-d', $value['create_time']);
             $value['login_time']  = date('Y-m-d', $value['login_time']);
@@ -50,17 +52,6 @@ class User extends Auth
         }
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('data', $userList);
-        $this->display();
-    }
-
-    /**
-     * 添加用户界面
-     */
-    public function addUser()
-    {
-        $this->assign('c', $this->controller);
-        $this->assign('a', $this->method);
-        $this->assign('uid', $_SESSION['uid']);
         $this->display();
     }
 
@@ -74,18 +65,41 @@ class User extends Auth
         if ($userInfo) {
             call_Back(2, '', '账号已存在');
         }
+        $addData['role_id'] = // 开启事务
+        $build = UserModel::select();
+        $build->getConnection()->beginTransaction();
         $password               = '123456';
         $addData['password']    = password_hash(md5(md5($password)), PASSWORD_DEFAULT);
-        $addData['rid']         = 1;
         $addData['create_time'] = time();
         $addData['update_time'] = time();
-        $addData['create_by']   = $_SESSION['uid']['id'];
-        $addData['update_by']   = $_SESSION['uid']['id'];
-        $status                 = UserModel::insertGetId($addData);
-        if (!$status) {
+        $addData['create_by']   = $_SESSION['uid'];
+        $addData['update_by']   = $_SESSION['uid'];
+        $roleIds                = $addData['role_id'];
+        unset($addData['role_id']);
+        $id       = UserModel::insertGetId($addData);
+        $roleData = [];
+        foreach ($roleIds as $value) {
+            array_push($roleData, [
+                'uid'         => $id,
+                'rid'         => $value,
+                'status'      => 0,
+                'create_by'   => $_SESSION['uid'],
+                'update_by'   => $_SESSION['uid'],
+                'create_time' => time(),
+                'update_time' => time()
+            ]);
+
+        }
+        $status = UserRoleModel::insert($roleData);
+        if ($id && $status) {
+            // 提交事务
+            $build->getConnection()->commit();
+            call_back(0);
+        } else {
+            // 回滚事务
+            $build->getConnection()->rollBack();
             call_Back(2, '', '添加账号失败!');
         }
-        call_Back(0);
     }
 
     /**
