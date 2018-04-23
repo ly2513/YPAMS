@@ -65,7 +65,7 @@ class User extends Auth
         if ($userInfo) {
             call_Back(2, '', '账号已存在');
         }
-        $addData['role_id'] = // 开启事务
+        // 开启事务
         $build = UserModel::select();
         $build->getConnection()->beginTransaction();
         $password               = '123456';
@@ -103,19 +103,26 @@ class User extends Auth
     }
 
     /**
-     * 修改用户界面
+     * 账号信息
      *
      * @param $id
      */
-    public function updateUser($id)
+    public function getUserInfo($id)
     {
-        $userInfo = UserModel::select(['id', 'name', 'nickname', 'rid'])->whereId($id)->get()->toArray();
-        $userInfo = $userInfo ? $userInfo[0] : $userInfo;
-        $this->assign('c', $this->controller);
-        $this->assign('a', $this->method);
-        $this->assign('uid', $_SESSION['uid']);
-        $this->assign('data', $userInfo);
-        $this->display();
+        $userInfo        = UserModel::select([
+            'id',
+            'nickname',
+            'name',
+            'status'
+        ])->with([
+            'getUserRole' => function ($query) {
+                $query->select('id', 'uid', 'rid')->whereStatus(0);
+            }
+        ])->whereId($id)->get()->toArray();
+        $userInfo        = $userInfo ? $userInfo[0] : $userInfo;
+        $userInfo['rid'] = array_column($userInfo['get_user_role'], 'rid');
+        unset($userInfo['get_user_role']);
+        call_back(0, $userInfo);
     }
 
     /**
@@ -123,19 +130,44 @@ class User extends Auth
      */
     public function update()
     {
-        $addData  = $this->request->getPost();
+        $addData = $this->request->getPost();
         $userInfo = UserModel::select('*')->whereName($addData['name'])->where('id', '!=',
             $addData['id'])->get()->toArray();
         if ($userInfo) {
             call_back(2, '', '账号已存在');
         }
         // TODO 临时的
-        $addData['rid']         = 1;
         $addData['update_time'] = time();
-        $addData['update_by']   = $_SESSION['uid']['id'];
-        $status                 = UserModel::whereId($addData['id'])->update($addData);
-        if (!$status) {
-            call_back(2, '', '保存账号失败!');
+        $addData['update_by']   = $_SESSION['uid'];
+        // 开启事务
+        $build = UserModel::select();
+        $build->getConnection()->beginTransaction();
+        $roleIds = $addData['role_id'];
+        unset($addData['role_id']);
+        $status   = UserModel::whereId($addData['id'])->update($addData);
+        $roleData = [];
+        foreach ($roleIds as $value) {
+            array_push($roleData, [
+                'uid'         => $addData['id'],
+                'rid'         => $value,
+                'status'      => 0,
+                'create_by'   => $_SESSION['uid'],
+                'update_by'   => $_SESSION['uid'],
+                'create_time' => time(),
+                'update_time' => time()
+            ]);
+
+        }
+        $status1 = UserRoleModel::whereUid($addData['id'])->update(['is_delete' => 1]);
+        $status2 = UserRoleModel::insert($roleData);
+        if ($status && $status1 && $status2) {
+            // 提交事务
+            $build->getConnection()->commit();
+            call_back(0);
+        } else {
+            // 回滚事务
+            $build->getConnection()->rollBack();
+            call_Back(2, '', '保存账号失败!');
         }
         call_back(0);
     }

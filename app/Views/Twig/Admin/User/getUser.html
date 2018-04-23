@@ -61,19 +61,25 @@
                             <td>{{ v.name }}</td>
                             <td>{{ v.nickname }}</td>
                             <td>{{ v.role_name }}</td>
-                            <td>{{ v.status }}</td>
+                            <td> {% if v.status ==1 %} <span class="label label-success">激活</span>{% else %} <span class="label label-danger">禁用</span> {% endif %} </td>
                             <td>{{ v.create_time | date('Y-m-d H:i:s')}}</td>
                             <td>{{ v.login_time | date('Y-m-d H:i:s')}}</td>
                             <td class="text-right">
-                                <a type="button" class="btn btn-info btn-sm" href="/Admin/Member/edit/{{ v.id }}">
-                                    <i class="fa fa-edit"></i>编辑
-                                </a>
-                                <a type="button" class="btn btn-primary btn-sm" href="/Admin/Member/memberCollect/{{ v.id }}">
-                                    <i class="fa fa-heart-o" aria-hidden="true"></i> 收藏
-                                </a>
-                                <a type="button" class="btn btn-danger btn-sm" href="/Admin/Member/memberOrder/{{ v.id }}">
-                                    <i class="fa fa-diamond"></i> 订单
-                                </a>
+                                {% if v.status ==1%}
+                                <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}});">
+                                    <i class="fa fa-cog"></i>  禁用
+                                </button>
+                                {% else %}
+                                <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}});">
+                                    <i class="fa fa-cog"></i>  禁用
+                                </button>
+                                {% endif %}
+                                <button type="button" class="btn btn-warning btn-sm" onclick="return getInfo({{v.id}});">
+                                    <i class="fa fa-edit"></i>  编辑
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="return del({{v.id}});">
+                                    <i class="fa fa-trash"></i>  删除
+                                </button>
                             </td>
                         </tr>
                         {% else %}
@@ -108,7 +114,7 @@
                 <h4 class="modal-title">添加账号</h4>
             </div>
             <div class="modal-body">
-                <form method="post" class="m-t-md" name="brand_add">
+                <form method="post" class="m-t-md" name="user_add">
                     <div class="form-group" style="">
                         <label style="text-align: right">账号</label>
                         <div class="controls col-md-6" >
@@ -130,7 +136,6 @@
                                 <option value="2">运营</option>
                                 <option value="3">销售</option>
 
-
                             </select>
                         </div>
                     </div>
@@ -139,7 +144,7 @@
                         <div class="controls col-md-6" >
                             <div class="i-checks">
                                 <label style="padding-top: 5px;width: 100px;cursor: pointer;">
-                                    <input type="radio" checked="" value="1" name="status"> <i></i> 开启
+                                    <input type="radio" checked="" value="1" name="status"> <i></i> 激活
                                 </label>
                             </div>
                             <div class="i-checks">
@@ -163,25 +168,56 @@
 
 <!-- 编辑品牌框 -->
 <div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md modal-lg" style="top:13%;">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
-                <h4 class="modal-title">编辑品牌</h4>
+                <h4 class="modal-title">编辑账号</h4>
             </div>
-            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
-                <form method="post" class="m-t-md" name="brand_update">
-                    <input type="hidden" name="id">
-                    <small class="font-bold"><strong style="color:#333"> |</strong> 基本信息</small>
-                    <table class=" table table-stripped" data-page-size="15">
-                        <tbody>
-                        <tr>
-                            <td class="col-md-3">品牌名称</td>
-                            <td><input type="text" class="form-control col-md-4" name="name" placeholder="请输入品牌名称"></td>
-                        </tr>
-                        </tbody>
-                    </table>
+            <div class="modal-body">
+                <form method="post" class="m-t-md" name="user_update">
+                    <input type="hidden" name="id" >
+                    <div class="form-group" style="">
+                        <label style="text-align: right">账号</label>
+                        <div class="controls col-md-6" >
+                            <input type="text" placeholder="请输入账号" name="name" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">昵称</label>
+                        <div class="controls col-md-6" >
+                            <input type="email" placeholder="请输入昵称" name="nickname" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">角色</label>
+                        <div class="controls col-md-6" >
+                            <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
+
+                                <option value="1">管理员</option>
+                                <option value="2">运营</option>
+                                <option value="3">销售</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">状态</label>
+                        <div class="controls col-md-6" >
+                            <div class="i-checks">
+                                <label style="padding-top: 5px;width: 100px;cursor: pointer;">
+                                    <input type="radio" checked="" value="1" name="status"> <i></i> 激活
+                                </label>
+                            </div>
+                            <div class="i-checks">
+                                <label  style="padding-top: 5px;width: 100px;cursor: pointer;">
+                                    <input type="radio"  value="2" name="status"> <i></i> 禁用
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                 </form>
             </div>
 
@@ -269,7 +305,7 @@
             $().toastmessage('showErrorToast', '请选择状态！');
             return false;
         }
-        var data = $("form[name='brand_add']").serialize();
+        var data = $("form[name='user_add']").serialize();
         $.ajax({
             url: "/Admin/User/add",
             type: "POST",
@@ -296,17 +332,24 @@
     }
 
     // ******************* 显示编辑信息 **************
-    function getInfo(obj) {
-        var id = $(obj).attr('id');
+    function getInfo(id) {
         $.ajax({
-            url: "/Goods/Brand/getBrandInfo/" + id,
+            url: "/Admin/User/getUserInfo/" + id,
             type: "POST",
             dataType: 'json',
             success: function (re) {
                 if (re.code === 0) {
                     if (re.data) {
+                        console.log(re.data);
                         $("#myModal1").find("input[name='id']").val(re.data.id);
                         $("#myModal1").find("input[name='name']").val(re.data.name);
+                        $("#myModal1").find("input[name='nickname']").val(re.data.nickname);
+                        $.each(re.data.rid , function (i, n) {
+                            $("#myModal1").find("select[name='role_id[]']").val(n);
+                        });
+                        $("#myModal1").find("select[name='role_id[]']").multiselect('refresh');//刷新多选下拉标签
+                        $("#myModal1").find("select[name='role_id[]']").trigger("chosen:updated");
+                        $("#myModal1").find("input[name='status']").val(re.data.status);
                         $("#myModal1").modal();
                     } else {
 
@@ -328,14 +371,30 @@
 
     // ****************** 编辑品牌 ******************
     function update() {
-        var name = $("form[name='brand_update']").find("input[name='name']").val();
+        var name = $("form[name='user_update']").find("input[name='name']").val();
+        var nickname = $("form[name='user_update']").find("input[name='nickname']").val();
+        var role_id = $("form[name='user_update']").find("select[name='role_id[]']").val();
+        var status = $("form[name='user_update']").find("input[name='status']").val();
         if ($.trim(name) == '') {
-            $().toastmessage('showErrorToast', '品牌名称不能为空！');
+            $().toastmessage('showErrorToast', '账号不能为空！');
             return false;
         }
-        var data = $("form[name='brand_update']").serialize();
+        if ($.trim(nickname) == '') {
+            $().toastmessage('showErrorToast', '账昵称不能为空！');
+            return false;
+        }
+        if ($.trim(role_id) == '') {
+            $().toastmessage('showErrorToast', '请分配角色！');
+            return false;
+        }
+
+        if ($.trim(status) == '') {
+            $().toastmessage('showErrorToast', '请选择状态！');
+            return false;
+        }
+        var data = $("form[name='user_update']").serialize();
         $.ajax({
-            url: "/Goods/Brand/update",
+            url: "/Admin/User/update",
             type: "POST",
             dataType: 'json',
             data: data,
@@ -366,11 +425,11 @@
 
     }
 
-    // ************************* 删除品牌 ********************
+    // ************************* 删除账号 ********************
     function del() {
         var id = $("#myModal2").find("input[name='id']").val();
         $.ajax({
-            url: "/Goods/Brand/delete/" + id,
+            url: "/Admin/User/delete/" + id,
             type: "POST",
             dataType: 'json',
             success: function (re) {
