@@ -26,6 +26,22 @@ AmsSysUser:
                 fixed: false
                 comment: 姓名
                 default: ''
+        nickname:
+            type: string
+            nullable: false
+            length: 128
+            options:
+                fixed: false
+                comment: 昵称
+                default: ''
+        phone:
+            type: string
+            nullable: false
+            length: 11
+            options:
+                fixed: false
+                comment: 手机号码
+                default: ''
         password:
             type: string
             nullable: false
@@ -104,12 +120,4 @@ AmsSysUser:
                 comment: '是否删除 0: 正常 1: 已删除'
                 default: '0'
             column: is_delete
-        phone:
-            type: string
-            nullable: false
-            length: 11
-            options:
-                fixed: false
-                comment: 手机号码
-                default: ''
     lifecycleCallbacks: {  }

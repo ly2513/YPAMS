@@ -1,0 +1,73 @@
+AmsUserRole:
+    type: entity
+    table: ams_user_role
+    id:
+        id:
+            type: integer
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: IDENTITY
+    fields:
+        uid:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 用户ID
+                default: '0'
+        rid:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 角色ID
+                default: '0'
+        status:
+            type: boolean
+            nullable: false
+            options:
+                comment: '用户与角色的当前状态  0激活 1冻结'
+                default: '0'
+        createBy:
+            type: integer
+            nullable: true
+            options:
+                unsigned: false
+                comment: 创建者
+                default: '0'
+            column: create_by
+        updateBy:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 更新者
+                default: '0'
+            column: update_by
+        createTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 创建时间
+                default: '0'
+            column: create_time
+        updateTime:
+            type: integer
+            nullable: false
+            options:
+                unsigned: false
+                comment: 更新时间
+                default: '0'
+            column: update_time
+        isDelete:
+            type: boolean
+            nullable: false
+            options:
+                comment: '0:正常1：删除'
+                default: '0'
+            column: is_delete
+    lifecycleCallbacks: {  }
