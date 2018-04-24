@@ -340,15 +340,20 @@
             success: function (re) {
                 if (re.code === 0) {
                     if (re.data) {
-                        console.log(re.data);
+//                        console.log(re.data);
                         $("#myModal1").find("input[name='id']").val(re.data.id);
                         $("#myModal1").find("input[name='name']").val(re.data.name);
                         $("#myModal1").find("input[name='nickname']").val(re.data.nickname);
                         $.each(re.data.rid , function (i, n) {
                             $("#myModal1").find("select[name='role_id[]']").val(n);
-                        });
-                        $("#myModal1").find("select[name='role_id[]']").multiselect('refresh');//刷新多选下拉标签
-                        $("#myModal1").find("select[name='role_id[]']").trigger("chosen:updated");
+//                            option["value='"+selValue[sel]+"']").attr("selected","selected");
+//                        $("select[name='"+obj.attr('id')+"'] option[value='"+selValue[sel]+"']").attr("selected","selected");
+                        $("#myModal1").find("select[name='role_id["+ n +"]'] option[value='"+n+"']").attr("selected","selected");
+                            $("#myModal1").find("select[name='role_id["+ n +"]'] option[value='"+n+"']").trigger("liszt:updated");
+                    });
+
+//                        $("#myModal1").find("select[name='role_id[]']").multiselect('refresh');//刷新多选下拉标签
+//                        $("#myModal1").find("select[name='role_id[]']").trigger("chosen:updated");
                         $("#myModal1").find("input[name='status']").val(re.data.status);
                         $("#myModal1").modal();
                     } else {
