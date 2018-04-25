@@ -130,13 +130,12 @@ class User extends Auth
      */
     public function update()
     {
-        $addData = $this->request->getPost();
+        $addData  = $this->request->getPost();
         $userInfo = UserModel::select('*')->whereName($addData['name'])->where('id', '!=',
             $addData['id'])->get()->toArray();
         if ($userInfo) {
             call_back(2, '', '账号已存在');
         }
-        // TODO 临时的
         $addData['update_time'] = time();
         $addData['update_by']   = $_SESSION['uid'];
         // 开启事务
@@ -171,14 +170,17 @@ class User extends Auth
         }
         call_back(0);
     }
-
+    
     /**
      * 修改账号状态
+     *
+     * @param $id
+     * @param $status
      */
-    public function changeStatus()
+    public function changeStatus($id, $status)
     {
-        $updateData = $this->request->getPost();
-        $status     = UserModel::whereId($updateData['id'])->update($updateData);
+        $status = $status == 1 ? 2 : 1;
+        $status = UserModel::whereId($id)->update(['status' => $status]);
         if (!$status) {
             call_back(2, '', '操作失败!');
         }

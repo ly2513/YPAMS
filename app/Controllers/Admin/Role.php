@@ -27,20 +27,14 @@ class Role extends Auth
 
     // 校验规则
     protected $rules = [
-        'name'           => 'required|min_length[1]|max_length[128]',
-        'license_num'    => 'required|is_natural|exact_length[13]',
-        'build_time'     => 'required|is_date',
-        'register_money' => 'required|numeric',
-        'agency_id'      => 'required|min_length[1]|max_length[128]'
+        'name'   => 'required|min_length[1]|max_length[128]',
+        'status' => 'required|is_natural|exact_length[1]',
     ];
 
     // 提示信息
     protected $message = [
-        'name'           => ['required' => '机构名称不能为空', 'min_length' => '最小长度为1', 'max_length' => '最大长度为128'],
-        'license_num'    => ['required' => '营业执照编号', 'is_natural' => '请输入正确的营业执照编号', 'exact_length' => '输入的营业执照编号有误'],
-        'build_time'     => ['required' => '成立时间不能为空', 'is_date' => '请输入正确的日期格式(如:2017-01-01)'],
-        'register_money' => ['required' => '注册资金不能为空', 'numeric' => '请输入有效的值'],
-        'agency_id'      => ['required' => '机构编号不能为空', 'min_length' => '最小长度为1', 'max_length' => '最大长度为128'],
+        'name'   => ['required' => '机构名称不能为空', 'min_length' => '最小长度为1', 'max_length' => '最大长度为128'],
+        'status' => ['required' => '请选择状态', 'is_natural' => '请选择状态', 'exact_length' => '请选择状态'],
     ];
 
     /**
@@ -67,22 +61,9 @@ class Role extends Auth
         foreach ($data as $key => $value) {
             $data[$key]['create_time'] = date('Y-m-d', $value['create_time']);
         }
-        $this->assign('c', $this->controller);
-        $this->assign('a', $this->method);
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('page', $page);
         $this->assign('data', $data);
-        $this->display();
-    }
-
-    /**
-     * 显示添加角色
-     */
-    public function addRole()
-    {
-        $this->assign('c', $this->controller);
-        $this->assign('a', $this->method);
-        $this->assign('uid', $_SESSION['uid']);
         $this->display();
     }
 
@@ -92,28 +73,28 @@ class Role extends Auth
     public function add()
     {
         // 开始校验
-        if (!$this->validate($this->request, $this->rules, $this->message)) {
+        if (!$this->validate($this->rules, $this->message)) {
             // 校验失败,输出错误信息
             call_back(1, '', $this->errors);
         }
         $addData = $this->request->getPost();
-        //        $agencyData = AgencyModel::select('*')->whereName($addData['name'])->get()->first();
         // 检测机构是否已存在
         $agencyData = RoleModel::select('id')->whereName($addData['name'])->get()->toArray();
         if ($agencyData) {
-            call_back(2, '', '该机构已存在');
+            call_back(2, '', '该角色已存在');
         }
-        $addData['build_time']  = strtotime($addData['build_time']);
+        $addData['permissions'] = '[]';
+        $addData['menus']       = '[]';
         $addData['create_time'] = time();
         $addData['update_time'] = time();
-        $addData['create_by']   = 1;
-        $addData['update_by']   = 1;
+        $addData['create_by']   = $_SESSION['uid'];
+        $addData['update_by']   = $_SESSION['uid'];
         // 获得自增ID(机构ID) 插入数据
         $id = RoleModel::insertGetId($addData);
         if (!$id) {
             call_back(2, '', '操作失败');
         }
-        // 添加成功
+        // 操作成功
         call_back(0);
 
     }
@@ -127,21 +108,13 @@ class Role extends Auth
     {
         $data = RoleModel::select([
             'id',
-            'agency_id',
             'name',
-            'license_num',
-            'register_money',
-            'build_time'
+            'status'
         ])->whereId($id)->get()->toArray();
         if (!$data) {
-            call_back(2, '', '无此机构');
+            call_back(2, '', '无此角色!');
         }
-        $data[0]['build_time'] = date('Y-m-d', $data[0]['build_time']);
-        $this->assign('c', $this->controller);
-        $this->assign('a', $this->method);
-        $this->assign('uid', $_SESSION['uid']);
-        $this->assign('data', $data[0]);
-        $this->display();
+        call_back(0, $data[0]);
     }
 
     /**
@@ -150,7 +123,7 @@ class Role extends Auth
     public function update()
     {
         // 开始校验
-        if (!$this->validate($this->request, $this->rules, $this->message)) {
+        if (!$this->validate($this->rules, $this->message)) {
             // 校验失败,输出错误信息
             call_back(1, '', $this->errors);
         }
@@ -158,34 +131,43 @@ class Role extends Auth
         $agencyData = RoleModel::select('id')->whereName($addData['name'])->where('id', '!=',
             $addData['id'])->get()->toArray();
         if ($agencyData) {
-            call_back(2, '', '该机构已存在');
+            call_back(2, '', '该角色已存在');
         }
         // 跟新的数据
-        $addData['build_time']  = strtotime($addData['build_time']);
         $addData['update_time'] = time();
-        $addData['update_by']   = 1;
+        $addData['update_by']   = $_SESSION['uid'];
         $status                 = RoleModel::whereId($addData['id'])->update($addData);
         if (!$status) {
             call_back(2, '', '操作失败');
         }
-        // 添加成功
+        // 操作成功
         call_back(0);
     }
 
     /**
-     * 删除角色
+     * 激活、禁用角色
      *
      * @param $id
+     * @param $status
      */
-    public function deleteRole($id)
+    public function changeStatus($id, $status)
     {
-        $addData['id']        = $id;
-        $addData['is_delete'] = 1;
-        $status               = RoleModel::whereId($id)->update($addData);
+        $status = $status == 1 ? 2 : 1;
+        $status = RoleModel::whereId($id)->update(['status' => $status]);
         if (!$status) {
             call_back(2, '', '操作失败');
         }
-        // 添加成功
+        // 操作成功
         call_back(0);
+    }
+
+    /**
+     * 设置权限
+     *
+     * @param $id
+     */
+    public function setPermissions($id)
+    {
+        
     }
 }

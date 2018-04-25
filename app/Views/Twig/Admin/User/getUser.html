@@ -61,25 +61,25 @@
                             <td>{{ v.name }}</td>
                             <td>{{ v.nickname }}</td>
                             <td>{{ v.role_name }}</td>
-                            <td> {% if v.status ==1 %} <span class="label label-success">激活</span>{% else %} <span class="label label-danger">禁用</span> {% endif %} </td>
+                            <td> {% if v.status ==1 %} <span class="label label-primary">激活</span>{% else %} <span class="label label-danger">禁用</span> {% endif %} </td>
                             <td>{{ v.create_time | date('Y-m-d H:i:s')}}</td>
                             <td>{{ v.login_time | date('Y-m-d H:i:s')}}</td>
                             <td class="text-right">
-                                {% if v.status ==1%}
-                                <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}});">
+                                {% if v.status ==1 %}
+                                <button type="button" class="btn btn-danger btn-sm" onclick="return updateStatus({{v.id}},{{v.status}});">
                                     <i class="fa fa-cog"></i>  禁用
                                 </button>
                                 {% else %}
-                                <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}});">
-                                    <i class="fa fa-cog"></i>  禁用
+                                <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}},{{v.status}});">
+                                    <i class="fa fa-cog"></i>  激活
                                 </button>
                                 {% endif %}
                                 <button type="button" class="btn btn-warning btn-sm" onclick="return getInfo({{v.id}});">
                                     <i class="fa fa-edit"></i>  编辑
                                 </button>
-                                <button type="button" class="btn btn-danger btn-sm" onclick="return del({{v.id}});">
-                                    <i class="fa fa-trash"></i>  删除
-                                </button>
+                                <!--<button type="button" class="btn btn-danger btn-sm" onclick="return del({{v.id}});">-->
+                                    <!--<i class="fa fa-trash"></i>  删除-->
+                                <!--</button>-->
                             </td>
                         </tr>
                         {% else %}
@@ -166,7 +166,7 @@
     </div>
 </div>
 
-<!-- 编辑品牌框 -->
+<!-- 编辑角色框 -->
 <div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md modal-lg" style="top:13%;">
         <div class="modal-content">
@@ -284,10 +284,10 @@
 
     // ****************** 添加账号 ******************
     function add() {
-        var name = $("form[name='brand_add']").find("input[name='name']").val();
-        var nickname = $("form[name='brand_add']").find("input[name='nickname']").val();
-        var role_id = $("form[name='brand_add']").find("select[name='role_id[]']").val();
-        var status = $("form[name='brand_add']").find("input[name='status']").val();
+        var name = $("form[name='user_add']").find("input[name='name']").val();
+        var nickname = $("form[name='user_add']").find("input[name='nickname']").val();
+        var role_id = $("form[name='user_add']").find("select[name='role_id[]']").val();
+        var status = $("form[name='user_add']").find("input[name='status']").val();
         if ($.trim(name) == '') {
             $().toastmessage('showErrorToast', '账号不能为空！');
             return false;
@@ -374,7 +374,7 @@
         });
     }
 
-    // ****************** 编辑品牌 ******************
+    // ****************** 编辑账号 ******************
     function update() {
         var name = $("form[name='user_update']").find("input[name='name']").val();
         var nickname = $("form[name='user_update']").find("input[name='nickname']").val();
@@ -422,6 +422,34 @@
             }
         });
     }
+
+    // ******************** 激活、禁用 账号 ****************
+    function updateStatus(id,status) {
+        $.ajax({
+            url: "/Admin/User/changeStatus/" + id + '/' + status,
+            type: "POST",
+            dataType: 'json',
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "操作成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+
+    }
+
     // ******************** 显示删除提示框 ************
     function deleteBrand(obj) {
         var id = $(obj).attr('id');
