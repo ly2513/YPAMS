@@ -2,11 +2,12 @@
 {% block header %}
 <link href="/Static/css/plugins/chosen/chosen.css" rel="stylesheet">
 <link href="/Static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<!-- table  -->
+<link href="/Static/css/plugins/footable/footable.core.css" rel="stylesheet">
 {% endblock %}
 {% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <!--<h2>会员管理</h2>-->
         <ol class="breadcrumb">
             <li>
                 <a href="#">权限管理</a>
@@ -56,7 +57,7 @@
                         </thead>
                         <tbody>
                         {% for k,v in data %}
-                        <tr>
+                        <tr class="{% if k%2 != 0 %} footable-odd {% endif %}">
                             <td>{{ v.id }}</td>
                             <td>{{ v.name }}</td>
                             <td>{{ v.nickname }}</td>
@@ -166,7 +167,7 @@
     </div>
 </div>
 
-<!-- 编辑角色框 -->
+<!-- 编辑账号框 -->
 <div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-md modal-lg" style="top:13%;">
         <div class="modal-content">
@@ -207,7 +208,7 @@
                         <div class="controls col-md-6" >
                             <div class="i-checks">
                                 <label style="padding-top: 5px;width: 100px;cursor: pointer;">
-                                    <input type="radio" checked="" value="1" name="status"> <i></i> 激活
+                                    <input type="radio"  value="1" name="status"> <i></i> 激活
                                 </label>
                             </div>
                             <div class="i-checks">
@@ -217,7 +218,6 @@
                             </div>
                         </div>
                     </div>
-
                 </form>
             </div>
 
@@ -352,9 +352,11 @@
                             $("#myModal1").find("select[name='role_id["+ n +"]'] option[value='"+n+"']").trigger("liszt:updated");
                     });
 
-//                        $("#myModal1").find("select[name='role_id[]']").multiselect('refresh');//刷新多选下拉标签
-//                        $("#myModal1").find("select[name='role_id[]']").trigger("chosen:updated");
-                        $("#myModal1").find("input[name='status']").val(re.data.status);
+                        if(re.data.status == 1){
+                            $("#myModal1").find('input[name="status"]:eq(0)').iCheck('check');
+                        }else{
+                            $("#myModal1").find('input[name="status"]:eq(1)').iCheck('check');
+                        }
                         $("#myModal1").modal();
                     } else {
 

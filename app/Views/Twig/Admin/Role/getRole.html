@@ -1,11 +1,14 @@
 {% extends "Admin/Public/base.html" %}
+
 {% block header %}
 <link href="/Static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<!-- table  -->
+<link href="/Static/css/plugins/footable/footable.core.css" rel="stylesheet">
 {% endblock %}
+
 {% block content %}
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
-        <!--<h2>会员管理</h2>-->
         <ol class="breadcrumb">
             <li>
                 <a href="#">权限管理</a>
@@ -52,7 +55,7 @@
                         </thead>
                         <tbody>
                         {% for k,v in data %}
-                        <tr>
+                        <tr class="{% if k%2 != 0 %} footable-odd {% endif %}">
                             <td>{{ v.id }}</td>
                             <td>{{ v.name }}</td>
                             <td> {% if v.status ==1 %} <span class="label label-primary">激活</span>{% else %} <span class="label label-danger">禁用</span> {% endif %} </td>
@@ -167,7 +170,7 @@
                         <div class="controls col-md-6" >
                             <div class="i-checks">
                                 <label style="padding-top: 5px;width: 100px;cursor: pointer;">
-                                    <input type="radio" checked="" value="1" name="status"> <i></i> 激活
+                                    <input type="radio" value="1" name="status"> <i></i> 激活
                                 </label>
                             </div>
                             <div class="i-checks">
@@ -257,10 +260,11 @@
                     if (re.data) {
                         $("#myModal1").find("input[name='id']").val(re.data.id);
                         $("#myModal1").find("input[name='name']").val(re.data.name);
-
-
-                        $("#myModal1").find("input[name='status']").val(re.data.status);
-                        $("#myModal1").find("input[name='status']").iCheck('check');   //将输入框的状态设置为checked
+                        if(re.data.status == 1){
+                            $("#myModal1").find('input[name="status"]:eq(0)').iCheck('check');
+                        }else{
+                            $("#myModal1").find('input[name="status"]:eq(1)').iCheck('check');
+                        }
                         $("#myModal1").modal();
                     }
 

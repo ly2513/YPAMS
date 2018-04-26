@@ -1,0 +1,482 @@
+{% extends "Admin/Public/base.html" %}
+
+{% block header %}
+
+<!-- select css -->
+<link href="/Static/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="/Static/css/plugins/chosen/chosen.css" rel="stylesheet">
+
+<!-- table  -->
+<link href="/Static/css/plugins/footable/footable.core.css" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">权限管理</a>
+            </li>
+            <li class="active">
+                <strong>菜单管理</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>菜单管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <form role="form" class="form-inline" style="display:inline-block;width:100%">
+                        <div class="col-md-12" style="float:right">
+                            <span style="float:left;line-height:30px;">筛选条件： </span>
+                            <div class="col-md-4">
+                                <input type="text" name="name" placeholder="菜单名称" id="" value="{{condition}}"
+                                       class="form-control ">
+                            </div>
+                            <div class="col-md-1 pull-right">
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal5"><i class="fa fa-plus-circle"></i> 添加菜单
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 搜索  、筛选 -->
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>图标</th>
+                            <th>菜单名称</th>
+                            <th>排序</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for k,v in list %}
+                        <tr class="{% if k%2 != 0 %} footable-odd {% endif %}">
+                            <td>{{v.id}}</td>
+                            <td><i class="fa {{v.icon}}"></i></td>
+                            <td style="text-align: left;text-indent: 5em;">{{v._name}}</td>
+                            <td>{{v.sort}}</td>
+                            <td>{{v.create_time | date('Y-m-d')}}</td>
+                            <td class="text-right">
+                                <!-- <a class="btn btn-primary btn-sm" href="/Goods/Attribute/getAttribute"><i
+                                        class="fa fa-edit"></i> 属性管理
+                                </a> -->
+                                <button type="button" class="btn btn-warning btn-sm" onclick="return getInfo(this);"
+                                        id="{{v.id}}"><i class="fa fa-edit"></i> 编辑
+                                </button>
+                                <button type="button" class="btn btn-danger btn-sm" onclick="return deleteMenu(this);"
+                                        id="{{v.id}}">
+                                    <i class="fa fa-trash-o"></i> 删除
+                                </button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td style="text-align: center" colspan="6">暂无数据</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        <!-- 分页 -->
+                        <tfoot>
+                        <tr>
+                            <td colspan="6" style="padding-top:30px;">
+                                {{ page | raw }}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block foot %}
+
+<!-- 添加菜单框 -->
+<div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="top:13%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">添加菜单</h4>
+            </div>
+            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+                <form method="post" class="m-t-md" name="menu_add">
+                    <div class="form-group" style="">
+                        <label style="text-align: right">父类菜单</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择父类类别" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="pid">
+                                <option value="0">请选择父类菜单</option>
+                                {% for v in list %}
+                                <option value="{{v.id}}">{{v._name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单名称</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="name" placeholder="请输入菜单名称">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单路径</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="url" placeholder="请输入菜单路径">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单图标</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="icon" onfocus="return awesome(this)"
+                                   placeholder="请输入图标">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单排序</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="sort" value="0" placeholder="数字越小越靠前">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单描述</label>
+                        <div class="controls col-md-6">
+                            <textarea name="description" cols="57" rows="3"
+                                      style="font-size: 14px;line-height: 18px;"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return add();">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑菜单框 -->
+<div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" style="top:13%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">编辑菜单</h4>
+            </div>
+            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+                <form method="post" class="m-t-md" name="menu_update">
+                    <input type="hidden" name="id">
+                    <div class="form-group" style="">
+                        <label style="text-align: right">父类菜单</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择父类类别" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="pid">
+                                <option value="0">请选择父类菜单</option>
+                                {% for v in list %}
+                                <option value="{{v.id}}">{{v._name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单名称</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="name" value="{{ data.name }}"
+                                   placeholder="请输入菜单名称">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单路径</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="url" value="{{ data.url }}"
+                                   placeholder="请输入菜单路径">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单图标</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="icon" value="{{ data.icon }}"
+                                   onfocus="return awesome(this)" placeholder="请输入图标">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单排序</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="sort" value="{{ data.sort }}"
+                                   placeholder="数字越小越靠前">
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">菜单描述</label>
+                        <div class="controls col-md-6">
+                            <textarea name="description" cols="57" rows="3" style="font-size: 14px;line-height: 18px;">{{ data.description }}</textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return update();">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 删除提示框 -->
+<div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #1ab394; color: white;">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">提示</h4>
+            </div>
+            <div class="modal-body col-md-12" style="padding:0px 30px;">
+                <h5 style="text-align: center;padding:5%;display: block;">确定要删除吗?</h5>
+                <input type="hidden" name="id">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return del();">确定</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Awesome -->
+<div class="modal inmodal fade" id="myModal3" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">
+                    请点击一个图标
+                </h4>
+            </div>
+            <div class="modal-body">
+                {% for k,v in awesome %}
+                <i class="fa {{v}} awesome" data-icon="{{v}}" style="cursor: pointer;"></i>&nbsp;
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-white" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Select2 -->
+<script src="/Static/js/plugins/chosen/chosen.jquery.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        // ****************** 初始化select *******************
+        $('.chosen-container').css({
+            'width': 100 + '%'
+        });
+    });
+
+    // ****************** 初始化select *******************
+    var config = {
+        '.chosen-select': {},
+        '.chosen-select-deselect': {allow_single_deselect: true},
+        '.chosen-select-no-single': {disable_search_threshold: 10},
+        '.chosen-select-no-results': {no_results_text: 'Oops, nothing found!'},
+        '.chosen-select-width': {width: "95%"}
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+
+    // ****************** 添加菜单 ******************
+    function add() {
+        var pid = $("form[name='menu_add']").find("select[name='pid']").val();
+        var name = $("form[name='menu_add']").find("input[name='name']").val();
+        var path = $("form[name='menu_add']").find("input[name='url']").val();
+        var icon = $("form[name='menu_add']").find("input[name='icon']").val();
+        var sort = $("form[name='menu_add']").find("input[name='sort']").val();
+        var description = $("form[name='menu_add']").find("textarea[name='description']").val();
+        if ($.trim(name) == '') {
+            $().toastmessage('showErrorToast', '菜单名称不能为空！');
+            return false;
+        }
+//        if($.trim(pid) == 0){
+//            if($.trim(description) == ''){
+//                $().toastmessage('showErrorToast', '请选择父类菜单！');
+//                return false;
+//            }
+//        }
+        var data = $("form[name='menu_add']").serialize();
+        $.ajax({
+            url: "/Admin/Menu/add",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "保存成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+    // ******************* 显示编辑信息 **************
+    function getInfo(obj) {
+        var id = $(obj).attr('id');
+        $.ajax({
+            url: "/Admin/Menu/getMenuInfo/" + id,
+            type: "POST",
+            dataType: 'json',
+            success: function (re) {
+                if (re.code === 0) {
+                    if (re.data) {
+                        $("#myModal1").find("input[name='id']").val(re.data.id);
+                        $("#myModal1").find("input[name='name']").val(re.data.name);
+                        $("#myModal1").find("input[name='url']").val(re.data.url);
+                        $("#myModal1").find("input[name='icon']").val(re.data.icon);
+                        $("#myModal1").find("input[name='sort']").val(re.data.sort);
+                        $("#myModal1").find("textarea[name='description']").val(re.data.description);
+                        $("#myModal1").modal();
+                    } else {
+
+                    }
+
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+    // ****************** 编辑菜单 ******************
+    function update() {
+        var name = $("form[name='menu_update']").find("input[name='name']").val();
+        var pid = $("form[name='menu_update']").find("select[name='pid']").val();
+        var path = $("form[name='menu_update']").find("input[name='url']").val();
+        var icon = $("form[name='menu_update']").find("input[name='icon']").val();
+        var sort = $("form[name='menu_update']").find("input[name='sort']").val();
+        var description = $("form[name='menu_update']").find("textarea[name='description']").val();
+        if ($.trim(name) == '') {
+            $().toastmessage('showErrorToast', '菜单名称不能为空！');
+            return false;
+        }
+//        if($.trim(pid) == 0){
+//            if($.trim(description) == ''){
+//                $().toastmessage('showErrorToast', '请选择父类菜单！');
+//                return false;
+//            }
+//        }
+        var data = $("#myModal1").find("form[name='menu_update']").serialize();
+        $.ajax({
+            url: "/Admin/Menu/update",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "保存成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+    // ******************** 显示删除提示框 ************
+    function deleteMenu(obj) {
+        var id = $(obj).attr('id');
+        $("#myModal2").modal();
+        $("#myModal2").find("input[name='id']").val(id);
+
+    }
+
+    // ************************* 删除类别 ********************
+    function del() {
+        var id = $("#myModal2").find("input[name='id']").val();
+        $.ajax({
+            url: "/Admin/Menu/delete/" + id,
+            type: "POST",
+            dataType: 'json',
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "删除成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+
+    }
+
+    /*************** 选择ICON ****************/
+    function awesome(obj) {
+        $("#myModal3").modal();
+    }
+    $(function () {
+        $(".awesome").click(function () {
+            var icon = $(this).attr('data-icon');
+            $('input[name="icon"]').val(icon);
+            $('#myModal3').modal('hide')
+        });
+    });
+
+</script>
+
+{% endblock %}

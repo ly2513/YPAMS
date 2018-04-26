@@ -174,12 +174,11 @@
                     </div>
                 </li>
                 <li class="active">
-                    <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">权限管理</span> <span class="fa arrow"></span></a>
+                    <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">权限管理</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a href="/Admin/User/getUser">账号管理</a></li>
-                        <li><a href="/Admin/Role/getRole">角色管理</a></li>
-                        <li><a href="/Admin/Node/getNode">节点管理</a></li>
-                        <li><a href="/Admin/Menu/getMenu">菜单管理</a></li>
+                        <li {% if c=='User' %} class="active" {% endif %}><a href="/Admin/User/getUser">账号管理</a></li>
+                        <li {% if c=='Role' %} class="active" {% endif %}><a href="/Admin/Role/getRole">角色管理</a></li>
+                        <li {% if c=='Menu' %} class="active" {% endif %}><a href="/Admin/Menu/getMenu">菜单管理</a></li>
                     </ul>
                 </li>
                 <li class="">

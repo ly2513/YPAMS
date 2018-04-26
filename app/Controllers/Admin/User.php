@@ -141,25 +141,9 @@ class User extends Auth
         // 开启事务
         $build = UserModel::select();
         $build->getConnection()->beginTransaction();
-        $roleIds = $addData['role_id'];
         unset($addData['role_id']);
         $status   = UserModel::whereId($addData['id'])->update($addData);
-        $roleData = [];
-        foreach ($roleIds as $value) {
-            array_push($roleData, [
-                'uid'         => $addData['id'],
-                'rid'         => $value,
-                'status'      => 0,
-                'create_by'   => $_SESSION['uid'],
-                'update_by'   => $_SESSION['uid'],
-                'create_time' => time(),
-                'update_time' => time()
-            ]);
-
-        }
-        $status1 = UserRoleModel::whereUid($addData['id'])->update(['is_delete' => 1]);
-        $status2 = UserRoleModel::insert($roleData);
-        if ($status && $status1 && $status2) {
+        if ($status) {
             // 提交事务
             $build->getConnection()->commit();
             call_back(0);
@@ -170,7 +154,7 @@ class User extends Auth
         }
         call_back(0);
     }
-    
+
     /**
      * 修改账号状态
      *

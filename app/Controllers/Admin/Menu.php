@@ -9,6 +9,7 @@
 namespace App\Controllers\Admin;
 
 use Admin\MenuModel;
+use App\Libraries\YP_Data;
 
 /**
  * Class Menu 菜单管理
@@ -52,14 +53,12 @@ class Menu extends Auth
 		if ($list) {
 			$this->redis->set('menusData', json_encode($list));
 		}
-		$tree = new \YP_Data();
+		$tree = new YP_Data();
 		$list = $tree->tree($list, 'name', 'id', 'pid');
 		$awesome = $this->getAwesome();
 		$this->assign('condition', $condition);
 		$this->assign('list', $list);
 		$this->assign('awesome', $awesome);
-		$this->assign('c', $this->controller);
-		$this->assign('a', $this->method);
 		$this->display();
 	}
 
