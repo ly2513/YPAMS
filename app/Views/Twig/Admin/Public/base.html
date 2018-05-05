@@ -176,23 +176,23 @@
                 <li class="active">
                     <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">权限管理</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li {% if c=='User' %} class="active" {% endif %}><a href="/Admin/User/getUser">账号管理</a></li>
-                        <li {% if c=='Role' %} class="active" {% endif %}><a href="/Admin/Role/getRole">角色管理</a></li>
-                        <li {% if c=='Menu' %} class="active" {% endif %}><a href="/Admin/Menu/getMenu">菜单管理</a></li>
+                        <li {% if c=='User' %} class="active" {% endif %}><a href="/Admin/User/getUser" class="J_menuItem" data-index="1">账号管理</a></li>
+                        <li {% if c=='Role' %} class="active" {% endif %}><a href="/Admin/Role/getRole" class="J_menuItem" data-index="2">角色管理</a></li>
+                        <li {% if c=='Menu' %} class="active" {% endif %}><a href="/Admin/Menu/getMenu" class="J_menuItem" data-index="3">菜单管理</a></li>
                     </ul>
                 </li>
                 <li class="">
-                    <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
+                    <a href="/Static/Html/index.html"><i class="fa fa-th-large"></i> <span class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
-                        <li class="active"><a href="index.html">Dashboard v.1</a></li>
-                        <li><a href="/Static/Html/dashboard_2.html">Dashboard v.2</a></li>
+                        <li class="active"><a href="/Static/Html/index.html" class="J_menuItem" data-index="1">Dashboard v.1</a></li>
+                        <li><a href="/Static/Html/dashboard_2.html" class="J_menuItem" data-index="1">Dashboard v.2</a></li>
                         <li><a href="/Static/Html/dashboard_3.html">Dashboard v.3</a></li>
                         <li><a href="/Static/Html/dashboard_4_1.html">Dashboard v.4</a></li>
                         <li><a href="/Static/Html/dashboard_5.html">Dashboard v.5 <span class="label label-primary pull-right">NEW</span></a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
+                    <a href="/Static/Html/layouts.html"><i class="fa fa-diamond"></i> <span class="nav-label">Layouts</span></a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span class="fa arrow"></span></a>
@@ -308,7 +308,7 @@
                 </li>
 
                 <li>
-                    <a href="grid_options.html"><i class="fa fa-laptop"></i> <span class="nav-label">Grid options</span></a>
+                    <a href="/Static/Html/grid_options.html"><i class="fa fa-laptop"></i> <span class="nav-label">Grid options</span></a>
                 </li>
                 <li>
                     <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Tables</span><span class="fa arrow"></span></a>
@@ -424,7 +424,7 @@
             </div>
         </div>
         <div class="row J_mainContent" id="content-main">
-        <!-- <iframe class="J_iframe" name="iframe0" src="/Static/Html/dashboard_3.html" data-id="" seamless="" style="display: none;" width="100%" height="100%" frameborder="0"></iframe> -->
+         <iframe class="J_iframe" name="iframe0" src="/Static/Html/dashboard_3.html" data-id="" seamless="" style="display: none;" width="100%" height="100%" frameborder="0"></iframe>
         <!--<iframe class="J_iframe" name="iframe9" src="#" data-id="" seamless="" width="100%" height="100%" frameborder="0"></iframe>-->
         </div>
         {% block content %}
@@ -447,6 +447,7 @@
 <!-- message -->
 <script src="/Static/js/plugins/message/jquery.toastmessage.js"></script>
 <script src="/Static/js/plugins/toastr/toastr.min.js"></script>
+<script src="/Static/js/contabs.min.js"></script>
 
 
 <script>
