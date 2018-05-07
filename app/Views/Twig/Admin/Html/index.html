@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>INSPINIA | Dashboard</title>
+
+    <link href="/Static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Static/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="/Static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="/Static/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="/Static/css/animate.css" rel="stylesheet">
+    <link href="/Static/css/style.css" rel="stylesheet">
+    <style>
+
+        .content-tabs {
+            position: relative;
+            height: 42px;
+            background: #fafafa;
+            line-height: 40px
+        }
+
+        .content-tabs .roll-nav, .page-tabs-list {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            color: #999;
+            z-index: 2;
+            top: 0
+        }
+
+        .content-tabs .roll-left {
+            left: 0;
+            border-right: solid 1px #eee
+        }
+
+        .content-tabs .roll-right {
+            right: 0;
+            border-left: solid 1px #eee
+        }
+
+        .content-tabs button {
+            background: #fff;
+            border: 0;
+            height: 40px;
+            width: 40px;
+            outline: 0
+        }
+
+        .content-tabs button:hover {
+            background: #fafafa
+        }
+
+        nav.page-tabs {
+            margin-left: 40px;
+            width: 100000px;
+            height: 40px;
+            overflow: hidden
+        }
+
+        nav.page-tabs .page-tabs-content {
+            float: left
+        }
+
+        .page-tabs a {
+            display: block;
+            float: left;
+            border-right: solid 1px #eee;
+            padding: 0 15px
+        }
+
+        .page-tabs a i:hover {
+            color: #c00
+        }
+
+        .content-tabs .roll-nav:hover, .page-tabs a:hover {
+            color: #777;
+            background: #f2f2f2;
+            cursor: pointer
+        }
+
+        .roll-right.J_tabRight {
+            right: 140px
+        }
+
+        .roll-right.btn-group {
+            right: 60px;
+            width: 80px;
+            padding: 0
+        }
+
+        .roll-right.btn-group button {
+            width: 80px
+        }
+
+        .roll-right.J_tabExit {
+            background: #fff;
+            height: 40px;
+            width: 60px;
+            outline: 0
+        }
+
+        .dropdown-menu-right {
+            left: auto
+        }
+
+        .content-tabs {
+            border-bottom: solid 2px #2f4050
+        }
+
+        .page-tabs a {
+            color: #999
+        }
+
+        .page-tabs a i {
+            color: #ccc
+        }
+
+        .page-tabs a.active {
+            background: #2f4050;
+            color: #a7b1c2
+        }
+
+        .page-tabs a.active i:hover, .page-tabs a.active:hover {
+            background: #293846;
+            color: #fff
+        }
+
+    </style>
+
+</head>
+
+<body>
+<div id="wrapper">
+    <nav class="navbar-default navbar-static-side" role="navigation">
+        <div class="sidebar-collapse">
+            <ul class="nav metismenu" id="side-menu">
+                <li class="nav-header">
+                    <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="/Static/img/profile_small.jpg"/>
+                             </span>
+                        <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                            <span class="clear"> <span class="block m-t-xs"> <strong
+                                    class="font-bold">David Williams</strong>
+                             </span> <span class="text-muted text-xs block">Art Director <b
+                                    class="caret"></b></span> </span> </a>
+                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                            <li><a href="/Static/Html/profile.html">Profile</a></li>
+                            <li><a href="/Static/Html/contacts.html">Contacts</a></li>
+                            <li><a href="/Static/Html/mailbox.html">Mailbox</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/Static/Html/login.html">退出</a></li>
+                        </ul>
+                    </div>
+                    <div class="logo-element">
+                        IN+
+                    </div>
+                </li>
+                <li class="active">
+                    <a href="#"><i class="fa fa-th-large"></i> <span class="nav-label">权限管理</span> <span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li {% if c=='User' %} class="active" {% endif %}><a href="/Admin/User/getUser">账号管理</a></li>
+                        <li {% if c=='Role' %} class="active" {% endif %}><a href="/Admin/Role/getRole">角色管理</a></li>
+                        <li {% if c=='Menu' %} class="active" {% endif %}><a href="/Admin/Menu/getMenu">菜单管理</a></li>
+                        <li {% if c=='Html' %} class="active" {% endif %}><a href="/Admin/Html/index">前端框架</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a href="/Static/Html/index.html"><i class="fa fa-th-large"></i> <span
+                            class="nav-label">Dashboards</span> <span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level">
+                        <li class="active"><a href="/Static/Html/index.html" class="J_menuItem" data-index="1">Dashboard
+                            v.1</a></li>
+                        <li><a href="/Static/Html/dashboard_2.html" class="J_menuItem" data-index="2">Dashboard v.2</a>
+                        </li>
+                        <li><a href="/Static/Html/dashboard_3.html" class="J_menuItem" data-index="3">Dashboard v.3</a>
+                        </li>
+                        <li><a href="/Static/Html/dashboard_4_1.html" class="J_menuItem" data-index="4">Dashboard
+                            v.4</a></li>
+                        <li><a href="/Static/Html/dashboard_5.html" class="J_menuItem" data-index="5">Dashboard v.5
+                            <span class="label label-primary pull-right">NEW</span></a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Static/Html/layouts.html" class="J_menuItem" data-index=""><i class="fa fa-diamond"></i>
+                        <span class="nav-label">Layouts</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-bar-chart-o"></i> <span class="nav-label">Graphs</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/graph_flot.html" class="J_menuItem" data-index="6">Flot Charts</a>
+                        </li>
+                        <li><a href="/Static/Html/graph_morris.html" class="J_menuItem" data-index="7">Morris.js
+                            Charts</a></li>
+                        <li><a href="/Static/Html/graph_rickshaw.html" class="J_menuItem" data-index="8">Rickshaw
+                            Charts</a></li>
+                        <li><a href="/Static/Html/graph_chartjs.html" class="J_menuItem" data-index="9">Chart.js</a>
+                        </li>
+                        <li><a href="/Static/Html/graph_chartist.html" class="J_menuItem" data-index="10">Chartist</a>
+                        </li>
+                        <li><a href="/Static/Html/graph_peity.html" class="J_menuItem" data-index="11">Peity Charts</a>
+                        </li>
+                        <li><a href="/Static/Html/graph_sparkline.html" class="J_menuItem" data-index="12">Sparkline
+                            Charts</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Static/Html/mailbox.html" class="J_menuItem" data-index="13"><i
+                            class="fa fa-envelope"></i> <span class="nav-label">Mailbox </span><span
+                            class="label label-warning pull-right">16/24</span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/mailbox.html" class="J_menuItem" data-index="14">Inbox</a></li>
+                        <li><a href="/Static/Html/mail_detail.html" class="J_menuItem" data-index="15">Email view</a>
+                        </li>
+                        <li><a href="/Static/Html/mail_compose.html" class="J_menuItem" data-index="16">Compose
+                            email</a></li>
+                        <li><a href="/Static/Html/email_template.html" class="J_menuItem" data-index="17">Email
+                            templates</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Static/Html/metrics.html" class="J_menuItem" data-index="18"><i
+                            class="fa fa-pie-chart"></i> <span class="nav-label">Metrics</span> </a>
+                </li>
+                <li>
+                    <a href="/Static/Html/widgets.html" class="J_menuItem" data-index="19"><i class="fa fa-flask"></i>
+                        <span class="nav-label">Widgets</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-edit"></i> <span class="nav-label">Forms</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/form_basic.html" class="J_menuItem" data-index="20">Basic form</a>
+                        </li>
+                        <li><a href="/Static/Html/form_advanced.html" class="J_menuItem" data-index="21">Advanced
+                            Plugins</a></li>
+                        <li><a href="/Static/Html/form_wizard.html" class="J_menuItem" data-index="22">Wizard</a></li>
+                        <li><a href="/Static/Html/form_file_upload.html" class="J_menuItem" data-index="23">File
+                            Upload</a></li>
+                        <li><a href="/Static/Html/form_editors.html" class="J_menuItem" data-index="24">Text Editor</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-desktop"></i> <span class="nav-label">App Views</span> <span
+                            class="pull-right label label-primary">SPECIAL</span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/contacts.html" class="J_menuItem" data-index="25">Contacts</a></li>
+                        <li><a href="/Static/Html/profile.html" class="J_menuItem" data-index="26">Profile</a></li>
+                        <li><a href="/Static/Html/profile_2.html" class="J_menuItem" data-index="27">Profile v.2</a>
+                        </li>
+                        <li><a href="/Static/Html/contacts_2.html" class="J_menuItem" data-index="28">Contacts v.2</a>
+                        </li>
+                        <li><a href="/Static/Html/projects.html" class="J_menuItem" data-index="29">Projects</a></li>
+                        <li><a href="/Static/Html/project_detail.html" class="J_menuItem" data-index="30">Project
+                            detail</a></li>
+                        <li><a href="/Static/Html/teams_board.html" class="J_menuItem" data-index="31">Teams board</a>
+                        </li>
+                        <li><a href="/Static/Html/social_feed.html" class="J_menuItem" data-index="32">Social feed</a>
+                        </li>
+                        <li><a href="/Static/Html/clients.html" class="J_menuItem" data-index="33">Clients</a></li>
+                        <li><a href="/Static/Html/full_height.html" class="J_menuItem" data-index="34">Outlook view</a>
+                        </li>
+                        <li><a href="/Static/Html/vote_list.html" class="J_menuItem" data-index="35">Vote list</a></li>
+                        <li><a href="/Static/Html/file_manager.html" class="J_menuItem" data-index="36">File manager</a>
+                        </li>
+                        <li><a href="/Static/Html/calendar.html" class="J_menuItem" data-index="37">Calendar</a></li>
+                        <li><a href="/Static/Html/issue_tracker.html" class="J_menuItem" data-index="38">Issue
+                            tracker</a></li>
+                        <li><a href="/Static/Html/blog.html" class="J_menuItem" data-index="39">Blog</a></li>
+                        <li><a href="/Static/Html/article.html" class="J_menuItem" data-index="40">Article</a></li>
+                        <li><a href="/Static/Html/faq.html" class="J_menuItem" data-index="41">FAQ</a></li>
+                        <li><a href="/Static/Html/timeline.html" class="J_menuItem" data-index="42">Timeline</a></li>
+                        <li><a href="/Static/Html/pin_board.html" class="J_menuItem" data-index="43">Pin board</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-files-o"></i> <span class="nav-label">Other Pages</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/search_results.html" class="J_menuItem" data-index="44">Search
+                            results</a></li>
+                        <li><a href="/Static/Html/lockscreen.html" class="J_menuItem" data-index="45">Lockscreen</a>
+                        </li>
+                        <li><a href="/Static/Html/invoice.html" class="J_menuItem" data-index="46">Invoice</a></li>
+                        <li><a href="/Static/Html/login.html" class="J_menuItem" data-index="47">Login</a></li>
+                        <li><a href="/Static/Html/login_two_columns.html" class="J_menuItem" data-index="48">Login
+                            v.2</a></li>
+                        <li><a href="/Static/Html/forgot_password.html" class="J_menuItem" data-index="49">Forget
+                            password</a></li>
+                        <li><a href="/Static/Html/register.html" class="J_menuItem" data-index="50">Register</a></li>
+                        <li><a href="/Static/Html/404.html" class="J_menuItem" data-index="51">404 Page</a></li>
+                        <li><a href="/Static/Html/500.html" class="J_menuItem" data-index="52">500 Page</a></li>
+                        <li><a href="/Static/Html/empty_page.html" class="J_menuItem" data-index="53">Empty page</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-globe"></i> <span class="nav-label">Miscellaneous</span><span
+                            class="label label-info pull-right">NEW</span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/toastr_notifications.html" class="J_menuItem" data-index="54">Notification</a>
+                        </li>
+                        <li><a href="/Static/Html/nestable_list.html" class="J_menuItem" data-index="55">Nestable
+                            list</a></li>
+                        <li><a href="/Static/Html/agile_board.html" class="J_menuItem" data-index="56">Agile board</a>
+                        </li>
+                        <li><a href="/Static/Html/timeline_2.html" class="J_menuItem" data-index="57">Timeline v.2</a>
+                        </li>
+                        <li><a href="/Static/Html/diff.html" class="J_menuItem" data-index="58">Diff</a></li>
+                        <li><a href="/Static/Html/sweetalert.html" class="J_menuItem" data-index="59">Sweet alert</a>
+                        </li>
+                        <li><a href="/Static/Html/idle_timer.html" class="J_menuItem" data-index="60">Idle timer</a>
+                        </li>
+                        <li><a href="/Static/Html/spinners.html" class="J_menuItem" data-index="61">Spinners</a></li>
+                        <li><a href="/Static/Html/tinycon.html" class="J_menuItem" data-index="62">Live favicon</a></li>
+                        <li><a href="/Static/Html/google_maps.html" class="J_menuItem" data-index="63">Google maps</a>
+                        </li>
+                        <li><a href="/Static/Html/code_editor.html" class="J_menuItem" data-index="64">Code editor</a>
+                        </li>
+                        <li><a href="/Static/Html/modal_window.html" class="J_menuItem" data-index="65">Modal window</a>
+                        </li>
+                        <li><a href="/Static/Html/forum_main.html" class="J_menuItem" data-index="66">Forum view</a>
+                        </li>
+                        <li><a href="/Static/Html/validation.html" class="J_menuItem" data-index="67">Validation</a>
+                        </li>
+                        <li><a href="/Static/Html/tree_view.html" class="J_menuItem" data-index="68">Tree view</a></li>
+                        <li><a href="/Static/Html/chat_view.html" class="J_menuItem" data-index="69">Chat view</a></li>
+                        <li><a href="/Static/Html/masonry.html" class="J_menuItem" data-index="70">Masonry</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-flask"></i> <span class="nav-label">UI Elements</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/typography.html" class="J_menuItem" data-index="71">Typography</a>
+                        </li>
+                        <li><a href="/Static/Html/icons.html" class="J_menuItem" data-index="72">Icons</a></li>
+                        <li><a href="/Static/Html/draggable_panels.html" class="J_menuItem" data-index="73">Draggable
+                            Panels</a></li>
+                        <li><a href="/Static/Html/buttons.html" class="J_menuItem" data-index="74">Buttons</a></li>
+                        <li><a href="/Static/Html/video.html" class="J_menuItem" data-index="75">Video</a></li>
+                        <li><a href="/Static/Html/tabs_panels.html" class="J_menuItem" data-index="76">Panels</a></li>
+                        <li><a href="/Static/Html/tabs.html" class="J_menuItem" data-index="77">Tabs</a></li>
+                        <li><a href="/Static/Html/notifications.html" class="J_menuItem" data-index="78">Notifications &
+                            Tooltips</a></li>
+                        <li><a href="/Static/Html/badges_labels.html" class="J_menuItem" data-index="79">Badges, Labels,
+                            Progress</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="/Static/Html/grid_options.html" class="J_menuItem" data-index="80"><i
+                            class="fa fa-laptop"></i> <span class="nav-label">Grid options</span></a>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-table"></i> <span class="nav-label">Tables</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/table_basic.html" class="J_menuItem" data-index="81">Static Tables</a>
+                        </li>
+                        <li><a href="/Static/Html/table_data_tables.html" class="J_menuItem" data-index="82">Data
+                            Tables</a></li>
+                        <li><a href="/Static/Html/table_foo_table.html" class="J_menuItem" data-index="83">Foo
+                            Tables</a></li>
+                        <li><a href="/Static/Html/jq_grid.html" class="J_menuItem" data-index="84">jqGrid</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-shopping-cart"></i> <span class="nav-label">E-commerce</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/ecommerce_products_grid.html" class="J_menuItem" data-index="85">Products
+                            grid</a></li>
+                        <li><a href="/Static/Html/ecommerce_product_list.html" class="J_menuItem" data-index="86">Products
+                            list</a></li>
+                        <li><a href="/Static/Html/ecommerce_product.html" class="J_menuItem" data-index="87">Product
+                            edit</a></li>
+                        <li><a href="/Static/Html/ecommerce_product_detail.html" class="J_menuItem" data-index="88">Product
+                            detail</a></li>
+                        <li><a href="/Static/Html/ecommerce-orders.html" class="J_menuItem" data-index="89">Orders</a>
+                        </li>
+                        <li><a href="/Static/Html/ecommerce_payments.html" class="J_menuItem" data-index="90">Credit
+                            Card form</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-picture-o"></i> <span class="nav-label">Gallery</span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li><a href="/Static/Html/basic_gallery.html" class="J_menuItem" data-index="91">Lightbox
+                            Gallery</a></li>
+                        <li><a href="/Static/Html/slick_carousel.html" class="J_menuItem" data-index="92">Slick
+                            Carousel</a></li>
+                        <li><a href="/Static/Html/carousel.html" class="J_menuItem" data-index="93">Bootstrap
+                            Carousel</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label">Menu Levels </span><span
+                            class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        <li>
+                            <a href="#">Third Level <span class="fa arrow"></span></a>
+                            <ul class="nav nav-third-level">
+                                <li>
+                                    <a href="#">Third Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level Item</a>
+                                </li>
+                                <li>
+                                    <a href="#">Third Level Item</a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li><a href="#">Second Level Item</a></li>
+                        <li>
+                            <a href="#">Second Level Item</a></li>
+                        <li>
+                            <a href="#">Second Level Item</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="/Static/Html/css_animation.html" class="J_menuItem" data-index=""><i
+                            class="fa fa-magic"></i> <span class="nav-label">CSS Animations </span><span
+                            class="label label-info pull-right">62</span></a>
+                </li>
+                <li class="landing_link">
+                    <a target="_blank" href="/Static/Html/landing.html" class="J_menuItem" data-index=""><i
+                            class="fa fa-star"></i> <span class="nav-label">Landing Page</span> <span
+                            class="label label-warning pull-right">NEW</span></a>
+                </li>
+                <li class="special_link">
+                    <a href="/Static/Html/package.html" class="J_menuItem" data-index=""><i class="fa fa-database"></i>
+                        <span class="nav-label">Package</span></a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+
+    <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i>
+                    </a>
+                    <form role="search" class="navbar-form-custom" action="search_results.html">
+                        <div class="form-group">
+                            <input type="text" placeholder="Search for something..." class="form-control"
+                                   name="top-search" id="top-search">
+                        </div>
+                    </form>
+                </div>
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <span class="m-r-sm text-muted welcome-message">Welcome to INSPINIA+ Admin Theme.</span>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-envelope"></i> <span class="label label-warning">16</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-messages">
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="/Static/img/a7.jpg">
+                                    </a>
+                                    <div class="media-body">
+                                        <small class="pull-right">46h ago</small>
+                                        <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>.
+                                        <br>
+                                        <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="/Static/img/a4.jpg">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right text-navy">5h ago</small>
+                                        <strong>Chris Johnatan Overtunk</strong> started following <strong>Monica
+                                        Smith</strong>. <br>
+                                        <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="dropdown-messages-box">
+                                    <a href="profile.html" class="pull-left">
+                                        <img alt="image" class="img-circle" src="/Static/img/profile.jpg">
+                                    </a>
+                                    <div class="media-body ">
+                                        <small class="pull-right">23h ago</small>
+                                        <strong>Monica Smith</strong> love <strong>Kim Smith</strong>. <br>
+                                        <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="mailbox.html">
+                                        <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                            <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-alerts">
+                            <li>
+                                <a href="mailbox.html">
+                                    <div>
+                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="profile.html">
+                                    <div>
+                                        <i class="fa fa-twitter fa-fw"></i> 3 New Followers
+                                        <span class="pull-right text-muted small">12 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="grid_options.html">
+                                    <div>
+                                        <i class="fa fa-upload fa-fw"></i> Server Rebooted
+                                        <span class="pull-right text-muted small">4 minutes ago</span>
+                                    </div>
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <div class="text-center link-block">
+                                    <a href="notifications.html">
+                                        <strong>See All Alerts</strong>
+                                        <i class="fa fa-angle-right"></i>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    <li>
+                        <a href="login.html">
+                            <i class="fa fa-sign-out"></i> Log out
+                        </a>
+                    </li>
+                    <li>
+                        <a class="right-sidebar-toggle">
+                            <i class="fa fa-tasks"></i>
+                        </a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
+            <nav class="page-tabs J_menuTabs">
+                <div class="page-tabs-content" style="margin-left: 0px;">
+                    <a href="javascript:;" class="J_menuTab active" data-id="/Static/Html/dashboard_3.html">首页</a>
+                    <!--<a href="javascript:;" class="J_menuTab" data-id="graph_echarts.html">百度ECharts <i class="fa fa-times-circle"></i></a>-->
+                    <!--<a href="javascript:;" class="J_menuTab active" data-id="graph_morris.html">Morris.js <i class="fa fa-times-circle"></i></a>-->
+                    <!--<a href="javascript:;" class="J_menuTab" data-id="graph_rickshaw.html">Rickshaw <i class="fa fa-times-circle"></i></a>-->
+                    <!--<a href="javascript:;" class="J_menuTab" data-id="graph_flot.html">Flot <i class="fa fa-times-circle"></i></a>-->
+                </div>
+            </nav>
+            <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+            </button>
+            <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span></button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                    <li class="J_tabShowActive"><a>定位当前选项卡</a></li>
+                    <li class="divider"></li>
+                    <li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
+                    <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row J_mainContent" id="content-main">
+            <iframe class="J_iframe  " name="iframe0" src="/Static/Html/dashboard_3.html" data-id="" seamless=""
+                    style="display: block;min-height:1000px;" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+
+    </div>
+    <div class="small-chat-box fadeInRight animated">
+
+        <div class="heading" draggable="true">
+            <small class="chat-date pull-right">
+                02.19.2015
+            </small>
+            Small chat
+        </div>
+
+        <div class="content">
+
+            <div class="left">
+                <div class="author-name">
+                    Monica Jackson
+                    <small class="chat-date">
+                        10:02 am
+                    </small>
+                </div>
+                <div class="chat-message active">
+                    Lorem Ipsum is simply dummy text input.
+                </div>
+
+            </div>
+            <div class="right">
+                <div class="author-name">
+                    Mick Smith
+                    <small class="chat-date">
+                        11:24 am
+                    </small>
+                </div>
+                <div class="chat-message">
+                    Lorem Ipsum is simpl.
+                </div>
+            </div>
+            <div class="left">
+                <div class="author-name">
+                    Alice Novak
+                    <small class="chat-date">
+                        08:45 pm
+                    </small>
+                </div>
+                <div class="chat-message active">
+                    Check this stock char.
+                </div>
+            </div>
+            <div class="right">
+                <div class="author-name">
+                    Anna Lamson
+                    <small class="chat-date">
+                        11:24 am
+                    </small>
+                </div>
+                <div class="chat-message">
+                    The standard chunk of Lorem Ipsum
+                </div>
+            </div>
+            <div class="left">
+                <div class="author-name">
+                    Mick Lane
+                    <small class="chat-date">
+                        08:45 pm
+                    </small>
+                </div>
+                <div class="chat-message active">
+                    I belive that. Lorem Ipsum is simply dummy text.
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-chat">
+            <div class="input-group input-group-sm"><input type="text" class="form-control"> <span
+                    class="input-group-btn"> <button
+                    class="btn btn-primary" type="button">Send
+                </button> </span></div>
+        </div>
+
+    </div>
+    <div id="small-chat">
+
+        <span class="badge badge-warning pull-right">5</span>
+        <a class="open-small-chat">
+            <i class="fa fa-comments"></i>
+
+        </a>
+    </div>
+    <div id="right-sidebar">
+        <div class="sidebar-container">
+
+            <ul class="nav nav-tabs navs-3">
+
+                <li class="active"><a data-toggle="tab" href="#tab-1">
+                    Notes
+                </a></li>
+                <li><a data-toggle="tab" href="#tab-2">
+                    Projects
+                </a></li>
+                <li class=""><a data-toggle="tab" href="#tab-3">
+                    <i class="fa fa-gear"></i>
+                </a></li>
+            </ul>
+
+            <div class="tab-content">
+
+
+                <div id="tab-1" class="tab-pane active">
+
+                    <div class="sidebar-title">
+                        <h3><i class="fa fa-comments-o"></i> Latest Notes</h3>
+                        <small><i class="fa fa-tim"></i> You have 10 new message.</small>
+                    </div>
+
+                    <div>
+
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a1.jpg">
+
+                                    <div class="m-t-xs">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+
+                                    There are many variations of passages of Lorem Ipsum available.
+                                    <br>
+                                    <small class="text-muted">Today 4:21 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a2.jpg">
+                                </div>
+                                <div class="media-body">
+                                    The point of using Lorem Ipsum is that it has a more-or-less normal.
+                                    <br>
+                                    <small class="text-muted">Yesterday 2:45 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a3.jpg">
+
+                                    <div class="m-t-xs">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    Mevolved over the years, sometimes by accident, sometimes on purpose (injected
+                                    humour and the like).
+                                    <br>
+                                    <small class="text-muted">Yesterday 1:10 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a4.jpg">
+                                </div>
+
+                                <div class="media-body">
+                                    Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the
+                                    <br>
+                                    <small class="text-muted">Monday 8:37 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a8.jpg">
+                                </div>
+                                <div class="media-body">
+
+                                    All the Lorem Ipsum generators on the Internet tend to repeat.
+                                    <br>
+                                    <small class="text-muted">Today 4:21 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a7.jpg">
+                                </div>
+                                <div class="media-body">
+                                    Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes
+                                    from a line in section 1.10.32.
+                                    <br>
+                                    <small class="text-muted">Yesterday 2:45 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a3.jpg">
+
+                                    <div class="m-t-xs">
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                        <i class="fa fa-star text-warning"></i>
+                                    </div>
+                                </div>
+                                <div class="media-body">
+                                    The standard chunk of Lorem Ipsum used since the 1500s is reproduced below.
+                                    <br>
+                                    <small class="text-muted">Yesterday 1:10 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="sidebar-message">
+                            <a href="#">
+                                <div class="pull-left text-center">
+                                    <img alt="image" class="img-circle message-avatar" src="/Static/img/a4.jpg">
+                                </div>
+                                <div class="media-body">
+                                    Uncover many web sites still in their infancy. Various versions have.
+                                    <br>
+                                    <small class="text-muted">Monday 8:37 pm</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="tab-2" class="tab-pane">
+
+                    <div class="sidebar-title">
+                        <h3><i class="fa fa-cube"></i> Latest projects</h3>
+                        <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                    </div>
+
+                    <ul class="sidebar-list">
+                        <li>
+                            <a href="#">
+                                <div class="small pull-right m-t-xs">9 hours ago</div>
+                                <h4>Business valuation</h4>
+                                It is a long established fact that a reader will be distracted.
+
+                                <div class="small">Completion with: 22%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                                </div>
+                                <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="small pull-right m-t-xs">9 hours ago</div>
+                                <h4>Contract with Company </h4>
+                                Many desktop publishing packages and web page editors.
+
+                                <div class="small">Completion with: 48%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 48%;" class="progress-bar"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="small pull-right m-t-xs">9 hours ago</div>
+                                <h4>Meeting</h4>
+                                By the readable content of a page when looking at its layout.
+
+                                <div class="small">Completion with: 14%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 14%;" class="progress-bar progress-bar-info"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="label label-primary pull-right">NEW</span>
+                                <h4>The generated</h4>
+                                <!--<div class="small pull-right m-t-xs">9 hours ago</div>-->
+                                There are many variations of passages of Lorem Ipsum available.
+                                <div class="small">Completion with: 22%</div>
+                                <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="small pull-right m-t-xs">9 hours ago</div>
+                                <h4>Business valuation</h4>
+                                It is a long established fact that a reader will be distracted.
+
+                                <div class="small">Completion with: 22%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                                </div>
+                                <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="small pull-right m-t-xs">9 hours ago</div>
+                                <h4>Contract with Company </h4>
+                                Many desktop publishing packages and web page editors.
+
+                                <div class="small">Completion with: 48%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 48%;" class="progress-bar"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="small pull-right m-t-xs">9 hours ago</div>
+                                <h4>Meeting</h4>
+                                By the readable content of a page when looking at its layout.
+
+                                <div class="small">Completion with: 14%</div>
+                                <div class="progress progress-mini">
+                                    <div style="width: 14%;" class="progress-bar progress-bar-info"></div>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <span class="label label-primary pull-right">NEW</span>
+                                <h4>The generated</h4>
+                                <!--<div class="small pull-right m-t-xs">9 hours ago</div>-->
+                                There are many variations of passages of Lorem Ipsum available.
+                                <div class="small">Completion with: 22%</div>
+                                <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </div>
+
+                <div id="tab-3" class="tab-pane">
+
+                    <div class="sidebar-title">
+                        <h3><i class="fa fa-gears"></i> Settings</h3>
+                        <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                    </div>
+
+                    <div class="setings-item">
+                    <span>
+                        Show notifications
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example">
+                                <label class="onoffswitch-label" for="example">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
+                    <span>
+                        Disable Chat
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="collapsemenu" checked class="onoffswitch-checkbox"
+                                       id="example2">
+                                <label class="onoffswitch-label" for="example2">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
+                    <span>
+                        Enable history
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example3">
+                                <label class="onoffswitch-label" for="example3">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
+                    <span>
+                        Show charts
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example4">
+                                <label class="onoffswitch-label" for="example4">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
+                    <span>
+                        Offline users
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox"
+                                       id="example5">
+                                <label class="onoffswitch-label" for="example5">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
+                    <span>
+                        Global search
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox"
+                                       id="example6">
+                                <label class="onoffswitch-label" for="example6">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setings-item">
+                    <span>
+                        Update everyday
+                    </span>
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example7">
+                                <label class="onoffswitch-label" for="example7">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-content">
+                        <h4>Settings</h4>
+                        <div class="small">
+                            I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                            And typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since
+                            the 1500s.
+                            Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Mainly scripts -->
+<script src="/Static/js/jquery-2.1.1.js"></script>
+<script src="/Static/js/bootstrap.min.js"></script>
+<script src="/Static/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="/Static/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Flot -->
+<script src="/Static/js/plugins/flot/jquery.flot.js"></script>
+<script src="/Static/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+<script src="/Static/js/plugins/flot/jquery.flot.spline.js"></script>
+<script src="/Static/js/plugins/flot/jquery.flot.resize.js"></script>
+<script src="/Static/js/plugins/flot/jquery.flot.pie.js"></script>
+
+<!-- Peity -->
+<script src="/Static/js/plugins/peity/jquery.peity.min.js"></script>
+<script src="/Static/js/demo/peity-demo.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="/Static/js/inspinia.js"></script>
+<script src="/Static/js/plugins/pace/pace.min.js"></script>
+
+<!-- jQuery UI -->
+<script src="/Static/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+<!-- GITTER -->
+<script src="/Static/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+<!-- Sparkline -->
+<script src="/Static/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+<!-- Sparkline demo data  -->
+<script src="/Static/js/demo/sparkline-demo.js"></script>
+
+<!-- ChartJS-->
+<script src="/Static/js/plugins/chartJs/Chart.min.js"></script>
+
+<!-- Toastr -->
+<script src="/Static/js/plugins/toastr/toastr.min.js"></script>
+<script src="/Static/js/contabs.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $(".J_iframe").css({'min-height': 1000 + 'px'});
+        setTimeout(function () {
+            toastr.options = {
+                closeButton: true,
+                progressBar: true,
+                showMethod: 'slideDown',
+                timeOut: 4000
+            };
+            toastr.success('响应式后台主题', '欢迎使用INSPINIA前端框架');
+
+        }, 1300);
+
+
+        var data1 = [
+            [0, 4], [1, 8], [2, 5], [3, 10], [4, 4], [5, 16], [6, 5], [7, 11], [8, 6], [9, 11], [10, 30], [11, 10], [12, 13], [13, 4], [14, 3], [15, 3], [16, 6]
+        ];
+        var data2 = [
+            [0, 1], [1, 0], [2, 2], [3, 0], [4, 1], [5, 3], [6, 1], [7, 5], [8, 2], [9, 3], [10, 2], [11, 1], [12, 0], [13, 2], [14, 8], [15, 0], [16, 0]
+        ];
+        $("#flot-dashboard-chart").length && $.plot($("#flot-dashboard-chart"), [
+                    data1, data2
+                ],
+                {
+                    series: {
+                        lines: {
+                            show: false,
+                            fill: true
+                        },
+                        splines: {
+                            show: true,
+                            tension: 0.4,
+                            lineWidth: 1,
+                            fill: 0.4
+                        },
+                        points: {
+                            radius: 0,
+                            show: true
+                        },
+                        shadowSize: 2
+                    },
+                    grid: {
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#d5d5d5",
+                        borderWidth: 1,
+                        color: '#d5d5d5'
+                    },
+                    colors: ["#1ab394", "#1C84C6"],
+                    xaxis: {},
+                    yaxis: {
+                        ticks: 4
+                    },
+                    tooltip: false
+                }
+        );
+
+        var doughnutData = [
+            {
+                value: 300,
+                color: "#a3e1d4",
+                highlight: "#1ab394",
+                label: "App"
+            },
+            {
+                value: 50,
+                color: "#dedede",
+                highlight: "#1ab394",
+                label: "Software"
+            },
+            {
+                value: 100,
+                color: "#A4CEE8",
+                highlight: "#1ab394",
+                label: "Laptop"
+            }
+        ];
+
+        var doughnutOptions = {
+            segmentShowStroke: true,
+            segmentStrokeColor: "#fff",
+            segmentStrokeWidth: 2,
+            percentageInnerCutout: 45, // This is 0 for Pie charts
+            animationSteps: 100,
+            animationEasing: "easeOutBounce",
+            animateRotate: true,
+            animateScale: false
+        };
+
+        var ctx = document.getElementById("doughnutChart").getContext("2d");
+        var DoughnutChart = new Chart(ctx).Doughnut(doughnutData, doughnutOptions);
+
+        var polarData = [
+            {
+                value: 300,
+                color: "#a3e1d4",
+                highlight: "#1ab394",
+                label: "App"
+            },
+            {
+                value: 140,
+                color: "#dedede",
+                highlight: "#1ab394",
+                label: "Software"
+            },
+            {
+                value: 200,
+                color: "#A4CEE8",
+                highlight: "#1ab394",
+                label: "Laptop"
+            }
+        ];
+
+        var polarOptions = {
+            scaleShowLabelBackdrop: true,
+            scaleBackdropColor: "rgba(255,255,255,0.75)",
+            scaleBeginAtZero: true,
+            scaleBackdropPaddingY: 1,
+            scaleBackdropPaddingX: 1,
+            scaleShowLine: true,
+            segmentShowStroke: true,
+            segmentStrokeColor: "#fff",
+            segmentStrokeWidth: 2,
+            animationSteps: 100,
+            animationEasing: "easeOutBounce",
+            animateRotate: true,
+            animateScale: false
+        };
+        var ctx = document.getElementById("polarChart").getContext("2d");
+        var Polarchart = new Chart(ctx).PolarArea(polarData, polarOptions);
+
+
+    });
+</script>
+<script>
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date();
+        a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-4625583-2', 'webapplayers.com');
+    ga('send', 'pageview');
+
+</script>
+</body>
+</html>
