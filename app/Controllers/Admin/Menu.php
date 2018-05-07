@@ -27,16 +27,15 @@ class Menu extends Auth
     /**
      * 构造方法
      */
-    public function initialization()
-    {
-        parent::initialization();
-        $this->redis = \Config\Services::redis();
-        // 初始化redis
-        if (!$this->redis->getRedis()) {
-            $this->redis->initialize();
-        }
-    }
-
+    //    public function initialization()
+    //    {
+    //        parent::initialization();
+    //        $this->redis = \Config\Services::redis();
+    //        // 初始化redis
+    //        if (!$this->redis->getRedis()) {
+    //            $this->redis->initialize();
+    //        }
+    //    }
     /**
      * 菜单列表
      *
@@ -88,7 +87,7 @@ class Menu extends Auth
             $data['id']        = $id;
             $data['redisFlag'] = 1;
             // 添加缓存
-            $this->redis->hmset('menu:' . $data['id'], '', $data);
+            //            $this->redis->hmset('menu:' . $data['id'], '', $data);
         } else {
             call_back(2, '', ' 保存失败!');
         }
@@ -188,7 +187,6 @@ class Menu extends Auth
                 $ids .= $this->getSub($value['id']);
             }
         }
-
         return $ids;
     }
 
@@ -224,7 +222,6 @@ class Menu extends Auth
             "fa-stack-2x",
             "fa-inverse"
         ];
-
         return $this->array_delete($matches[0], $exclude_icons);
     }
 
