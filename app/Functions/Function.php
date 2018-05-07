@@ -161,3 +161,153 @@ function get_password($length = 6)
 
     return $str;
 }
+
+/**
+ * 根据多维数组中的某个值 直接重构数据结构
+ *
+ * @param array $data
+ * @param       $key
+ *
+ * @return array
+ *
+ * @TODO 目前只支持二维数组
+ */
+function array_flatten_key(array $data, $key)
+{
+    $finalData = [];
+    foreach ($data as $val) {
+        $k             = isset($val[$key]) ? $val[$key] : '';
+        $finalData[$k] = $val;
+    }
+
+    return $finalData;
+}
+
+/**
+ * 获得两个日期之间的连续日期
+ *
+ * @param $startDate    开始日期
+ * @param $endDate      结束日期
+ *
+ * @return array
+ */
+function get_date_range($startDate, $endDate)
+{
+    $dateArr = [];
+    // 开始时间戳
+    $dt_start = strtotime($startDate);
+    // 结束时间戳
+    $dt_end = strtotime($endDate);
+    array_push($dateArr, $startDate);
+    while ($dt_start < $dt_end) {
+        $dt_start = strtotime('+1 day', $dt_start);
+        $dateTmp  = date('Y-m-d', $dt_start);
+        array_push($dateArr, $dateTmp);
+    }
+
+    return array_unique($dateArr);
+}
+
+/**
+ * 获得连续的年份
+ *
+ * @param $startDate  开始日期
+ * @param $endDate    结束日期
+ *
+ * @return array
+ */
+function get_year_range($startDate, $endDate)
+{
+    $yearArr = [];
+    // 开始时间戳
+    $dt_start = strtotime($startDate);
+    // 结束时间戳
+    $dt_end = strtotime($endDate);
+    if ($dt_start > $dt_end) {
+        $date     = $dt_start;
+        $dt_start = $dt_end;
+        $dt_end   = $date;
+    }
+    // 开始时间
+    $start_year = intval(date('Y', $dt_start));
+    // 结束时间
+    $end_year = intval(date('Y', $dt_end));
+    while ($start_year <= $end_year) {
+        array_push($yearArr, $start_year);
+        $start_year += 1;
+    }
+
+    return array_unique($yearArr);
+}
+
+/**
+ * 获得连续的年月
+ *
+ * @param $startDate  开始日期
+ * @param $endDate    结束日期
+ *
+ * @return array
+ */
+function get_year_month($startDate, $endDate)
+{
+    $dateArr = [];
+    // 开始时间戳
+    $dt_start = strtotime($startDate);
+    // 结束时间戳
+    $dt_end = strtotime($endDate);
+    array_push($dateArr, date('Y-m', $dt_start));
+    while ($dt_start < $dt_end) {
+        $dt_start = strtotime('+1 day', $dt_start);
+        $dateTmp  = date('Y-m', $dt_start);
+        array_push($dateArr, $dateTmp);
+    }
+
+    return array_values(array_unique($dateArr));
+}
+
+/**
+ * 获得连续的季度数据
+ *
+ * @param $startDate  开始日期
+ * @param $endDate    结束日期
+ *
+ * @return array
+ */
+function get_quarter_range($startDate, $endDate)
+{
+    $quarter = [];
+    $dateArr = get_year_month($startDate, $endDate);
+    foreach ($dateArr as $value) {
+        list($year, $month) = explode('-', $value);
+        $quarterValue   = ceil($month / 3);
+        $yearQuarterStr = $year . '-' . $quarterValue;
+        array_push($quarter, $yearQuarterStr);
+    }
+
+    return array_values(array_unique($quarter));
+}
+
+/**
+ * 将数据格式化成树形结构
+ *
+ * @param         $items
+ * @param  string $id
+ * @param  string $pid
+ * @param  string $child
+ *
+ * @return array
+ */
+function get_tree($items, $id = 'id', $pid = 'pid', $child = 'children')
+{
+    $tree = []; //格式化好的树
+    foreach ($items as $item) {
+        if (isset($items[$item[$pid]])) {
+            $items[$item[$pid]][$child][] = &$items[$item[$id]];
+        } else {
+            $tree[] = &$items[$item[$id]];
+        }
+    }
+
+    return $tree;
+
+}
