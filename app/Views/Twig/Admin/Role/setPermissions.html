@@ -32,7 +32,28 @@
                 </div>
                 <!-- 节点列表 -->
                 <div class="ibox-content">
-                    <div id="tree"></div>
+                    <table class="table table-bordered table-striped with-check" style="margin-bottom:50px;">
+                        <ul style="list-style:none;" >
+                            <?php foreach ($nodedata as $k => $v):?>
+                            <li style="margin-left:30px;width:100%;height:auto" class="dlbox">
+                                <input type="checkbox" class="checkall" <?php if(!empty($controller)):?> <?php if(in_array($v['name'],$controller)):?> checked="" <?php endif;?><?php endif;?> ><strong><?php echo $v['title'];?></strong>
+                                <ul style="list-style:none;width:100%;float:left;margin:10px 0px 10px 30px;" class="subul">
+                                    <?php foreach ($v['_data'] as $k1 => $v1):?>
+                                    <li style="float:left;margin-right:40px;width:200px;">
+                                        <input type="checkbox" name="access[<?php echo $v['name'];?>][]"  class="subcheck" value="<?php echo $v1['name'];?>" <?php if(!empty($accessdata[$v['name']])):?> <?php if(in_array($v1['name'],$accessdata[$v['name']])):?> checked="" <?php endif;?> <?php endif;?> ><?php echo $v1['title'];?>
+                                    </li>
+                                    <?php endforeach;?>
+                                </ul>
+                            </li>
+                            <?php endforeach;?>
+                        </ul>
+
+                        <div class="" style="margin-top:90px;">
+                            <label class="control-label"></label>
+                            <a href="javascript:;"  class="btn btn-success" style="margin-right:30px;" id="add"><i class="icon-ok"></i>    确定</a>
+                            <a href="/role/index"  class="btn btn-info"><i class="icon-repeat"></i>    取消并返回</a>
+                        </div>
+                    </table>
                     <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}},{{v.status}});">
                     <i class="fa fa-check"></i>  保存
                     </button>
@@ -60,50 +81,7 @@
         $('.i-checks').iCheck({
             radioClass: 'iradio_square-green',
         });
-//
-//        fa-square-o
-        var tree = [
-            {
-                text: "Parent 1",
-                nodes: [
-                    {
-                        text: "Child 1",
-                        nodes: [
-                            {
-                                text: "Grandchild 1"
-                            },
-                            {
-                                text: "Grandchild 2"
-                            }
-                        ]
-                    },
-                    {
-                        text: "Child 2"
-                    }
-                ]
-            },
-            {
-                text: "Parent 2"
-            },
-            {
-                text: "Parent 3"
-            },
-            {
-                text: "Parent 4"
-            },
-            {
-                text: "Parent 5"
-            }
-        ];
-        $('#tree').treeview({
-//            expandIcon: 'glyphicon glyphicon-chevron-right',
-            collapseIcon: 'fa fa-square-o',
-            icon: 'fa fa-check-square-o',
-//            nodeIcon: 'fa fa-check-square-o',
-            data: tree,         // data is not optional
-            levels: 5,
-            backColor: 'white'
-        });
+
 
     });
 
