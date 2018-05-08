@@ -9,6 +9,7 @@
 namespace App\Controllers\Admin;
 
 use Admin\MenuModel;
+use Admin\UserModel;
 use App\Libraries\YP_Data;
 
 /**
@@ -49,9 +50,9 @@ class Menu extends Auth
             $query->where('name', 'like', "%$condition%");
         }
         $list = $query->get()->toArray();
-        if ($list) {
-            $this->redis->set('menusData', json_encode($list));
-        }
+        //        if ($list) {
+        //            $this->redis->set('menusData', json_encode($list));
+        //        }
         $tree    = new YP_Data();
         $list    = $tree->tree($list, 'name', 'id', 'pid');
         $awesome = $this->getAwesome();
@@ -187,6 +188,7 @@ class Menu extends Auth
                 $ids .= $this->getSub($value['id']);
             }
         }
+
         return $ids;
     }
 
@@ -222,6 +224,7 @@ class Menu extends Auth
             "fa-stack-2x",
             "fa-inverse"
         ];
+
         return $this->array_delete($matches[0], $exclude_icons);
     }
 
@@ -237,5 +240,133 @@ class Menu extends Auth
     {
         return (is_array($element)) ? array_values(array_diff($array, $element)) : array_values(array_diff($array,
             [$element]));
+    }
+
+    /**
+     * 获取某个用户的菜单ids
+     *
+     * @param $uid 用户ID
+     *
+     * @return array
+     */
+    public function getUserMenusId($uid)
+    {
+        $roleIds  = UserModel::select('roles')->whereId($uid)->get()->row_array();
+        $roleIds  = isset($roleIds['roles']) ? json_decode($roleIds['roles'], true) : [0];
+        $menusIds = MenuModel::select('menus')->whereIn('id', $roleIds)->get()->toArray();
+        $menusArr = array_column($menusIds, 'menus');
+        $arr      = [];
+        foreach ($menusArr as $key => $value) {
+            $menusValue = json_decode($value, true);
+            foreach ($menusValue as $k => $v) {
+                array_push($arr, $v);
+            }
+        }
+        $arr = array_unique($arr);
+
+        return $arr;
+    }
+
+    /**
+     * 获得该用户的菜单信息
+     *
+     * @param array $menusId 菜单ID数组
+     *
+     * @return array
+     */
+    public function getUserMenus(array $menusId)
+    {
+        $fields    = ['id', 'name', 'pid', 'api_link', 'level'];
+        $menusInfo = MenuModel::select($fields)->whereIn('id',
+            $menusId)->orderBy('level DESC')->get(self::TB_MENUS)->toArray();
+        //开始处理数据
+        $menusInfo = array_flatten_key($menusInfo, 'id');
+        // 获得树形菜单
+        $data = get_tree($menusInfo);
+
+        return $data;
+    }
+
+    /**
+     * 序列化列表,以层级关系显示
+     *
+     * @param array $data   需要序列号的数据
+     * @param int   $status 表示是否写入选中状态1:不写入,0:写入
+     *
+     * @return array
+     */
+    public function serializeMapList(array $data, $status = 1)
+    {
+        if (!is_array($data) || !isset($data[0])) {
+            return [];
+        }
+        //开始处理数据
+        $mapData = array_flatten_key($data, 'id');
+        //处理树形结构
+        $data = get_tree($mapData);
+        //        P($data);
+        $data = $this->sortChild($data, $status);
+
+        return $data;
+    }
+
+    /**
+     * 根据权重 递归排序 整个list
+     * 权重排序规则 由大=>小
+     *
+     * @param array $child  子节点数组
+     * @param       $status 表示是否写入选中状态1:不写入,0:写入
+     *
+     * @return array
+     */
+    public function sortChild(array $child, $status)
+    {
+        $docker = function ($a, $b) {
+            return $a['level'] < $b['level'] ? -1 : 1;
+        };
+        usort($child, $docker);
+        foreach ($child as $k => $val) {
+            $tmpP_id = $val['pid'];
+            if ($tmpP_id != 0) {
+                $tmpP_nameArr  = MenuModel::select('name')->whereId($tmpP_id)->get()->rowArray();
+                $val['p_name'] = @$tmpP_nameArr['name'];
+            } else {
+                $val['p_name'] = '';
+            }
+            if (isset($val['children'])) {
+                $child[$k]['p_name']   = $val['p_name'];
+                $child[$k]['children'] = self::sortChild($val['children'], $status);
+                unset($child[$k]['pid'], $child[$k]['p_name']);
+            } else {
+                $child[$k] = self::filterMapList($val, $status);
+            }
+        }
+
+        return $child;
+    }
+
+    /**
+     * 处理数据维度最后一级,格式化数据,并处理命名逻辑关系
+     *
+     * @param $data     需最后处理的数据
+     * @param $status   表示是否写入选中状态1:不写入,0:写入
+     *
+     * @return array
+     */
+    public static function filterMapList($data, $status)
+    {
+        if (empty($data)) {
+            return [];
+        }
+        $finalData             = [];
+        $finalData['children'] = [];
+        $finalData['name']     = $data['name'];
+        $finalData['id']       = $data['id'];
+        $finalData['type']     = $data['type'];
+        if (!$status) {
+            $finalData['checked'] = $data['checked'];
+        }
+
+        return $finalData;
     }
 }

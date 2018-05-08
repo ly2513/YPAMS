@@ -168,6 +168,45 @@ class Role extends Auth
      */
     public function setPermissions($id)
     {
-        
+        $this->display();
     }
+
+    /**
+     * 获得角色信息
+     *
+     * @return mixed
+     */
+    public function getRoleInfo()
+    {
+        $result = RoleModel::select('id')->whereId($this->param['id'])->get()->toArray();
+        if (!$result) {
+            callBack(2, '', '该记录不存在!');
+        }
+        $permissionArr = json_decode($result['permissions'], true);
+        if (empty($permissionArr)) {
+            $permissionArr = [];
+        }
+        if (!is_array($permissionArr) && !empty($permissionArr)) {//传入角色的权限ids
+            $permissionArr = [$permissionArr];
+        }
+        // 获得系统所有的菜单
+        $sysMenus = $this->menusModel->getMenusList();
+        //        $menuIds  = array_column($sysMenus, 'id');
+        //        if ($result['name'] == 'Administrators') {
+        //            // 获得超级管理员的所有的菜单
+        //            $permissionArr = array_merge($menuIds, $permissionArr);
+        //        }
+        foreach ($sysMenus as $key => $value) {//添加type 值 与checked值
+            if (in_array($value['id'], $permissionArr)) {
+                $checked = 1;
+            } else {
+                $checked = 0;
+            }
+            $sysMenus[$key]['checked'] = $checked;
+        }
+        unset($result['menus'], $result['permissions']);
+        $result['data'] = $this->menusModel->serializeMapList($sysMenus, 0);
+        callBack(0, $result);
+    }
+
 }

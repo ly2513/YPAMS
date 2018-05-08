@@ -61,9 +61,12 @@
                             <td> {% if v.status ==1 %} <span class="label label-primary">激活</span>{% else %} <span class="label label-danger">禁用</span> {% endif %} </td>
                             <td>{{ v.create_time}}</td>
                             <td class="text-right">
-                                <button type="button" class="btn btn-success btn-sm" onclick="return setPermissions({{v.id}});">
+                                <a  class="btn btn-success btn-sm" href="/Admin/Role/setPermissions/{{v.id}}">
                                     <i class="fa fa-cog"></i>  设置权限
-                                </button>
+                                </a>
+                                <!--<button type="button" class="btn btn-success btn-sm" onclick="return setPermissions({{v.id}});">-->
+                                    <!--<i class="fa fa-cog"></i>  设置权限-->
+                                <!--</button>-->
                                 {% if v.status ==1 %}
                                 <button type="button" class="btn btn-danger btn-sm" onclick="return updateStatus({{v.id}},{{v.status}});">
                                     <i class="fa fa-cog"></i>  禁用
@@ -350,31 +353,31 @@
 
     // *********************** 设置权限 ************************
     
-    function setPermissions(id) {
-
-        $.ajax({
-            url: "/Admin/Role/setPermissions/" + id ,
-            type: "POST",
-            dataType: 'json',
-            success: function (re) {
-                if (re.code === 0) {
-                    $().toastmessage('showSuccessToast', "操作成功");
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                } else if (re.code === 1) {
-                    $.each(re.msg, function (i, n) {
-                        $().toastmessage('showErrorToast', n);
-                    });
-                } else {
-                    $().toastmessage('showErrorToast', re.msg);
-                }
-            },
-            error: function () {
-                alert('服务器休息了');
-            }
-        });
-    }
+//    function setPermissions(id) {
+//
+//        $.ajax({
+//            url: "/Admin/Role/setPermissions/" + id ,
+//            type: "POST",
+//            dataType: 'json',
+//            success: function (re) {
+//                if (re.code === 0) {
+//                    $().toastmessage('showSuccessToast', "操作成功");
+//                    setTimeout(function () {
+//                        window.location.reload();
+//                    }, 2000);
+//                } else if (re.code === 1) {
+//                    $.each(re.msg, function (i, n) {
+//                        $().toastmessage('showErrorToast', n);
+//                    });
+//                } else {
+//                    $().toastmessage('showErrorToast', re.msg);
+//                }
+//            },
+//            error: function () {
+//                alert('服务器休息了');
+//            }
+//        });
+//    }
 </script>
 {% endblock %}
 
