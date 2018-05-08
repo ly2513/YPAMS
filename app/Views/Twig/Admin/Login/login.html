@@ -130,6 +130,14 @@
 <script src="/Static/js/plugins/message/jquery.toastmessage.js"></script>
 <script src="/Static/js/plugins/md5/jquery.md5.js"></script>
 <script>
+    // 登陆
+    $(document).keydown(function (event) {
+        if (event.keyCode == 13) { //回车键的键值为13
+            login();
+        }
+    });
+
+    // *********************** 登录 *************************
     function login() {
         var username = $("input[name='username']").val();
 

@@ -4,7 +4,7 @@
 <link href="/Static/css/plugins/iCheck/custom.css" rel="stylesheet">
 <!-- table  -->
 <link href="/Static/css/plugins/footable/footable.core.css" rel="stylesheet">
-<link href="/Static/css/plugins/treeview/bootstrap.treeview.css" rel="stylesheet">
+<!--<link href="/Static/css/plugins/treeview/bootstrap.treeview.css" rel="stylesheet">-->
 {% endblock %}
 
 {% block content %}
@@ -32,7 +32,34 @@
                 </div>
                 <!-- 节点列表 -->
                 <div class="ibox-content">
-                    <div id="tree"></div>
+                    <ul>
+                        <li style="width: 100px;">
+                            <span></span>
+                            <ul style="width: 100%;height: 30px;">
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li>
+                                <li></li> 
+                            </ul>
+                        </li>
+                        <li>
+                            <ul></ul>
+                        </li>
+                        <li>
+                            <ul></ul>
+                        </li>
+                        <li>
+                            <ul></ul>
+                        </li>
+                        <li>
+                            <ul></ul>
+                        </li>
+                        <li>
+                            <ul></ul>
+                        </li>
+                    </ul>
                     <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}},{{v.status}});">
                     <i class="fa fa-check"></i>  保存
                     </button>
@@ -60,50 +87,7 @@
         $('.i-checks').iCheck({
             radioClass: 'iradio_square-green',
         });
-//
-//        fa-square-o
-        var tree = [
-            {
-                text: "Parent 1",
-                nodes: [
-                    {
-                        text: "Child 1",
-                        nodes: [
-                            {
-                                text: "Grandchild 1"
-                            },
-                            {
-                                text: "Grandchild 2"
-                            }
-                        ]
-                    },
-                    {
-                        text: "Child 2"
-                    }
-                ]
-            },
-            {
-                text: "Parent 2"
-            },
-            {
-                text: "Parent 3"
-            },
-            {
-                text: "Parent 4"
-            },
-            {
-                text: "Parent 5"
-            }
-        ];
-        $('#tree').treeview({
-//            expandIcon: 'glyphicon glyphicon-chevron-right',
-            collapseIcon: 'fa fa-square-o',
-            icon: 'fa fa-check-square-o',
-//            nodeIcon: 'fa fa-check-square-o',
-            data: tree,         // data is not optional
-            levels: 5,
-            backColor: 'white'
-        });
+
 
     });
 
