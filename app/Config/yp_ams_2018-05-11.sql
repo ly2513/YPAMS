@@ -5,9 +5,9 @@
 # http://www.sequelpro.com/
 # https://github.com/sequelpro/sequelpro
 #
-# Host: 127.0.0.1 (MySQL 5.7.12)
+# Host: 127.0.0.1 (MySQL 5.7.21)
 # Database: yp_ams
-# Generation Time: 2018-05-07 17:05:43 +0000
+# Generation Time: 2018-05-10 16:05:10 +0000
 # ************************************************************
 
 
@@ -34,6 +34,7 @@ CREATE TABLE `ams_sys_menus` (
   `url` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '菜单路由',
   `description` varchar(500) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '菜单描述',
   `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜单排序',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0:菜单 1:接口',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '更新时间',
   `create_by` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '创建人',
@@ -45,27 +46,14 @@ CREATE TABLE `ams_sys_menus` (
 LOCK TABLES `ams_sys_menus` WRITE;
 /*!40000 ALTER TABLE `ams_sys_menus` DISABLE KEYS */;
 
-INSERT INTO `ams_sys_menus` (`id`, `pid`, `icon`, `name`, `level`, `url`, `description`, `sort`, `create_time`, `update_time`, `create_by`, `update_by`, `is_delete`)
+INSERT INTO `ams_sys_menus` (`id`, `pid`, `icon`, `name`, `level`, `url`, `description`, `sort`, `type`, `create_time`, `update_time`, `create_by`, `update_by`, `is_delete`)
 VALUES
-	(1,0,'fa-th-large','权限管理',1,'#','',100,1524755039,1524756616,1,1,0),
-	(2,1,'fa-group','账号管理',2,'/Admin/User/getUser','',80,1524756747,1524756747,1,1,0),
-	(3,1,'fa-user','角色管理',2,'/Admin/Role/getRole','',70,1524757574,1524757574,1,1,0),
-	(4,1,'fa-list','菜单管理',2,'/Admin/Menu/getMenu','',60,1524757648,1524757648,1,1,0),
-	(5,0,'fa-tachometer','仪表板',1,'#','',100,1524757868,1524757868,1,1,0),
-	(6,0,'fa-diamond','布局',1,'','',100,1524758005,1524758005,1,1,0),
-	(7,0,'fa-bar-chart','统计图表',1,'','',100,1524758046,1524758209,1,1,0),
-	(8,0,'fa-envelope-o','信箱',1,'','',100,1524758126,1524758195,1,1,0),
-	(9,0,'fa-puzzle-piece','小部件',1,'','',100,1524845850,1524845850,1,1,0),
-	(10,0,'fa-edit','表单',1,'','',100,1524845912,1524846001,1,1,0),
-	(11,0,'fa-desktop','App视图',1,'','',100,1524846046,1524846070,1,1,0),
-	(12,0,'','UI元素',1,'','100',0,1524846121,1524846121,1,1,0),
-	(13,0,'fa-laptop','网格布局',1,'','',100,1524846201,1524846201,1,1,0),
-	(14,0,'fa-table','列表',1,'','',100,1524846219,1524846219,1,1,0),
-	(15,0,'fa-cart-plus','电商部件',1,'','',100,1524846350,1524846350,1,1,0),
-	(16,0,'fa-photo','画廊',1,'','',100,1524846388,1524846388,1,1,0),
-	(17,0,'fa-sitemap','菜单级别',1,'','',100,1524846621,1524846740,1,1,0),
-	(18,0,'fa-magic','CSS动画',1,'','',100,1524846655,1524846655,1,1,0),
-	(19,0,'','首页',1,'','',0,1524846725,1524846725,1,1,0);
+	(1,0,'fa-th-large','权限管理',1,'#','',80,0,1524755039,1525960045,1,1,0),
+	(2,1,'fa-group','账号管理',2,'/Admin/User/getUser','',80,0,1524756747,1524756747,1,1,0),
+	(3,1,'fa-user','角色管理',2,'/Admin/Role/getRole','',70,0,1524757574,1524757574,1,1,0),
+	(4,1,'fa-list','菜单管理',2,'/Admin/Menu/getMenu','',60,0,1524757648,1524757648,1,1,0),
+	(22,0,'fa-home','首页',1,'/Admin/Index/index','',100,0,1525959670,1525960017,1,1,0),
+	(23,0,'fa-credit-card','H+前端框架',1,'/Admin/Html/index','前端页面',90,0,1525959825,1525960033,1,1,0);
 
 /*!40000 ALTER TABLE `ams_sys_menus` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -98,8 +86,8 @@ LOCK TABLES `ams_sys_roles` WRITE;
 
 INSERT INTO `ams_sys_roles` (`id`, `name`, `menus`, `permissions`, `p_id`, `status`, `create_by`, `update_by`, `create_time`, `update_time`, `is_delete`)
 VALUES
-	(1,'超级管理员','','',0,1,0,0,0,1524670387,0),
-	(2,'运营',X'5B5D',X'5B5D',0,1,1,1,1524671404,1524746224,0);
+	(1,'超级管理员',X'5B32322C32332C315D',X'5B332C342C322C32322C32332C315D',0,1,0,0,0,1525962159,0),
+	(2,'前端',X'5B32322C32335D',X'5B32322C32335D',0,1,1,1,1524671404,1525964014,0);
 
 /*!40000 ALTER TABLE `ams_sys_roles` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -135,7 +123,7 @@ LOCK TABLES `ams_sys_user` WRITE;
 
 INSERT INTO `ams_sys_user` (`id`, `pid`, `name`, `roles`, `nickname`, `phone`, `password`, `head_img`, `status`, `token`, `create_time`, `update_time`, `login_time`, `create_by`, `update_by`, `is_delete`)
 VALUES
-	(1,0,'admin','[\"1\",\"3\"]','dylan.li','18518178485','$2y$10$w4xL7hzI1dIATcSWfcZlTerFg3wjeomZGfSqHTA/mbvdG/JHqjWsq','Static/images/head.png',1,'',0,1524670280,0,0,1,0),
+	(1,0,'admin','[\"1\",\"3\"]','dylan.li','18518178485','$2y$10$w4xL7hzI1dIATcSWfcZlTerFg3wjeomZGfSqHTA/mbvdG/JHqjWsq','Static/images/head.png',1,'',0,1525959021,0,0,1,0),
 	(2,0,'张三','[]','ly2513','','$2y$10$dintxct1gqOauJ0trV543OxMLnE3djt5hrwc/XPUeYye5eoopbY9G','Static/images/head.png',2,'',1524418445,1524745819,0,1,1,0);
 
 /*!40000 ALTER TABLE `ams_sys_user` ENABLE KEYS */;
