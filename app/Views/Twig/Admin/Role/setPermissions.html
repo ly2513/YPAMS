@@ -45,7 +45,6 @@
                                     <li style="float:left;margin-right:40px;width:200px;">
                                         <input type="checkbox" class="i-checks subcheck" style="cursor: pointer;" {% if
                                                vv.checked==1 %} checked="" {% endif %} name="node" value="{{vv.id}}">{{v.name}}
-                                        <!--<input type="checkbox" name="access[{{v.id}}][]"  class="subcheck" value="{{vv.name}}" {% if vv.type == 1 %} checked=""{% endif %}>{{vv.name}}-->
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -82,25 +81,18 @@
             checkboxClass: 'icheckbox_square-green',
         });
         $(".icheckbox_square-green").css({
-//            'background-size': 222 + 'px '  + 20 + 'px',
-//            'width': 22 + 'px',
-//            'height': 20 + 'px',
             'margin-right': 9 + 'px'
         })
 
         // 全选
         $('input.checkall').on('ifChecked', function (event) { //ifCreated 事件应该在插件初始化之前绑定
-//
             $(this).parent('div').parent('li').find('input.subcheck').iCheck('check');
-
         });
         // 反选
         $('input.checkall').on('ifUnchecked', function (event) {
             $(this).parent('div').parent('li').find('input.subcheck').iCheck('uncheck');
 
         });
-
-
     });
 
     // **************** 设置权限 ******************
@@ -143,173 +135,6 @@
             }
         });
     }
-
-
-    // ****************** 添加角色 ******************
-    function add() {
-        var name = $("form[name='user_add']").find("input[name='name']").val();
-        var status = $("form[name='user_add']").find("input[name='status']").val();
-        console.log(name);
-        if ($.trim(name) == '') {
-            $().toastmessage('showErrorToast', '名称不能为空！');
-            return false;
-        }
-        if ($.trim(status) == '') {
-            $().toastmessage('showErrorToast', '请选择状态！');
-            return false;
-        }
-        var data = $("form[name='user_add']").serialize();
-        $.ajax({
-            url: "/Admin/Role/add",
-            type: "POST",
-            dataType: 'json',
-            data: data,
-            success: function (re) {
-                if (re.code === 0) {
-                    $().toastmessage('showSuccessToast', "保存成功");
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                } else if (re.code === 1) {
-                    $.each(re.msg, function (i, n) {
-                        $().toastmessage('showErrorToast', n);
-                    });
-                } else {
-                    $().toastmessage('showErrorToast', re.msg);
-                }
-            },
-            error: function () {
-                alert('服务器休息了');
-            }
-        });
-    }
-
-    // ******************* 显示编辑信息 **************
-    function getInfo(id) {
-        $.ajax({
-            url: "/Admin/Role/updateRole/" + id,
-            type: "POST",
-            dataType: 'json',
-            success: function (re) {
-                if (re.code === 0) {
-                    if (re.data) {
-                        $("#myModal1").find("input[name='id']").val(re.data.id);
-                        $("#myModal1").find("input[name='name']").val(re.data.name);
-                        if (re.data.status == 1) {
-                            $("#myModal1").find('input[name="status"]:eq(0)').iCheck('check');
-                        } else {
-                            $("#myModal1").find('input[name="status"]:eq(1)').iCheck('check');
-                        }
-                        $("#myModal1").modal();
-                    }
-
-                } else if (re.code === 1) {
-                    $.each(re.msg, function (i, n) {
-                        $().toastmessage('showErrorToast', n);
-                    });
-                } else {
-                    $().toastmessage('showErrorToast', re.msg);
-                }
-            },
-            error: function () {
-                alert('服务器休息了');
-            }
-        });
-    }
-
-    // ****************** 编辑角色 ******************
-    function update() {
-        var name = $("form[name='user_update']").find("input[name='name']").val();
-        var status = $("form[name='user_update']").find("input[name='status']").val();
-        if ($.trim(name) == '') {
-            $().toastmessage('showErrorToast', '账号不能为空！');
-            return false;
-        }
-
-        if ($.trim(status) == '') {
-            $().toastmessage('showErrorToast', '请选择状态！');
-            return false;
-        }
-        var data = $("form[name='user_update']").serialize();
-        $.ajax({
-            url: "/Admin/Role/update",
-            type: "POST",
-            dataType: 'json',
-            data: data,
-            success: function (re) {
-                if (re.code === 0) {
-                    $().toastmessage('showSuccessToast', "保存成功");
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                } else if (re.code === 1) {
-                    $.each(re.msg, function (i, n) {
-                        $().toastmessage('showErrorToast', n);
-                    });
-                } else {
-                    $().toastmessage('showErrorToast', re.msg);
-                }
-            },
-            error: function () {
-                alert('服务器休息了');
-            }
-        });
-    }
-
-    // ******************** 激活、禁用 角色 ****************
-    //    function updateStatus(id, status) {
-    //        $.ajax({
-    //            url: "/Admin/Role/changeStatus/" + id + '/' + status,
-    //            type: "POST",
-    //            dataType: 'json',
-    //            success: function (re) {
-    //                if (re.code === 0) {
-    //                    $().toastmessage('showSuccessToast', "操作成功");
-    //                    setTimeout(function () {
-    //                        window.location.reload();
-    //                    }, 2000);
-    //                } else if (re.code === 1) {
-    //                    $.each(re.msg, function (i, n) {
-    //                        $().toastmessage('showErrorToast', n);
-    //                    });
-    //                } else {
-    //                    $().toastmessage('showErrorToast', re.msg);
-    //                }
-    //            },
-    //            error: function () {
-    //                alert('服务器休息了');
-    //            }
-    //        });
-
-    //    }
-
-    // *********************** 设置权限 ************************
-
-    //    function setPermissions(id) {
-    //
-    //        $.ajax({
-    //            url: "/Admin/Role/setPermissions/" + id ,
-    //            type: "POST",
-    //            dataType: 'json',
-    //            success: function (re) {
-    //                if (re.code === 0) {
-    //                    $().toastmessage('showSuccessToast', "操作成功");
-    //                    setTimeout(function () {
-    //                        window.location.reload();
-    //                    }, 2000);
-    //                } else if (re.code === 1) {
-    //                    $.each(re.msg, function (i, n) {
-    //                        $().toastmessage('showErrorToast', n);
-    //                    });
-    //                } else {
-    //                    $().toastmessage('showErrorToast', re.msg);
-    //                }
-    //            },
-    //            error: function () {
-    //                alert('服务器休息了');
-    //            }
-    //        });
-    //    }
 </script>
 {% endblock %}
 
