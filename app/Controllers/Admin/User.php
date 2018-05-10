@@ -50,8 +50,10 @@ class User extends Auth
             $value['login_time']  = date('Y-m-d', $value['login_time']);
             unset($value['get_user_role']);
         }
+        $roleData = RoleModel::select(['id','name'])->get()->toArray();
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('data', $userList);
+        $this->assign('roleData', $roleData);
         $this->display();
     }
 

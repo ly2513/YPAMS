@@ -45,11 +45,18 @@ class Menu extends Auth
     public function getMenu()
     {
         $condition = $this->request->getGet('name') ? $this->request->getGet('name') : '';
-        $query     = MenuModel::select(['id', 'pid', 'icon', 'name', 'sort', 'create_time']);
+        $build     = MenuModel::select(['id', 'pid', 'icon', 'name', 'sort', 'create_time']);
         if ($condition) {
-            $query->where('name', 'like', "%$condition%");
+            $build->where('name', 'like', "%$condition%");
         }
-        $list = $query->get()->toArray();
+        $list     = $build->get()->toArray();
+        $list     = $list ? $list : [];
+        $menuNode = [];
+        foreach ($list as $key => $value) {
+            if ($value['pid'] == 0) {
+                array_push($menuNode, ['id' => $value['id'], 'name' => $value['name']]);
+            }
+        }
         //        if ($list) {
         //            $this->redis->set('menusData', json_encode($list));
         //        }
@@ -58,6 +65,7 @@ class Menu extends Auth
         $awesome = $this->getAwesome();
         $this->assign('condition', $condition);
         $this->assign('list', $list);
+        $this->assign('menuNode', $menuNode);
         $this->assign('awesome', $awesome);
         $this->display();
     }
@@ -188,7 +196,6 @@ class Menu extends Auth
                 $ids .= $this->getSub($value['id']);
             }
         }
-
         return $ids;
     }
 
@@ -224,7 +231,6 @@ class Menu extends Auth
             "fa-stack-2x",
             "fa-inverse"
         ];
-
         return $this->array_delete($matches[0], $exclude_icons);
     }
 
@@ -263,7 +269,6 @@ class Menu extends Auth
             }
         }
         $arr = array_unique($arr);
-
         return $arr;
     }
 
@@ -283,9 +288,7 @@ class Menu extends Auth
         $menusInfo = array_flatten_key($menusInfo, 'id');
         // 获得树形菜单
         $data = get_tree($menusInfo);
-
         return $data;
     }
 
-    
 }

@@ -132,10 +132,9 @@
                         <label style="text-align: right">角色</label>
                         <div class="controls col-md-6" >
                             <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
-
-                                <option value="1">管理员</option>
-                                <option value="2">运营</option>
-                                <option value="3">销售</option>
+                                {% for k,v in roleData %}
+                                <option value="{{v.id}}">{{v.id}}</option>
+                                {% endfor %}
 
                             </select>
                         </div>
@@ -195,10 +194,9 @@
                         <label style="text-align: right">角色</label>
                         <div class="controls col-md-6" >
                             <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
-
-                                <option value="1">管理员</option>
-                                <option value="2">运营</option>
-                                <option value="3">销售</option>
+                                {% for k,v in roleData %}
+                                <option value="{{v.id}}">{{v.id}}</option>
+                                {% endfor %}
 
                             </select>
                         </div>

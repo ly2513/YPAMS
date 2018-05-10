@@ -35,7 +35,7 @@
 
                     <table class="table table-bordered table-striped with-check" style="margin-bottom:50px;">
                         <ul style="list-style:none;">
-                            {% for k,v in menu %}
+                            {% for k,v in permissions %}
                             <li style="margin-left:30px;width:100%;height:auto" class="dlbox">
                                 <input type="checkbox" class="i-checks checkall" style="cursor: pointer;" {% if
                                        v.checked==1 %} checked="" {% endif %} name="parentNode" value="{{v.id}}"><strong>{{v.name}}</strong>

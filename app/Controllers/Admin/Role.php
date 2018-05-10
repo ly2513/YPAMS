@@ -193,11 +193,6 @@ class Role extends Auth
             'sort',
             'type'
         ])->get()->toArray();
-        //        $menuIds  = array_column($sysMenus, 'id');
-        //        if ($result['name'] == 'Administrators') {
-        //            // 获得超级管理员的所有的菜单
-        //            $permissionArr = array_merge($menuIds, $permissionArr);
-        //        }
         foreach ($sysMenus as $key => $value) {//添加type 值 与checked值
             if (in_array($value['id'], $permissionArr)) {
                 $checked = 1;
@@ -208,8 +203,7 @@ class Role extends Auth
         }
         unset($result['permissions']);
         $result['data'] = MenuModel::serializeMapList($sysMenus, 0);
-        //                P($result['data']);die;
-        $this->assign('menu', $result['data']);
+        $this->assign('permissions', $result['data']);
         $this->assign('id', $rid);
         $this->display();
     }

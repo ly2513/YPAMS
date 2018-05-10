@@ -18,17 +18,9 @@ use Admin\UserModel;
 class Login extends \YP\Core\YP_Controller
 {
     /**
-     * 零售登录
+     * 登录
      */
     public function login()
-    {
-        $this->display();
-    }
-
-    /**
-     * 商户登录
-     */
-    public function login2()
     {
         $this->display();
     }
@@ -41,13 +33,14 @@ class Login extends \YP\Core\YP_Controller
         $username  = $this->request->getPost('username');
         $password  = $this->request->getPost('password');
         $isManager = $this->request->getPost('is_manager') ?? false;
-        $userData     = UserModel::select([
-                'id',
-                'name',
-                'password',
-                'nickname',
-            ])->whereName($username)->whereStatus(1)->get()->toArray();
-        $userData = $userData ? $userData[0] : [];
+        $userData  = UserModel::select([
+            'id',
+            'roles',
+            'name',
+            'password',
+            'nickname',
+        ])->whereName($username)->whereStatus(1)->get()->toArray();
+        $userData  = $userData ? $userData[0] : [];
         if (!$userData) {
             call_back(2, '', '用户不存在或被禁用!');
         }
@@ -61,6 +54,7 @@ class Login extends \YP\Core\YP_Controller
         $userInfo = [
             'uid'        => $userData['id'],
             'name'       => $userData['name'],
+            'rid'        => json_decode($userData['roles'], true),
             'is_manager' => $isManager,
         ];
         $session->set('userInfo', $userInfo);

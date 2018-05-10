@@ -54,7 +54,7 @@
                     <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
                         <thead>
                         <tr>
-                            <th>ID</th>
+                            <!--<th>ID</th>-->
                             <th>图标</th>
                             <th>菜单名称</th>
                             <th>排序</th>
@@ -65,7 +65,7 @@
                         <tbody>
                         {% for k,v in list %}
                         <tr class="{% if k%2 != 0 %} footable-odd {% endif %}">
-                            <td>{{v.id}}</td>
+                            <!--<td>{{v.id}}</td>-->
                             <td><i class="fa {{v.icon}}"></i></td>
                             <td style="text-align: left;text-indent: 5em;">{{v._name}}</td>
                             <td>{{v.sort}}</td>
@@ -116,7 +116,7 @@
                         class="sr-only">Close</span></button>
                 <h4 class="modal-title">添加菜单</h4>
             </div>
-            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+            <div class="modal-body">
                 <form method="post" class="m-t-md" name="menu_add">
                     <div class="form-group" style="">
                         <label style="text-align: right">父类菜单</label>
@@ -124,8 +124,8 @@
                             <select data-placeholder="请选择父类类别" class="chosen-select" style="width:250px;display: none;"
                                     tabindex="1" name="pid">
                                 <option value="0">请选择父类菜单</option>
-                                {% for v in list %}
-                                <option value="{{v.id}}">{{v._name}}</option>
+                                {% for v in menuNode %}
+                                <option value="{{v.id}}">{{v.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -182,7 +182,7 @@
                         class="sr-only">Close</span></button>
                 <h4 class="modal-title">编辑菜单</h4>
             </div>
-            <div class="modal-body col-md-12" style="padding: 0px 30px;overflow: auto;height: 50%">
+            <div class="modal-body">
                 <form method="post" class="m-t-md" name="menu_update">
                     <input type="hidden" name="id">
                     <div class="form-group" style="">
@@ -191,8 +191,8 @@
                             <select data-placeholder="请选择父类类别" class="chosen-select" style="width:250px;display: none;"
                                     tabindex="1" name="pid">
                                 <option value="0">请选择父类菜单</option>
-                                {% for v in list %}
-                                <option value="{{v.id}}">{{v._name}}</option>
+                                {% for v in menuNode %}
+                                <option value="{{v.id}}">{{v.name}}</option>
                                 {% endfor %}
                             </select>
                         </div>
@@ -244,14 +244,14 @@
 
 <!-- 删除提示框 -->
 <div class="modal inmodal fade" id="myModal2" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-md" style="top:13%">
         <div class="modal-content">
-            <div class="modal-header" style="background-color: #1ab394; color: white;">
+            <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
                         class="sr-only">Close</span></button>
                 <h4 class="modal-title">提示</h4>
             </div>
-            <div class="modal-body col-md-12" style="padding:0px 30px;">
+            <div class="modal-body">
                 <h5 style="text-align: center;padding:5%;display: block;">确定要删除吗?</h5>
                 <input type="hidden" name="id">
             </div>
