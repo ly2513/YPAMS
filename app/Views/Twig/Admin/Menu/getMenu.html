@@ -155,10 +155,10 @@
                             <input type="text" class="form-control" name="sort" value="0" placeholder="数字越小越靠前">
                         </div>
                     </div>
-                    <div class="form-group" style="">
+                    <div class="form-group" style="height: 83px;">
                         <label style="text-align: right">菜单描述</label>
                         <div class="controls col-md-6">
-                            <textarea name="description" cols="57" rows="3"
+                            <textarea class="form-control" placeholder="菜单描述" name="description" cols="57" rows="3"
                                       style="font-size: 14px;line-height: 18px;"></textarea>
                         </div>
                     </div>
@@ -225,10 +225,11 @@
                                    placeholder="数字越小越靠前">
                         </div>
                     </div>
-                    <div class="form-group" style="">
+                    <div class="form-group" style="height: 83px;">
                         <label style="text-align: right">菜单描述</label>
                         <div class="controls col-md-6">
-                            <textarea name="description" cols="57" rows="3" style="font-size: 14px;line-height: 18px;">{{ data.description }}</textarea>
+                            <textarea class="form-control" placeholder="菜单描述" name="description" cols="57" rows="3"
+                                      style="font-size: 14px;line-height: 18px;">{{ data.description }}</textarea>
                         </div>
                     </div>
                 </form>
@@ -361,13 +362,16 @@
             success: function (re) {
                 if (re.code === 0) {
                     if (re.data) {
+                        $("#myModal1").find("select[name='pid']").val(re.data.pid);
                         $("#myModal1").find("input[name='id']").val(re.data.id);
                         $("#myModal1").find("input[name='name']").val(re.data.name);
                         $("#myModal1").find("input[name='url']").val(re.data.url);
                         $("#myModal1").find("input[name='icon']").val(re.data.icon);
                         $("#myModal1").find("input[name='sort']").val(re.data.sort);
                         $("#myModal1").find("textarea[name='description']").val(re.data.description);
+                        $("#myModal1").find("select[name='pid']").trigger("chosen:updated");
                         $("#myModal1").modal();
+
                     } else {
 
                     }
