@@ -34,14 +34,18 @@
                 <div class="ibox-content">
 
                     <table class="table table-bordered table-striped with-check" style="margin-bottom:50px;">
-                        <ul style="list-style:none;" >
-                            {% for k,v in  menu %}
+                        <ul style="list-style:none;">
+                            {% for k,v in menu %}
                             <li style="margin-left:30px;width:100%;height:auto" class="dlbox">
-                                <input type="checkbox" class="checkall" {% if v.checked==1 %} checked=""{% endif %} ><strong>{{v.name}}</strong>
-                                <ul style="list-style:none;width:100%;float:left;margin:10px 0px 10px 30px;" class="subul">
+                                <input type="checkbox" class="i-checks checkall" style="cursor: pointer;" {% if
+                                       v.checked==1 %} checked="" {% endif %} name="parentNode" value="{{v.id}}"><strong>{{v.name}}</strong>
+                                <ul style="list-style:none;width:100%;float:left;margin:10px 0px 10px 30px;"
+                                    class="subul">
                                     {% for kk,vv in v.children %}
                                     <li style="float:left;margin-right:40px;width:200px;">
-                                        <input type="checkbox" name="access[{{v.id}}][]"  class="subcheck" value="{{vv.name}}" {% if vv.type == 1 %} checked=""{% endif %}>{{vv.name}}
+                                        <input type="checkbox" class="i-checks subcheck" style="cursor: pointer;" {% if
+                                               vv.checked==1 %} checked="" {% endif %} name="node" value="{{vv.id}}">{{v.name}}
+                                        <!--<input type="checkbox" name="access[{{v.id}}][]"  class="subcheck" value="{{vv.name}}" {% if vv.type == 1 %} checked=""{% endif %}>{{vv.name}}-->
                                     </li>
                                     {% endfor %}
                                 </ul>
@@ -49,12 +53,13 @@
                             {% endfor %}
                         </ul>
                     </table>
-                    <button type="button" class="btn btn-primary btn-sm" onclick="return updateStatus({{v.id}},{{v.status}});">
-                    <i class="fa fa-check"></i>  保存
+                    <button type="button" class="btn btn-primary btn-sm"
+                            onclick="return setPermissions({{id}});">
+                        <i class="fa fa-check"></i> 保存
                     </button>
-                    <button type="button" class="btn btn-warning btn-sm" onclick="return getInfo({{v.id}});">
-                    <i class="fa fa-mail-reply"></i>  取消并返回
-                    </button>
+                    <a type="button" class="btn btn-warning btn-sm" href="/Admin/Role/getRole">
+                        <i class="fa fa-mail-reply"></i> 取消并返回
+                    </a>
                 </div>
             </div>
         </div>
@@ -74,11 +79,70 @@
 
         // ****************** 初始化单选按钮 ******************
         $('.i-checks').iCheck({
-            radioClass: 'iradio_square-green',
+            checkboxClass: 'icheckbox_square-green',
+        });
+        $(".icheckbox_square-green").css({
+//            'background-size': 222 + 'px '  + 20 + 'px',
+//            'width': 22 + 'px',
+//            'height': 20 + 'px',
+            'margin-right': 9 + 'px'
+        })
+
+        // 全选
+        $('input.checkall').on('ifChecked', function (event) { //ifCreated 事件应该在插件初始化之前绑定
+//
+            $(this).parent('div').parent('li').find('input.subcheck').iCheck('check');
+
+        });
+        // 反选
+        $('input.checkall').on('ifUnchecked', function (event) {
+            $(this).parent('div').parent('li').find('input.subcheck').iCheck('uncheck');
+
         });
 
 
     });
+
+    // **************** 设置权限 ******************
+    function setPermissions(id) {
+        // 获取选中的菜单值
+        var menu = [];
+        // 接口及页码权限节点
+        var node = [];
+        $('input.checkall:checked').each(function () {
+            menu.push(parseInt($(this).val()));
+        });
+
+        $('input.subcheck:checked').each(function () {
+            node.push(parseInt($(this).val()));
+        });
+        menu = JSON.stringify(menu);
+        node = JSON.stringify(node);
+        $.ajax({
+            url: "/Admin/Role/set/" + id,
+            type: "POST",
+            dataType: 'json',
+            data:{'menu':menu,'node':node},
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "操作成功！");
+                    setTimeout(function () {
+                        window.location.href = '/Admin/Role/getRole';
+                    }, 2000);
+
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
 
 
     // ****************** 添加角色 ******************
@@ -131,9 +195,9 @@
                     if (re.data) {
                         $("#myModal1").find("input[name='id']").val(re.data.id);
                         $("#myModal1").find("input[name='name']").val(re.data.name);
-                        if(re.data.status == 1){
+                        if (re.data.status == 1) {
                             $("#myModal1").find('input[name="status"]:eq(0)').iCheck('check');
-                        }else{
+                        } else {
                             $("#myModal1").find('input[name="status"]:eq(1)').iCheck('check');
                         }
                         $("#myModal1").modal();
@@ -193,31 +257,31 @@
     }
 
     // ******************** 激活、禁用 角色 ****************
-    function updateStatus(id,status) {
-        $.ajax({
-            url: "/Admin/Role/changeStatus/" + id + '/' + status,
-            type: "POST",
-            dataType: 'json',
-            success: function (re) {
-                if (re.code === 0) {
-                    $().toastmessage('showSuccessToast', "操作成功");
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 2000);
-                } else if (re.code === 1) {
-                    $.each(re.msg, function (i, n) {
-                        $().toastmessage('showErrorToast', n);
-                    });
-                } else {
-                    $().toastmessage('showErrorToast', re.msg);
-                }
-            },
-            error: function () {
-                alert('服务器休息了');
-            }
-        });
+    //    function updateStatus(id, status) {
+    //        $.ajax({
+    //            url: "/Admin/Role/changeStatus/" + id + '/' + status,
+    //            type: "POST",
+    //            dataType: 'json',
+    //            success: function (re) {
+    //                if (re.code === 0) {
+    //                    $().toastmessage('showSuccessToast', "操作成功");
+    //                    setTimeout(function () {
+    //                        window.location.reload();
+    //                    }, 2000);
+    //                } else if (re.code === 1) {
+    //                    $.each(re.msg, function (i, n) {
+    //                        $().toastmessage('showErrorToast', n);
+    //                    });
+    //                } else {
+    //                    $().toastmessage('showErrorToast', re.msg);
+    //                }
+    //            },
+    //            error: function () {
+    //                alert('服务器休息了');
+    //            }
+    //        });
 
-    }
+    //    }
 
     // *********************** 设置权限 ************************
 

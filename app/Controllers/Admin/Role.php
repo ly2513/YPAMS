@@ -163,13 +163,13 @@ class Role extends Auth
     }
 
     /**
-     * 设置权限
+     * 显示和设置权限
      *
-     * @param $id
+     * @param $rid 角色ID
      */
-    public function setPermissions($id)
+    public function setPermissions($rid)
     {
-        $result = RoleModel::select(['id', 'permissions'])->whereId($id)->get()->toArray();
+        $result = RoleModel::select(['id', 'permissions'])->whereId($rid)->get()->toArray();
         $result = $result ? $result[0] : [];
         if (!$result) {
             callBack(2, '', '该记录不存在!');
@@ -208,8 +208,9 @@ class Role extends Auth
         }
         unset($result['permissions']);
         $result['data'] = MenuModel::serializeMapList($sysMenus, 0);
-//        P($result['data']);die;
+        //                P($result['data']);die;
         $this->assign('menu', $result['data']);
+        $this->assign('id', $rid);
         $this->display();
     }
 
@@ -259,6 +260,24 @@ class Role extends Auth
         unset($result['permissions']);
         $result['data'] = $this->menusModel->serializeMapList($sysMenus, 0);
         callBack(0, $result);
+    }
+
+    /**
+     * 设置权限
+     *
+     * @param $rid  角色ID
+     */
+    public function set($rid)
+    {
+        $menuIds = $this->request->getPost('menu');
+        $node    = $this->request->getPost('node');
+        $menuIds = $menuIds ? array_unique(json_decode($menuIds, true)) : [];
+        $node    = $node ? array_unique(json_decode($node, true)) : [];
+        $node    = array_merge($node, $menuIds);
+        $status  = RoleModel::whereId($rid)->update(['menus'       => json_encode($menuIds),
+                                                     'permissions' => json_encode($node)
+        ]);
+        $status ? call_back(0) : call_back(2, '', '操作失败！');
     }
 
 }
