@@ -58,7 +58,7 @@
                 </li>
                 {% for k,v in menuList %}
                 {% if v.children %}
-                <li>
+                <li {% if m ==v.m %} class="active"{% endif %}>
                     <a href="#"><i class="fa {{v.icon}}"></i> <span class="nav-label">{{v.name}}</span> <span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
@@ -68,7 +68,7 @@
                     </ul>
                 </li>
                 {% else %}
-                <li {% if v.name == '首页' %} class="active"{% endif %}>
+                <li {% if c==v.c %} class="active"{% endif %}>
                     <a href="{{v.url}}" ><i class="fa {{v.icon}}"></i>{{v.name}}</a>
                 </li>
                 {% endif %}

@@ -59,6 +59,7 @@ class Auth extends Controller
         $this->_showMenu();
         $session        = Services::session();
         $this->userInfo = $session->get('userInfo');
+        $this->assign('m', rtrim($this->directory,'/'));
         $this->assign('c', $this->controller);
         $this->assign('a', $this->method);
     }
@@ -170,6 +171,7 @@ class Auth extends Controller
         }
         unset($result['permissions']);
         $result['data'] = MenuModel::serializeMapList($sysMenus, 0);
+//        P($result['data']);
         $this->assign('menuList', $result['data']);
     }
 
