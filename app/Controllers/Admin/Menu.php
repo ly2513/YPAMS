@@ -89,8 +89,8 @@ class Menu extends Auth
         }
         $data['create_time'] = time();
         $data['update_time'] = time();
-        $data['create_by']   = 1;
-        $data['update_by']   = 1;
+        $data['create_by']   = $_SESSION['uid'];
+        $data['update_by']   = $_SESSION['uid'];
         $id                  = MenuModel::insertGetId($data);
         if ($id) {
             $data['id']        = $id;
@@ -131,7 +131,7 @@ class Menu extends Auth
             $data['level'] = 1;
         }
         $data['update_time'] = time();
-        $data['update_by']   = 1;
+        $data['update_by']   = $_SESSION['uid'];
         $id                  = MenuModel::whereId($data['id'])->update($data);
         $this->getSubArray($data['id'], $data['level']);
         $id ? call_back(0) : call_back(2, '', '保存失败');
@@ -173,7 +173,7 @@ class Menu extends Auth
             $info              = MenuModel::findOrFail($id);
             $info->is_delete   = 1;
             $info->update_time = time();
-            $info->update_by   = 1;
+            $info->update_by   = $_SESSION['uid'];
             $info->save();
         }
         call_back(0);
