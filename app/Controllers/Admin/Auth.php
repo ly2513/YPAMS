@@ -140,7 +140,7 @@ class Auth extends Controller
         }
         $permissionArr = [];
         foreach ($result as $key => $value) {
-            $menus = json_decode($value['permissions'], true);
+            $menus = $value['permissions'] ? json_decode($value['permissions'], true) : [];
             foreach ($menus as $k => $v){
                 array_push($permissionArr, $v);
             }

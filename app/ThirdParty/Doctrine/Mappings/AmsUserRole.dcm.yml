@@ -1,6 +1,6 @@
 AmsUserRole:
     type: entity
-    table: ams_user_role
+    table: ams_sys_user_role
     id:
         id:
             type: integer

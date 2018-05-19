@@ -130,12 +130,12 @@ VALUES
 UNLOCK TABLES;
 
 
-# Dump of table ams_user_role
+# Dump of table ams_sys_user_role
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `ams_user_role`;
+DROP TABLE IF EXISTS `ams_sys_user_role`;
 
-CREATE TABLE `ams_user_role` (
+CREATE TABLE `ams_sys_user_role` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户ID',
   `rid` int(11) NOT NULL DEFAULT '0' COMMENT '角色ID',
@@ -148,10 +148,10 @@ CREATE TABLE `ams_user_role` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='账号与角色关联表';
 
-LOCK TABLES `ams_user_role` WRITE;
-/*!40000 ALTER TABLE `ams_user_role` DISABLE KEYS */;
+LOCK TABLES `ams_sys_user_role` WRITE;
+/*!40000 ALTER TABLE `ams_sys_user_role` DISABLE KEYS */;
 
-INSERT INTO `ams_user_role` (`id`, `uid`, `rid`, `status`, `create_by`, `update_by`, `create_time`, `update_time`, `is_delete`)
+INSERT INTO `ams_sys_user_role` (`id`, `uid`, `rid`, `status`, `create_by`, `update_by`, `create_time`, `update_time`, `is_delete`)
 VALUES
 	(1,1,1,0,1,1,0,1524500320,1),
 	(2,1,1,0,1,1,1524500230,1524500320,1),
@@ -159,7 +159,7 @@ VALUES
 	(4,1,1,0,1,1,1524500320,1524500320,0),
 	(5,1,3,0,1,1,1524500320,1524500320,0);
 
-/*!40000 ALTER TABLE `ams_user_role` ENABLE KEYS */;
+/*!40000 ALTER TABLE `ams_sys_user_role` ENABLE KEYS */;
 UNLOCK TABLES;
 
 
