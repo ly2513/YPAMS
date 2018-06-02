@@ -172,7 +172,7 @@ class Role extends Auth
         $result = RoleModel::select(['id', 'permissions'])->whereId($rid)->get()->toArray();
         $result = $result ? $result[0] : [];
         if (!$result) {
-            callBack(2, '', '该记录不存在!');
+            call_back(2, '', '该记录不存在!');
         }
         $permissionArr = json_decode($result['permissions'], true);
         if (empty($permissionArr)) {
@@ -218,7 +218,7 @@ class Role extends Auth
         $result = RoleModel::select(['id', 'permissions'])->whereId($this->param['id'])->get()->toArray();
         $result = $result ? $result[0] : [];
         if (!$result) {
-            callBack(2, '', '该记录不存在!');
+            call_back(2, '', '该记录不存在!');
         }
         $permissionArr = json_decode($result['permissions'], true);
         if (empty($permissionArr)) {
@@ -253,7 +253,7 @@ class Role extends Auth
         }
         unset($result['permissions']);
         $result['data'] = $this->menusModel->serializeMapList($sysMenus, 0);
-        callBack(0, $result);
+        call_back(0, $result);
     }
 
     /**

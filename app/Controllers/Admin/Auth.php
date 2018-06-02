@@ -136,7 +136,7 @@ class Auth extends Controller
         $result = RoleModel::select(['id', 'permissions'])->whereIn('id', $rids)->get()->toArray();
         $result = $result ? $result : [];
         if (!$result) {
-            callBack(2, '', '该记录不存在!');
+            call_back(2, '', '该记录不存在!');
         }
         $permissionArr = [];
         foreach ($result as $key => $value) {

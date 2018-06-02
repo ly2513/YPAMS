@@ -1,281 +1,440 @@
-<!DOCTYPE html>
-<html>
+{% extends "Admin/Public/base.html" %}
 
-<head>
+{% block header %}
+<link href="/Static/css/plugins/chosen/chosen.css" rel="stylesheet">
+<!-- table  -->
+<link href="/Static/css/plugins/footable/footable.core.css" rel="stylesheet">
+{% endblock %}
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>INSPINIA | Rickshaw Charts</title>
-
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
-    <link href="../font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <link href="../css/animate.css" rel="stylesheet">
-    <link href="../css/style.css" rel="stylesheet">
-
-</head>
-
-<body>
-
-    <div id="wrapper">
-        <div id="page-wrapper" class="gray-bg" style="margin: 0px;">
-            <div class="row wrapper border-bottom white-bg page-heading">
-                <div class="col-lg-10">
-                    <h2>Rickshaw Charts</h2>
-                    <ol class="breadcrumb">
-                        <li>
-                            <a href="index.html">Home</a>
-                        </li>
-                        <li>
-                            <a>Graphs</a>
-                        </li>
-                        <li class="active">
-                            <strong>Rickshaw Charts</strong>
-                        </li>
-                    </ol>
+{% block content %}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <ol class="breadcrumb">
+            <li>
+                <a href="#">首页</a>
+            </li>
+            <li class="active">
+                <strong>价格管理</strong>
+            </li>
+        </ol>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>价格管理</h5>
                 </div>
-                <div class="col-lg-2">
-
+                <div class="ibox-content">
+                    <form role="form" class="form-inline" style="display:inline-block;width:100%">
+                        <div class="col-md-12" style="float:right">
+                            <div class="col-md-1 pull-left">
+                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                        data-target="#myModal5"><i class="fa fa-plus-circle"></i> 添加价格
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- 搜索  、筛选 -->
+                <div class="ibox-content">
+                    <table class="footable table table-stripped toggle-arrow-tiny" data-page-size="15">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>价目单</th>
+                            <th>规格</th>
+                            <th>材质</th>
+                            <th>单价</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for k,v in data %}
+                        <tr class="{% if k%2 != 0 %} footable-odd {% endif %}">
+                            <td>{{ v.id }}</td>
+                            <td>{{ v.print_type }}</td>
+                            <td> {{v.paper_type}}</td>
+                            <td>{{ v.material_type}}</td>
+                            <td>{{ v.price_fen}}元/{{v.unit}}</td>
+                            <td class="text-right">
+                                <button type="button" class="btn btn-warning btn-sm"
+                                        onclick="return getInfo({{v.id}});">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </button>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td style="text-align: center" colspan="6">暂无数据</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                        <!-- 分页 -->
+                        <tfoot>
+                        <tr>
+                            <td colspan="6" style="padding-top:30px;">
+                                {{ page | raw }}
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
-            <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Simple area example <small>With custom colors.</small></h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="chart" class="rickshaw_graph"></div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Multiple Area</h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="rickshaw_multi" class="rickshaw_graph"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>One line Example</h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="rickshaw_line" class="rickshaw_graph"></div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Multiple Line Example</h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="rickshaw_multi_line" class="rickshaw_graph"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Bars</h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="rickshaw_bars" class="rickshaw_graph"></div>
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Stacked Bars</h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="rickshaw_bars_stacked" class="rickshaw_graph"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <h5>Scatterplot</h5>
-                                <div class="ibox-tools">
-                                    <a class="collapse-link">
-                                        <i class="fa fa-chevron-up"></i>
-                                    </a>
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                        <i class="fa fa-wrench"></i>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user">
-                                        <li><a href="#">Config option 1</a>
-                                        </li>
-                                        <li><a href="#">Config option 2</a>
-                                        </li>
-                                    </ul>
-                                    <a class="close-link">
-                                        <i class="fa fa-times"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="ibox-content">
-                                <div id="rickshaw_scatterplot" class="rickshaw_graph"></div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-            <div class="footer">
-                <div class="pull-right">
-                    10GB of <strong>250GB</strong> Free.
-                </div>
-                <div>
-                    <strong>Copyright</strong> Example Company &copy; 2014-2015
-                </div>
-            </div>
-
         </div>
     </div>
+</div>
+
+
+<!-- 添加角色框 -->
+<div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-lg" style="top:13%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">添加价格</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="m-t-md" name="user_add">
+                    <div class="form-group" style="">
+                        <label style="text-align: right">打印类型</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择打印类型" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="print_type">
+                                <option value="0">请选择打印类型</option>
+                                <option value="1">黑白打印</option>
+                                <option value="2">彩色打印</option>
+                                <option value="3">胶装</option>
+                                <option value="4">热过塑</option>
+                                <option value="5">配送费</option>
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">纸张规格</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择纸张规格" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="paper_type">
+                                <option value="0">请选择纸张规格</option>
+                                <option value="1">A4</option>
+                                <option value="2">A3</option>
+                                <option value="3">X</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">材质</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择材质" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="material_type">
+                                <option value="0">请选择材质</option>
+                                <option value="1">70g复印纸</option>
+                                <option value="2">100g铜版纸</option>
+                                <option value="3">200g铜版纸</option>
+                                <option value="4">300g铜版纸</option>
+                                <option value="5">热熔胶装</option>
+                                <option value="6">7C</option>
+                                <option value="7">时间段配送</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">价格</label>
+                        <div class="controls col-md-5">
+                            <input type="text" class="form-control" name="price_fen" placeholder="请输入价格">
+                        </div>
+                        <span style="display: inline-block;line-height: 20px;padding: 18px 0px 18px 10px;">元</span>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">单位</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择单位" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="unit">
+                                <option value="0">请选择单位</option>
+                                <option value="1">面</option>
+                                <option value="2">本</option>
+                                <option value="3">次</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return add();">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 编辑角色框 -->
+<div class="modal inmodal fade" id="myModal1" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md modal-lg" style="top:13%;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
+                <h4 class="modal-title">编辑价格</h4>
+            </div>
+            <div class="modal-body">
+                <form method="post" class="m-t-md" name="user_update">
+                    <input type="hidden" name="id">
+                    <div class="form-group" style="">
+                        <label style="text-align: right">打印类型</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择打印类型" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="print_type">
+                                <option value="0">请选择打印类型</option>
+                                <option value="1">黑白打印</option>
+                                <option value="2">彩色打印</option>
+                                <option value="3">胶装</option>
+                                <option value="4">热过塑</option>
+                                <option value="5">配送费</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="">
+                        <label style="text-align: right">纸张规格</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择纸张规格" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="paper_type">
+                                <option value="0">请选择纸张规格</option>
+                                <option value="1">A4</option>
+                                <option value="2">A3</option>
+                                <option value="3">X</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">材质</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择材质" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="material_type">
+                                <option value="0">请选择材质</option>
+                                <option value="1">70g复印纸</option>
+                                <option value="2">100g铜版纸</option>
+                                <option value="3">200g铜版纸</option>
+                                <option value="4">300g铜版纸</option>
+                                <option value="5">热熔胶装</option>
+                                <option value="6">7C</option>
+                                <option value="7">时间段配送</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">价格</label>
+                        <div class="controls col-md-6">
+                            <input type="text" class="form-control" name="price_fen" placeholder="请输入价格">
+                        </div>
+                        <span>元</span>
+                    </div>
+                    <div class="form-group" style="">
+                        <label style="text-align: right">单位</label>
+                        <div class="controls col-md-6">
+                            <select data-placeholder="请选择单位" class="chosen-select" style="width:250px;display: none;"
+                                    tabindex="1" name="unit">
+                                <option value="0">请选择单位</option>
+                                <option value="1">面</option>
+                                <option value="2">本</option>
+                                <option value="3">次</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="return update();">保存</button>
+                <button type="button" class="btn btn-white" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block foot %}
+<!-- Select2 -->
+<script src="/Static/js/plugins/chosen/chosen.jquery.js"></script>
+
+<script>
+
+    $(document).ready(function () {
+
+        // ****************** 初始化select *******************
+        $('.chosen-container').css({
+            'width': 100 + '%'
+        });
+    });
+
+    // ****************** 初始化select *******************
+    var config = {
+        '.chosen-select': {},
+        '.chosen-select-deselect': {allow_single_deselect: true},
+        '.chosen-select-no-single': {disable_search_threshold: 10},
+        '.chosen-select-no-results': {no_results_text: 'Oops, nothing found!'},
+        '.chosen-select-width': {width: "95%"}
+    }
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+
+
+    // ****************** 添加价格 ******************
+    function add() {
+        var print_type = $("form[name='user_add']").find("select[name='print_type']").val();
+        var paper_type = $("form[name='user_add']").find("select[name='paper_type']").val();
+        var material_type = $("form[name='user_add']").find("select[name='material_type']").val();
+        var price_fen = $("form[name='user_add']").find("input[name='price_fen']").val();
+        var unit = $("form[name='user_add']").find("select[name='unit']").val();
+        if ($.trim(print_type) == 0) {
+            $().toastmessage('showErrorToast', '请选择打印类型！');
+            return false;
+        }
+        if ($.trim(paper_type) == 0) {
+            $().toastmessage('showErrorToast', '请选择纸张规格！');
+            return false;
+        }
+        if ($.trim(material_type) == 0) {
+            $().toastmessage('showErrorToast', '请选择材质！');
+            return false;
+        }
+        if ($.trim(price_fen) == '') {
+            $().toastmessage('showErrorToast', '价格不能为空！');
+            return false;
+        }
+        if ($.trim(unit) == 0) {
+            $().toastmessage('showErrorToast', '请选择单位！');
+            return false;
+        }
+        var data = $("form[name='user_add']").serialize();
+        $.ajax({
+            url: "/Admin/Cost/add",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "保存成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+    // ******************* 显示编辑信息 **************
+    function getInfo(id) {
+        $.ajax({
+            url: "/Admin/Cost/getPriceInfo/" + id,
+            type: "POST",
+            dataType: 'json',
+            success: function (re) {
+                if (re.code === 0) {
+                    if (re.data) {
+                        $("#myModal1").find("input[name='id']").val(re.data.id);
+                        $("#myModal1").find("select[name='print_type']").val(re.data.print_type);
+                        $("#myModal1").find("select[name='paper_type']").val(re.data.paper_type);
+                        $("#myModal1").find("select[name='material_type']").val(re.data.material_type);
+                        $("#myModal1").find("input[name='price_fen']").val(re.data.price_fen);
+                        $("#myModal1").find("select[name='unit']").val(re.data.unit);
+                        $("#myModal1").find("select[name='print_type']").trigger('chosen:updated')
+//                        $("#myModal1").find("select[name='paper_type']").trigger('chosen:updated')
+//                        $("#myModal1").find("select[name='material_type']").trigger('chosen:updated')
+//                        $("#myModal1").find("select[name='unit']").trigger("chosen:updated");
+                        $("#myModal1").modal();
+                    }
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+    // ****************** 编辑价格 ******************
+    function update() {
+        var print_type = $("form[name='user_update']").find("select[name='print_type']").val();
+        var paper_type = $("form[name='user_update']").find("select[name='paper_type']").val();
+        var material_type = $("form[name='user_update']").find("select[name='material_type']").val();
+        var price_fen = $("form[name='user_update']").find("input[name='price_fen']").val();
+        var unit = $("form[name='user_update']").find("select[name='unit']").val();
+
+        if ($.trim(print_type) == 0) {
+            $().toastmessage('showErrorToast', '请选择打印类型！');
+            return false;
+        }
+        if ($.trim(paper_type) == 0) {
+            $().toastmessage('showErrorToast', '请选择纸张规格！');
+            return false;
+        }
+        if ($.trim(material_type) == 0) {
+            $().toastmessage('showErrorToast', '请选择材质！');
+            return false;
+        }
+        if ($.trim(price_fen) == '') {
+            $().toastmessage('showErrorToast', '价格不能为空！');
+            return false;
+        }
+        if ($.trim(unit) == 0) {
+            $().toastmessage('showErrorToast', '请选择单位！');
+            return false;
+        }
+        var data = $("form[name='user_update']").serialize();
+        $.ajax({
+            url: "/Admin/Cost/update",
+            type: "POST",
+            dataType: 'json',
+            data: data,
+            success: function (re) {
+                if (re.code === 0) {
+                    $().toastmessage('showSuccessToast', "保存成功");
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 2000);
+                } else if (re.code === 1) {
+                    $.each(re.msg, function (i, n) {
+                        $().toastmessage('showErrorToast', n);
+                    });
+                } else {
+                    $().toastmessage('showErrorToast', re.msg);
+                }
+            },
+            error: function () {
+                alert('服务器休息了');
+            }
+        });
+    }
+
+
+</script>
+{% endblock %}
 
 
 
-    <!-- Mainly scripts -->
-    <script src="../js/jquery-2.1.1.js"></script>
-    <script src="../js/bootstrap.min.js"></script>
-    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <!-- Rickshaw -->
-    <script src="../js/plugins/rickshaw/vendor/d3.v3.js"></script>
-    <script src="../js/plugins/rickshaw/rickshaw.min.js"></script>
 
-    <!-- Custom and plugin javascript -->
-    <script src="../js/inspinia.js"></script>
-    <script src="../js/plugins/pace/pace.min.js"></script>
 
-    <!-- Rickshaw demo data -->
-    <script src="../js/demo/rickshaw-demo.js"></script>
-
-</body>
-
-</html>
