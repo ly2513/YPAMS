@@ -50,7 +50,7 @@ class User extends Auth
             $value['login_time']  = date('Y-m-d', $value['login_time']);
             unset($value['get_user_role']);
         }
-        $roleData = RoleModel::select(['id','name'])->get()->toArray();
+        $roleData = RoleModel::select(['id', 'name'])->get()->toArray();
         $this->assign('uid', $_SESSION['uid']);
         $this->assign('data', $userList);
         $this->assign('roleData', $roleData);
@@ -76,6 +76,7 @@ class User extends Auth
         $addData['update_time'] = time();
         $addData['create_by']   = $_SESSION['uid'];
         $addData['update_by']   = $_SESSION['uid'];
+        $addData['roles']       = json_encode($addData['role_id']);
         $roleIds                = $addData['role_id'];
         unset($addData['role_id']);
         $id       = UserModel::insertGetId($addData);
@@ -140,11 +141,12 @@ class User extends Auth
         }
         $addData['update_time'] = time();
         $addData['update_by']   = $_SESSION['uid'];
+        $addData['roles']       = json_encode($addData['role_id']);
         // 开启事务
         $build = UserModel::select();
         $build->getConnection()->beginTransaction();
         unset($addData['role_id']);
-        $status   = UserModel::whereId($addData['id'])->update($addData);
+        $status = UserModel::whereId($addData['id'])->update($addData);
         if ($status) {
             // 提交事务
             $build->getConnection()->commit();

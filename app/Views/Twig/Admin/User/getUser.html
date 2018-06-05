@@ -133,7 +133,7 @@
                         <div class="controls col-md-6" >
                             <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
                                 {% for k,v in roleData %}
-                                <option value="{{v.id}}">{{v.id}}</option>
+                                <option value="{{v.id}}">{{v.name}}</option>
                                 {% endfor %}
 
                             </select>
@@ -195,7 +195,7 @@
                         <div class="controls col-md-6" >
                             <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
                                 {% for k,v in roleData %}
-                                <option value="{{v.id}}">{{v.id}}</option>
+                                <option value="{{v.id}}">{{v.name}}</option>
                                 {% endfor %}
 
                             </select>
