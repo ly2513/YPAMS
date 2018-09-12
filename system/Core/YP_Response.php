@@ -205,6 +205,7 @@ class YP_Response extends Message
      */
     public function setStatusCode(int $code, string $reason = ''): self
     {
+//        $codeLen = strlen($code);
         $codeLen = count($code);
 
         // 状态码的有效范围
