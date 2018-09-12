@@ -27,6 +27,6 @@ YPAMS系统一个自带权限认证的后台管理系统，YPAMS采用[YPPHP](ht
  ```
  回车,你将看到如下界面
 
-![图片](public/Static/images/ss71921870-3F22-4094-8E52-08018F185F27.png)
+![图片](public/Static/images/71921870-3F22-4094-8E52-08018F185F27.png)
 
 
