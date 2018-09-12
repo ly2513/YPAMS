@@ -10,12 +10,13 @@ namespace App\Controllers\Admin;
 
 use Config\Services;
 use Admin\UserModel;
+use \YP\Core\YP_Controller as Controller;
 
 /**
  * Class Login 登陆
  * @package App\Controllers\Admin
  */
-class Login extends \YP\Core\YP_Controller
+class Login extends Controller
 {
     /**
      * 登录
