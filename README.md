@@ -27,6 +27,16 @@ YPAMS系统一个自带权限认证的后台管理系统，YPAMS采用[YPPHP](ht
  ```
  回车,你将看到如下界面
 
-![图片](public/Static/images/71921870-3F22-4094-8E52-08018F185F27.png)
+![图片](public/Static/images/1536830044185.jpg)
 
+
+点击右上角的**YPASM系统登陆**菜单进入后台登陆界面，如下图所示
+
+![图片](public/Static/images/1536830610459.jpg)
+
+账号密码如界面上所示
+
+下图是登陆后所示
+
+![图片](public/Static/images/1536830388839.jpg)
 
