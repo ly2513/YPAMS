@@ -14,6 +14,7 @@ use App\Libraries\YP_Data;
 
 /**
  * Class Menu 菜单管理
+ *
  * @package App\Controllers\Admin
  */
 class Menu extends Auth
@@ -40,7 +41,7 @@ class Menu extends Auth
     /**
      * 菜单列表
      *
-     * @return  Response
+     * @return Response
      */
     public function getMenu()
     {
@@ -73,7 +74,7 @@ class Menu extends Auth
     /**
      * 添加菜单
      *
-     * @return  Response
+     * @return Response
      */
     public function add()
     {
@@ -106,9 +107,9 @@ class Menu extends Auth
     /**
      * 菜单信息
      *
-     * @param  int $id
+     * @param int $id
      *
-     * @return  Json
+     * @return Json
      */
     public function getMenuInfo($id)
     {
@@ -119,7 +120,7 @@ class Menu extends Auth
     /**
      * 编辑菜单
      *
-     * @return  Response
+     * @return Response
      */
     public function update()
     {
@@ -160,7 +161,7 @@ class Menu extends Auth
      *
      * @param int
      *
-     * @return  Response
+     * @return Response
      */
     public function delete($id)
     {
@@ -182,7 +183,7 @@ class Menu extends Auth
     /**
      * Obtain the sub menu id via parent id
      *
-     * @param  int $id
+     * @param int $id
      *
      * @return string
      */
@@ -237,15 +238,19 @@ class Menu extends Auth
     /**
      * Diff the element not in $array
      *
-     * @param  array $array
-     * @param        array or string $element
+     * @param array           $array
+     * @param array or string $element
      *
      * @return array
      */
     function array_delete($array, $element)
     {
-        return (is_array($element)) ? array_values(array_diff($array, $element)) : array_values(array_diff($array,
-            [$element]));
+        return (is_array($element)) ? array_values(array_diff($array, $element)) : array_values(
+            array_diff(
+                $array,
+                [$element]
+            )
+        );
     }
 
     /**
@@ -282,8 +287,10 @@ class Menu extends Auth
     public function getUserMenus(array $menusId)
     {
         $fields    = ['id', 'name', 'pid', 'api_link', 'level'];
-        $menusInfo = MenuModel::select($fields)->whereIn('id',
-            $menusId)->orderBy('level DESC')->get(self::TB_MENUS)->toArray();
+        $menusInfo = MenuModel::select($fields)->whereIn(
+            'id',
+            $menusId
+        )->orderBy('level DESC')->get(self::TB_MENUS)->toArray();
         //开始处理数据
         $menusInfo = array_flatten_key($menusInfo, 'id');
         // 获得树形菜单

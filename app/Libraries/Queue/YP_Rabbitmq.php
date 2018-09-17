@@ -16,7 +16,8 @@ use PhpAmqpLib\Message\AMQPMessage;
  *
  * @package Queue
  */
-class YP_Rabbitmq implements YP_QueueInterface {
+class YP_Rabbitmq implements YP_QueueInterface
+{
 
     /**
      * 配置信息
@@ -71,8 +72,10 @@ class YP_Rabbitmq implements YP_QueueInterface {
         // 我们检查是否有一个配置，然后初始化连接
         if (! empty($config)) {
             $this->config    = $config['rabbitmq'];
-            $this->connexion = new AMQPStreamConnection($this->config['host'], $this->config['port'],
-                $this->config['user'], $this->config['pass'], $this->config['vhost']);
+            $this->connexion = new AMQPStreamConnection(
+                $this->config['host'], $this->config['port'],
+                $this->config['user'], $this->config['pass'], $this->config['vhost']
+            );
             $this->channel   = $this->connexion->channel();
         } else {
             $this->_outputMessage('Invalid configuration file', 'error', 'x');
@@ -89,12 +92,12 @@ class YP_Rabbitmq implements YP_QueueInterface {
      *
      * @return bool
      */
-    public function push($queue = NULL, $data = NULL, $permanent = FALSE, $params = [])
+    public function push($queue = null, $data = null, $permanent = false, $params = [])
     {
         // 我们检查队列是否为空，然后声明队列
         if (! empty($queue)) {
             // 产生一个队列
-            $this->channel->queue_declare($queue, FALSE, $permanent, FALSE, FALSE, FALSE, NULL, NULL);
+            $this->channel->queue_declare($queue, false, $permanent, false, false, false, null, null);
             // 如果给定的信息是个数组，需要将其转换成JSON格式
             $data = (is_array($data)) ? json_encode($data) : $data;
             // 创建一个新的消息实例，然后将其推入选定的队列中
@@ -102,12 +105,14 @@ class YP_Rabbitmq implements YP_QueueInterface {
             // 将消息推送到队列
             $this->channel->basic_publish($item, '', $queue);
             // 输出
-            $this->show_output ? $this->_outputMessage('Pushing "' . $item->body . '" to "' . $queue . '" queue -> OK',
-                NULL, '+') : TRUE;
+            $this->show_output ? $this->_outputMessage(
+                'Pushing "' . $item->body . '" to "' . $queue . '" queue -> OK',
+                null, '+'
+            ) : true;
         } else {
             $this->_outputMessage('You did not specify the [queue] parameter', 'error', 'x');
 
-            return FALSE;
+            return false;
         }
     }
 
@@ -120,16 +125,16 @@ class YP_Rabbitmq implements YP_QueueInterface {
      *
      * @return bool
      */
-    public function pull($queue = NULL, $permanent = FALSE, array $callback = [])
+    public function pull($queue = null, $permanent = false, array $callback = [])
     {
         // 检查队列是否为空，然后声明队列
         if (! empty($queue)) {
             // 再次声明队列
-            $this->channel->queue_declare($queue, FALSE, $permanent, FALSE, FALSE, FALSE, NULL, NULL);
+            $this->channel->queue_declare($queue, false, $permanent, false, false, false, null, null);
             // 未答复的限制次数
-            $this->channel->basic_qos(NULL, 1, NULL);
+            $this->channel->basic_qos(null, 1, null);
             // 设置回调用过程的影响
-            $this->channel->basic_consume($queue, '', FALSE, FALSE, FALSE, FALSE, $callback);
+            $this->channel->basic_consume($queue, '', false, false, false, false, $callback);
             // 继续CLI命令的过程，等待其他指令
             while (count($this->channel->callbacks)) {
                 $this->channel->wait();
@@ -137,7 +142,7 @@ class YP_Rabbitmq implements YP_QueueInterface {
         } else {
             $this->_outputMessage('You did not specify the [queue] parameter', 'error', 'x');
 
-            return FALSE;
+            return false;
         }
     }
 
@@ -148,7 +153,7 @@ class YP_Rabbitmq implements YP_QueueInterface {
      */
     public function lock($message)
     {
-        $this->channel->basic_reject($message->delivery_info['delivery_tag'], TRUE);
+        $this->channel->basic_reject($message->delivery_info['delivery_tag'], true);
     }
 
     /**
@@ -166,7 +171,7 @@ class YP_Rabbitmq implements YP_QueueInterface {
      */
     public function move()
     {
-        show_error('This method does not exist', NULL, 'RabbitMQ Library Error');
+        show_error('This method does not exist', null, 'RabbitMQ Library Error');
     }
 
     /**
@@ -174,9 +179,9 @@ class YP_Rabbitmq implements YP_QueueInterface {
      *
      * @param null $queue
      */
-    public function purge($queue = NULL)
+    public function purge($queue = null)
     {
-        show_error('This method does not exist', NULL, 'RabbitMQ Library Error');
+        show_error('This method does not exist', null, 'RabbitMQ Library Error');
     }
 
     /**
@@ -198,28 +203,28 @@ class YP_Rabbitmq implements YP_QueueInterface {
      * 将信息输出到命令端
      *
      * @param $message
-     * @param null   $type
-     * @param string $symbol
+     * @param null    $type
+     * @param string  $symbol
      */
-    private function _outputMessage($message, $type = NULL, $symbol = '>')
+    private function _outputMessage($message, $type = null, $symbol = '>')
     {
         if (is_cli()) {
             switch ($type) {
-                case 'error':
-                    echo '[x] RabbitMQ Library Error : ' . $message . PHP_EOL;
-                    break;
-                default:
-                    echo '[' . $symbol . '] ' . $message . PHP_EOL;
-                    break;
+            case 'error':
+                echo '[x] RabbitMQ Library Error : ' . $message . PHP_EOL;
+                break;
+            default:
+                echo '[' . $symbol . '] ' . $message . PHP_EOL;
+                break;
             }
         } else {
             switch ($type) {
-                case 'error':
-                    show_error($message, NULL, 'RabbitMQ Library Error');
-                    break;
-                default:
-                    echo $message . '<br>';
-                    break;
+            case 'error':
+                show_error($message, null, 'RabbitMQ Library Error');
+                break;
+            default:
+                echo $message . '<br>';
+                break;
             }
         }
     }

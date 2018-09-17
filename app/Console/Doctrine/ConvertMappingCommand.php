@@ -26,7 +26,8 @@ class ConvertMappingCommand extends \Doctrine\ORM\Tools\Console\Command\ConvertM
         $this
             ->setName($this->name)
             ->setDescription('在支持格式之间转换映射信息.')
-            ->setDefinition(array(
+            ->setDefinition(
+                array(
                 new InputOption(
                     'filter',
                     null,
@@ -74,8 +75,10 @@ class ConvertMappingCommand extends \Doctrine\ORM\Tools\Console\Command\ConvertM
                     InputOption::VALUE_OPTIONAL,
                     'Defines a namespace for the generated entity classes, if converted from database.'
                 ),
-            ))
-            ->setHelp(<<<EOT
+                )
+            )
+            ->setHelp(
+                <<<EOT
 Convert mapping information between supported formats.
 
 This is an execute <info>one-time</info> command. It should not be necessary for

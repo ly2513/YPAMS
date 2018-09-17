@@ -45,13 +45,15 @@ class CreateCommand extends QueueCommand
      */
     protected function configure()
     {
-        $this->setName('queue:create')->setDescription('Create a queue job with the redis.')->setDefinition([
+        $this->setName('queue:create')->setDescription('Create a queue job with the redis.')->setDefinition(
+            [
             new InputOption('job-name', 'j', InputOption::VALUE_REQUIRED, 'Create a queue job name.'),
             new InputOption('job-describe', 'd', InputOption::VALUE_NONE, 'Describe the function of the queue.'),
             new InputOption('queue-name', null, InputOption::VALUE_NONE, 'queue name.'),
             new InputOption('redis-host', 'rh', InputOption::VALUE_NONE, 'Redis service host.'),
             new InputOption('redis-port', 'rp', InputOption::VALUE_NONE, 'Redis service port.'),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -100,14 +102,22 @@ class CreateCommand extends QueueCommand
                 return true;
             } catch (\InvalidArgumentException $e) {
                 $this->log->writeLog('Create queue job error, the error message is ' . $e->getMessage());
-                $output->writeln(sprintf('Create queue job error, the error message is "<info>%s</info>"',
-                    $e->getMessage()));
+                $output->writeln(
+                    sprintf(
+                        'Create queue job error, the error message is "<info>%s</info>"',
+                        $e->getMessage()
+                    )
+                );
 
                 return false;
             } catch (QueueException $e) {
                 $this->log->writeLog('Create queue job error, the error message is ' . $e->getMessage());
-                $output->writeln(sprintf('Create queue job error, the error message is "<info>%s</info>"',
-                    $e->getMessage()));
+                $output->writeln(
+                    sprintf(
+                        'Create queue job error, the error message is "<info>%s</info>"',
+                        $e->getMessage()
+                    )
+                );
 
                 return false;
             }

@@ -53,8 +53,8 @@ class MenuModel extends \YP\Core\YP_Model
      * 根据权重 递归排序 整个list
      * 权重排序规则 由大=>小
      *
-     * @param array $child  子节点数组
-     * @param       $status 表示是否写入选中状态1:不写入,0:写入
+     * @param array                                                     $child 子节点数组
+     * @param $status 表示是否写入选中状态1:不写入,0:写入
      *
      * @return array
      */

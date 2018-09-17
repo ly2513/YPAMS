@@ -15,7 +15,8 @@ namespace App\Libraries\Queue;
  *
  * @package App\Libraries\Queue
  */
-interface YP_QueueInterface {
+interface YP_QueueInterface
+{
 
     /**
      * 将消息从队列中取出

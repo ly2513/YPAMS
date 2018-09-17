@@ -14,7 +14,7 @@ use Illuminate\Database\Capsule\Manager as DB;
  * 统计数据控制器
  * Class Index.
  *
- * @notice  fun命名规则
+ * @notice fun命名规则
  * 主页+index
  * 在主页下触发展示页的+view
  * 对数据有增删改的+action

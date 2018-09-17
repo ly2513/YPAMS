@@ -34,11 +34,13 @@ class WorkQueueCommand extends QueueCommand
      */
     protected function configure()
     {
-        $this->setName('queue:work')->setDescription('work a queue.')->setDefinition([
+        $this->setName('queue:work')->setDescription('work a queue.')->setDefinition(
+            [
             new InputOption('queue-name', null, InputOption::VALUE_NONE, 'queue name.'),
             new InputOption('redis-host', 'rh', InputOption::VALUE_NONE, 'Redis service host.'),
             new InputOption('redis-port', 'rp', InputOption::VALUE_NONE, 'Redis service port.'),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -79,7 +81,7 @@ class WorkQueueCommand extends QueueCommand
             if (!file_exists($appInclude)) {
                 die('APP_INCLUDE (' . $appInclude . ") does not exist.\n");
             }
-            require_once $appInclude;
+            include_once $appInclude;
         }
         // 隔多久执行 时间:秒级
         $interval = $_SERVER['INTERVAL'] ? $_SERVER['INTERVAL'] : 5;

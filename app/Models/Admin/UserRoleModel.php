@@ -12,7 +12,6 @@ use YP\Core\YP_Model as Model;
 
 /**
  * Class UserRoleModel  后端用户模型
- *
  */
 class UserRoleModel extends Model
 {

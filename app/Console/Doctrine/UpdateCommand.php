@@ -26,7 +26,8 @@ class UpdateCommand extends \Doctrine\ORM\Tools\Console\Command\SchemaTool\Updat
             ->setDescription(
                 '通过匹配当前的映射元数据,去执行(或转储)SQL需要更新数据库的结构.'
             )
-            ->setDefinition(array(
+            ->setDefinition(
+                array(
                 new InputOption(
                     'complete',
                     null,
@@ -46,9 +47,11 @@ class UpdateCommand extends \Doctrine\ORM\Tools\Console\Command\SchemaTool\Updat
                     InputOption::VALUE_NONE,
                     'Causes the generated SQL statements to be physically executed against your database.'
                 ),
-            ));
+                )
+            );
 
-        $this->setHelp(<<<EOT
+        $this->setHelp(
+            <<<EOT
 The <info>%command.name%</info> command generates the SQL needed to
 synchronize the database schema with the current mapping metadata of the
 default entity manager.

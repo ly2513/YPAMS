@@ -145,33 +145,33 @@ class Queue
     {
         if ($this->handlerDrive == 'rabbitmq') {
             switch (ENVIRONMENT) {
-                case 'prod':
-                    $config = [
-                               'host'  => '127.0.0.1',  // 主机
-                               'port'  => 5672,         // 端口
-                               'user'  => 'username',   // 账号
-                               'pass'  => 'password',   // 密码
-                               'vhost' => '/',
-                              ];
-                    break;
-                case 'test':
-                    $config = [
-                               'host'  => '127.0.0.1',  // 主机
-                               'port'  => 5672,         // 端口
-                               'user'  => 'username',   // 账号
-                               'pass'  => 'password',   // 密码
-                               'vhost' => '/',
-                              ];
-                    break;
-                default:
-                    $config = [
-                               'host'  => '127.0.0.1',  // 主机
-                               'port'  => 5672,         // 端口
-                               'user'  => 'username',   // 账号
-                               'pass'  => 'password',   // 密码
-                               'vhost' => '/',
-                              ];
-                    break;
+            case 'prod':
+                $config = [
+                           'host'  => '127.0.0.1',  // 主机
+                           'port'  => 5672,         // 端口
+                           'user'  => 'username',   // 账号
+                           'pass'  => 'password',   // 密码
+                           'vhost' => '/',
+                          ];
+                break;
+            case 'test':
+                $config = [
+                           'host'  => '127.0.0.1',  // 主机
+                           'port'  => 5672,         // 端口
+                           'user'  => 'username',   // 账号
+                           'pass'  => 'password',   // 密码
+                           'vhost' => '/',
+                          ];
+                break;
+            default:
+                $config = [
+                           'host'  => '127.0.0.1',  // 主机
+                           'port'  => 5672,         // 端口
+                           'user'  => 'username',   // 账号
+                           'pass'  => 'password',   // 密码
+                           'vhost' => '/',
+                          ];
+                break;
             };
         } else {
             // redis 配置

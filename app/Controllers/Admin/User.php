@@ -25,25 +25,31 @@ class User extends Auth
      */
     public function getUser()
     {
-        $userList = UserModel::select([
+        $userList = UserModel::select(
+            [
             'id',
             'nickname',
             'name',
             'status',
             'create_time',
             'login_time'
-        ])->with([
-            'getUserRole' => function ($query) {
-                $query->select('id', 'uid', 'rid')->whereStatus(0);
-            }
-        ])->get()->toArray();
+            ]
+        )->with(
+            [
+                'getUserRole' => function ($query) {
+                    $query->select('id', 'uid', 'rid')->whereStatus(0);
+                }
+                ]
+        )->get()->toArray();
         if (!$userList) {
             call_back(0);
         }
         foreach ($userList as $key => &$value) {
             $rid                  = array_column($value['get_user_role'], 'rid');
-            $role                 = RoleModel::select(['id', 'name'])->whereIn('id',
-                $rid)->whereStatus(1)->get()->toArray();
+            $role                 = RoleModel::select(['id', 'name'])->whereIn(
+                'id',
+                $rid
+            )->whereStatus(1)->get()->toArray();
             $role_name            = $role ? implode(',', array_column($role, 'name')) : '';
             $value['role_name']   = $role_name;
             $value['create_time'] = date('Y-m-d', $value['create_time']);
@@ -81,7 +87,8 @@ class User extends Auth
         $id       = UserModel::insertGetId($addData);
         $roleData = [];
         foreach ($roleIds as $value) {
-            array_push($roleData, [
+            array_push(
+                $roleData, [
                 'uid'         => $id,
                 'rid'         => $value,
                 'status'      => 0,
@@ -89,7 +96,8 @@ class User extends Auth
                 'update_by'   => $_SESSION['uid'],
                 'create_time' => time(),
                 'update_time' => time()
-            ]);
+                ]
+            );
 
         }
         $status = UserRoleModel::insert($roleData);
@@ -111,16 +119,20 @@ class User extends Auth
      */
     public function getUserInfo($id)
     {
-        $userInfo        = UserModel::select([
+        $userInfo        = UserModel::select(
+            [
             'id',
             'nickname',
             'name',
             'status'
-        ])->with([
-            'getUserRole' => function ($query) {
-                $query->select('id', 'uid', 'rid')->whereStatus(0);
-            }
-        ])->whereId($id)->get()->toArray();
+            ]
+        )->with(
+            [
+                'getUserRole' => function ($query) {
+                    $query->select('id', 'uid', 'rid')->whereStatus(0);
+                }
+                ]
+        )->whereId($id)->get()->toArray();
         $userInfo        = $userInfo ? $userInfo[0] : $userInfo;
         $userInfo['rid'] = array_column($userInfo['get_user_role'], 'rid');
         unset($userInfo['get_user_role']);
@@ -133,8 +145,10 @@ class User extends Auth
     public function update()
     {
         $addData  = $this->request->getPost();
-        $userInfo = UserModel::select('*')->whereName($addData['name'])->where('id', '!=',
-            $addData['id'])->get()->toArray();
+        $userInfo = UserModel::select('*')->whereName($addData['name'])->where(
+            'id', '!=',
+            $addData['id']
+        )->get()->toArray();
         if ($userInfo) {
             call_back(2, '', '账号已存在');
         }

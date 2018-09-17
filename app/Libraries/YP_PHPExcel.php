@@ -118,8 +118,8 @@ class YP_PHPExcel
     /**
      * 获取主体数据
      *
-     * @param        $excelUrl 读取的excel的位置
-     * @param int    $row      定位 从第几行开始读取
+     * @param $excelUrl 读取的excel的位置
+     * @param int                              $row 定位从第几行开始读取
      *
      * @return mixed
      */
@@ -224,7 +224,7 @@ class YP_PHPExcel
     /**
      * 添加图片logo
      *
-     * @param        $url
+     * @param $url
      * @param string $imageName
      *
      * @throws \PHPExcel_Exception
@@ -247,8 +247,10 @@ class YP_PHPExcel
         $cl_width     = '';
         if ($this->excelObj->getActiveSheet()->getColumnDimensions()) {
             foreach ($this->excelObj->getActiveSheet()->getColumnDimensions() as $key => $columnDimension) {
-                if (($width = \PHPExcel_Shared_Drawing::cellDimensionToPixels($columnDimension->getWidth(),
-                        $defaultFont)) >= 0 && in_array($key, $column)
+                if (($width = \PHPExcel_Shared_Drawing::cellDimensionToPixels(
+                    $columnDimension->getWidth(),
+                    $defaultFont
+                )) >= 0 && in_array($key, $column)
                 ) {
                     $cl_width           = $cl_width + ($width);
                     $columnLength[$key] = $width;
@@ -268,8 +270,10 @@ class YP_PHPExcel
                 $sheet->getColumnDimension($col)->setWidth(20);
             }
             foreach ($this->excelObj->getActiveSheet()->getColumnDimensions() as $key => $columnDimension) {
-                if (($width = \PHPExcel_Shared_Drawing::cellDimensionToPixels($columnDimension->getWidth(),
-                        $defaultFont)) >= 0 && in_array($key, $column)
+                if (($width = \PHPExcel_Shared_Drawing::cellDimensionToPixels(
+                    $columnDimension->getWidth(),
+                    $defaultFont
+                )) >= 0 && in_array($key, $column)
                 ) {
                     $cl_width           = $cl_width + ($width);
                     $columnLength[$key] = $width;
@@ -373,8 +377,10 @@ class YP_PHPExcel
                 foreach ($vo as $key => $item) {
                     // 设置数据格式
                     // $this->excelObj->setActiveSheetIndex($this->sheet)->setCellValue($keys[$j] . $this->dataRow, $item);
-                    $this->excelObj->setActiveSheetIndex($this->sheet)->setCellValueExplicit($keys[$j] . $this->dataRow,
-                        $item, \PHPExcel_Cell_DataType::TYPE_STRING);
+                    $this->excelObj->setActiveSheetIndex($this->sheet)->setCellValueExplicit(
+                        $keys[$j] . $this->dataRow,
+                        $item, \PHPExcel_Cell_DataType::TYPE_STRING
+                    );
                     $j++;
                 }
                 $this->dataRow++;
