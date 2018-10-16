@@ -57,20 +57,26 @@
                     </div>
                 </li>
                 {% for k,v in menuList %}
-                {% if v.children %}
+                {% if (v.children)   %}
+                {% if (v.checked==1) %}
                 <li {% if m ==v.m %} class="active"{% endif %}>
                     <a href="#"><i class="fa {{v.icon}}"></i> <span class="nav-label">{{v.name}}</span> <span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level">
                         {% for kk,vv in v.children %}
+                        {% if(vv.checked==1) %}
                         <li {% if c==vv.c %} class="active" {% endif %}><a href="{{vv.url}}"><i class="fa {{vv.icon}}"></i>{{vv.name}}</a></li>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </li>
+                {% endif %}
                 {% else %}
+                {% if (v.checked==1) %}
                 <li {% if c==v.c %} class="active"{% endif %}>
                     <a href="{{v.url}}" ><i class="fa {{v.icon}}"></i>{{v.name}}</a>
                 </li>
+                {% endif %}
                 {% endif %}
                 {% endfor %}
             </ul>
