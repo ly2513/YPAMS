@@ -82,7 +82,7 @@ class User extends Auth
         $addData['update_time'] = time();
         $addData['create_by']   = $_SESSION['uid'];
         $addData['update_by']   = $_SESSION['uid'];
-        $roleIds                = $addData['role_id'];
+        $roleIds                = json_encode($addData['role_id']);
         unset($addData['role_id']);
         $id       = UserModel::insertGetId($addData);
         $roleData = [];
