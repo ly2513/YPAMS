@@ -154,6 +154,7 @@ class User extends Auth
         }
         $addData['update_time'] = time();
         $addData['update_by']   = $_SESSION['uid'];
+        $addData['roles']       = json_encode($addData['role_id']);
         // 开启事务
         $build = UserModel::select();
         $build->getConnection()->beginTransaction();
