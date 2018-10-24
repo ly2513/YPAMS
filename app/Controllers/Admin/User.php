@@ -98,7 +98,6 @@ class User extends Auth
                 'update_time' => time()
                 ]
             );
-
         }
         $status = UserRoleModel::insert($roleData);
         if ($id && $status) {

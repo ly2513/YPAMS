@@ -20,6 +20,6 @@ class UserRoleModel extends Model
      *
      * @var string
      */
-    protected $table = 'ams_user_role';
+    protected $table = 'ams_sys_user_role';
 
 }
