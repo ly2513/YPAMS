@@ -26,12 +26,128 @@
     <link href="/Static/css/plugins/toastr/toastr.min.css" rel="stylesheet">
     {% endblock %}
 
+    <style>
 
+        .content-tabs {
+            position: relative;
+            height: 42px;
+            background: #fafafa;
+            line-height: 40px
+        }
+
+        .content-tabs .roll-nav, .page-tabs-list {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            color: #999;
+            z-index: 2;
+            top: 0
+        }
+
+        .content-tabs .roll-left {
+            left: 0;
+            border-right: solid 1px #eee
+        }
+
+        .content-tabs .roll-right {
+            right: 0;
+            border-left: solid 1px #eee
+        }
+
+        .content-tabs button {
+            background: #fff;
+            border: 0;
+            height: 40px;
+            width: 40px;
+            outline: 0
+        }
+
+        .content-tabs button:hover {
+            background: #fafafa
+        }
+
+        nav.page-tabs {
+            margin-left: 40px;
+            width: 100000px;
+            height: 40px;
+            overflow: hidden
+        }
+
+        nav.page-tabs .page-tabs-content {
+            float: left
+        }
+
+        .page-tabs a {
+            display: block;
+            float: left;
+            border-right: solid 1px #eee;
+            padding: 0 15px
+        }
+
+        .page-tabs a i:hover {
+            color: #c00
+        }
+
+        .content-tabs .roll-nav:hover, .page-tabs a:hover {
+            color: #777;
+            background: #f2f2f2;
+            cursor: pointer
+        }
+
+        .roll-right.J_tabRight {
+            right: 140px
+        }
+
+        .roll-right.btn-group {
+            right: 60px;
+            width: 80px;
+            padding: 0
+        }
+
+        .roll-right.btn-group button {
+            width: 80px
+        }
+
+        .roll-right.J_tabExit {
+            background: #fff;
+            height: 40px;
+            width: 60px;
+            outline: 0
+        }
+
+        .dropdown-menu-right {
+            left: auto
+        }
+
+        .content-tabs {
+            border-bottom: solid 2px #2f4050
+        }
+
+        .page-tabs a {
+            color: #999
+        }
+
+        .page-tabs a i {
+            color: #ccc
+        }
+
+        .page-tabs a.active {
+            background: #2f4050;
+            color: #a7b1c2
+        }
+
+        .page-tabs a.active i:hover, .page-tabs a.active:hover {
+            background: #293846;
+            color: #fff
+        }
+
+    </style>
 </head>
 
 <body>
 <div id="wrapper">
-
+    {% block menu %}
     <nav class="navbar-default navbar-static-side" role="navigation">
         <div class="sidebar-collapse">
             <ul class="nav metismenu" id="side-menu">
@@ -65,7 +181,7 @@
                     <ul class="nav nav-second-level">
                         {% for kk,vv in v.children %}
                         {% if(vv.checked==1) %}
-                        <li {% if c==vv.c %} class="active" {% endif %}><a href="{{vv.url}}"><i class="fa {{vv.icon}}"></i>{{vv.name}}</a></li>
+                        <li {% if c==vv.c %} class="active" {% endif %}><a href="{{vv.url}}" class="J_menuItem" data-index="{{k}}"><i class="fa {{vv.icon}}"></i>{{vv.name}}</a></li>
                         {% endif %}
                         {% endfor %}
                     </ul>
@@ -74,7 +190,7 @@
                 {% else %}
                 {% if (v.checked==1) %}
                 <li {% if c==v.c %} class="active"{% endif %}>
-                    <a href="{{v.url}}" ><i class="fa {{v.icon}}"></i>{{v.name}}</a>
+                    <a href="{{v.url}}" class="J_menuItem" data-index="{{k}}"><i class="fa {{v.icon}}"></i>{{v.name}}</a>
                 </li>
                 {% endif %}
                 {% endif %}
@@ -83,8 +199,11 @@
 
         </div>
     </nav>
+    {% endblock %}
 
+    {% block content %}
     <div id="page-wrapper" class="gray-bg dashbard-1">
+        {% block login %}
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
@@ -107,11 +226,34 @@
             </nav>
         </div>
 
-        {% block content %}
-
+        <div class="row content-tabs">
+            <button class="roll-nav roll-left J_tabLeft"><i class="fa fa-backward"></i></button>
+            <nav class="page-tabs J_menuTabs">
+                <div class="page-tabs-content" style="margin-left: 0px;">
+                    <a href="javascript:;" class="J_menuTab active" data-id="/Static/Html/dashboard_3.html">首页</a>
+                </div>
+            </nav>
+            <button class="roll-nav roll-right J_tabRight"><i class="fa fa-forward"></i>
+            </button>
+            <div class="btn-group roll-nav roll-right">
+                <button class="dropdown J_tabClose" data-toggle="dropdown">关闭操作<span class="caret"></span></button>
+                <ul role="menu" class="dropdown-menu dropdown-menu-right">
+                    <li class="J_tabShowActive"><a>定位当前选项卡</a></li>
+                    <li class="divider"></li>
+                    <li class="J_tabCloseAll"><a>关闭全部选项卡</a></li>
+                    <li class="J_tabCloseOther"><a>关闭其他选项卡</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row J_mainContent" id="content-main">
+            <iframe class="J_iframe  " name="iframe0" src="/Static/Html/dashboard_4_1.html" data-id="" seamless=""
+                    style="display: block;min-height:1000px;" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
         {% endblock %}
 
+
     </div>
+    {% endblock %}
 
 </div>
 
@@ -127,7 +269,8 @@
 
 <!-- message -->
 <script src="/Static/js/plugins/message/jquery.toastmessage.js"></script>
-
+<!-- tab-->
+<script src="/Static/js/contabs.min.js"></script>
 <script>
     (function (i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
