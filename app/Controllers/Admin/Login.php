@@ -10,6 +10,7 @@ namespace App\Controllers\Admin;
 
 use Config\Services;
 use Admin\UserModel;
+use Admin\RoleModel;
 use \YP\Core\YP_Controller as Controller;
 
 /**
@@ -58,10 +59,14 @@ class Login extends Controller
         $userInfo = [
             'uid'        => $userData['id'],
             'name'       => $userData['name'],
+            'nickname'   => $userData['nickname'],
             'rid'        => json_decode($userData['roles'], true),
             'is_manager' => $isManager,
         ];
+        $role     = RoleModel::select(['name'])->whereIn('id', json_decode($userData['roles'], true))->get()->toArray();
+        $roleName = implode(',', array_column($role, 'name'));
         $session->set('userInfo', $userInfo);
+        $session->set('roleName', $roleName);
         $session->set('uid', $userData['id']);
         // 登录成功
         call_back(0);
