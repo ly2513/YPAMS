@@ -188,26 +188,37 @@ class User extends Auth
     }
 
     /**
+     * 修改密码
+     */
+    public function updatePassword()
+    {
+        $this->display();
+    }
+
+    /**
      *  修改密码
      */
     public function changPassword()
     {
+        $session  = Services::session();
+        $uid      = $session->get('uid');
         $data     = $this->request->getPost();
-        $userInfo = UserModel::select(['id', 'password'])->whereId($data['id'])->get()->toArray();
+        $userInfo = UserModel::select(['id', 'password'])->whereId($uid)->whereStatus(1)->get()->toArray();
+        $userData = $userInfo ? $userInfo[0] : [];
+        if (!$userData) {
+            call_back(2, '', '用户不存在或被禁用!');
+        }
         // 验证原密码
-        if (!password_verify(md5($data['oldPassword']), $userInfo[0]['password'])) {
+        if (!password_verify(md5($data['oldPassword']), $userData['password'])) {
             call_back(2, '', '原密码错误!');
         }
-        if ($data['newPassword'] != $data['rePassword']) {
+        if ($data['password'] != $data['rePassword']) {
             call_back(2, '', ' 两次密码输入不一致!');
         }
-        $updateData['password'] = password_hash(md5($data['newPassword']), PASSWORD_DEFAULT);
+        $updateData['password'] = password_hash(md5($data['password']), PASSWORD_DEFAULT);
         // 跟新数据
-        $status = UserModel::whereId($data['id'])->update($updateData);
-        if (!$status) {
-            call_back(2, '', '修改密码失败!');
-        }
-        call_back(0);
+        $status = UserModel::whereId($uid)->update($updateData);
+        $status ? call_back(0) : call_back(2, [], '修改密码失败');
     }
 
     /**

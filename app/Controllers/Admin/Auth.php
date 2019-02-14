@@ -60,6 +60,9 @@ class Auth extends Controller
         $this->_showMenu();
         $session        = Services::session();
         $this->userInfo = $session->get('userInfo');
+        $this->assign('user_role', $session->get('roleName'));
+        $this->assign('user_nick_name', $this->userInfo['nickname']);
+        $this->assign('user_uid', $session->get('uid'));
         $this->assign('m', rtrim($this->directory, '/'));
         $this->assign('c', $this->controller);
         $this->assign('a', $this->method);
