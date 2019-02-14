@@ -157,15 +157,13 @@
                              </span>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear"> <span class="block m-t-xs"> <strong
-                                    class="font-bold">David Williams</strong>
-                             </span> <span class="text-muted text-xs block">Art Director <b
+                                    class="font-bold">{{user_nick_name}}</strong>
+                             </span> <span class="text-muted text-xs block">{{user_role}} <b
                                     class="caret"></b></span> </span> </a>
                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="/Static/Html/profile.html">Profile</a></li>
-                            <li><a href="/Static/Html/contacts.html">Contacts</a></li>
-                            <li><a href="/Static/Html/mailbox.html">Mailbox</a></li>
+                            <li><a href="/Admin/User/updatePassword">修改密码</a></li>
                             <li class="divider"></li>
-                            <li><a href="/Admin/Login/out">退出</a></li>
+                            <li><a href="javascript:;"  onclick="return out();">退出</a></li>
                         </ul>
                     </div>
                     <div class="logo-element">
