@@ -15,6 +15,7 @@ use \YP\Core\YP_Controller as Controller;
 
 /**
  * Class Auth 权限认证类
+ *
  * @package App\Controllers\Admin
  */
 class Auth extends Controller
@@ -59,7 +60,7 @@ class Auth extends Controller
         $this->_showMenu();
         $session        = Services::session();
         $this->userInfo = $session->get('userInfo');
-        $this->assign('m', rtrim($this->directory,'/'));
+        $this->assign('m', rtrim($this->directory, '/'));
         $this->assign('c', $this->controller);
         $this->assign('a', $this->method);
     }
@@ -136,11 +137,11 @@ class Auth extends Controller
         $result = RoleModel::select(['id', 'permissions'])->whereIn('id', $rids)->get()->toArray();
         $result = $result ? $result : [];
         if (!$result) {
-            call_back(2, '', '该记录不存在!');
+            callBack(2, '', '该记录不存在!');
         }
         $permissionArr = [];
         foreach ($result as $key => $value) {
-            $menus = $value['permissions'] ? json_decode($value['permissions'], true) : [];
+            $menus = json_decode($value['permissions'], true);
             foreach ($menus as $k => $v){
                 array_push($permissionArr, $v);
             }
@@ -150,7 +151,8 @@ class Auth extends Controller
             $permissionArr = [$permissionArr];
         }
         // 获得系统所有的菜单
-        $sysMenus = MenuModel::select([
+        $sysMenus = MenuModel::select(
+            [
             'id',
             'pid',
             'icon',
@@ -160,7 +162,8 @@ class Auth extends Controller
             'description',
             'sort',
             'type'
-        ])->get()->toArray();
+            ]
+        )->get()->toArray();
         foreach ($sysMenus as $key => $value) {//添加type 值 与checked值
             if (in_array($value['id'], $permissionArr)) {
                 $checked = 1;
@@ -171,7 +174,7 @@ class Auth extends Controller
         }
         unset($result['permissions']);
         $result['data'] = MenuModel::serializeMapList($sysMenus, 0);
-//        P($result['data']);
+        //        P($result['data']);
         $this->assign('menuList', $result['data']);
     }
 

@@ -21,9 +21,11 @@ class ListFailedCommand extends QueueCommand
      */
     protected function configure()
     {
-        $this->setName('queue:failed')->setDescription('List all of the failed queue jobs.')->setDefinition([
+        $this->setName('queue:failed')->setDescription('List all of the failed queue jobs.')->setDefinition(
+            [
             new InputOption('job-id', null, InputOption::VALUE_NONE, 'A queue job ID.'),
-        ]);
+            ]
+        );
     }
 
     /**

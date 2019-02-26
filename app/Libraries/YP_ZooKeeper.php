@@ -63,7 +63,7 @@ class YP_Zookeeper
      * 创建路径,相当于在Zookeeper上执行 "mkdir -p"
      *
      * @param $path  节点的路径
-     * @param string $value 分配给每个新节点沿路径的值
+     * @param string                $value 分配给每个新节点沿路径的值
      */
     public function makePath($path, $value = '')
     {
@@ -83,7 +83,7 @@ class YP_Zookeeper
      *
      * @param $path   节点的路径
      * @param $value  节点的值
-     * @param array $params 对于Zookeeper节点是可选参数。默认情况下，创建一个公共节点
+     * @param array                  $params 对于Zookeeper节点是可选参数。默认情况下，创建一个公共节点
      *
      * @return string 返回新创建的节点有效、无效的路径
      */
@@ -201,7 +201,7 @@ class YP_Zookeeper
      * 删除给定节点的 监听回调事件,当 $callback 为 null 时,删除所有的回调
      *
      * @param $path     节点路径
-     * @param null $callback 回调
+     * @param null                  $callback 回调
      *
      * @return bool|null
      */

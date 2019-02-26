@@ -106,8 +106,8 @@ class SensitiveFilter
     /**
      * 检索词用标记的符号替换
      *
-     * @param        $strWord
-     * @param string $mark
+     * @param $strWord
+     * @param string  $mark
      *
      * @return array
      */
@@ -180,7 +180,7 @@ class SensitiveFilter
     /**
      * 从词库中查询敏感词
      *
-     * @param        $string
+     * @param $string
      * @param string $mark
      *
      * @return array
@@ -272,8 +272,8 @@ class SensitiveFilter
     /**
      * panel 敏感词管理
      *
-     * @param        $strWord
-     * @param string $mark
+     * @param $strWord
+     * @param string  $mark
      *
      * @return array
      */
@@ -417,9 +417,9 @@ class SensitiveFilter
             $word = mb_substr($strWord, $i, 1, 'UTF-8');
             echo '<pre>';
             echo $word . PHP_EOL;
-//            print_r($map[$word]);
+            //            print_r($map[$word]);
             //过滤特殊字符
-//            if (strpos($special_str, $map[$word]) !== false) {
+            //            if (strpos($special_str, $map[$word]) !== false) {
             if (strpos($special_str, $word) !== false) {
                 if ($open_filter) {
                     $rep_str .= $mark;

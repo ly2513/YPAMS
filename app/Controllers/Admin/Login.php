@@ -14,6 +14,7 @@ use \YP\Core\YP_Controller as Controller;
 
 /**
  * Class Login 登陆
+ *
  * @package App\Controllers\Admin
  */
 class Login extends Controller
@@ -34,13 +35,15 @@ class Login extends Controller
         $username  = $this->request->getPost('username');
         $password  = $this->request->getPost('password');
         $isManager = $this->request->getPost('is_manager') ?? false;
-        $userData  = UserModel::select([
+        $userData  = UserModel::select(
+            [
             'id',
             'roles',
             'name',
             'password',
             'nickname',
-        ])->whereName($username)->whereStatus(1)->get()->toArray();
+            ]
+        )->whereName($username)->whereStatus(1)->get()->toArray();
         $userData  = $userData ? $userData[0] : [];
         if (!$userData) {
             call_back(2, '', '用户不存在或被禁用!');

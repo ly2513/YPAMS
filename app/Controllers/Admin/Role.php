@@ -53,12 +53,14 @@ class Role extends Auth
         $pagination->initialize($config);
         // 生成页码
         $page = $pagination->create_links();
-        $data = RoleModel::select([
+        $data = RoleModel::select(
+            [
             'id',
             'name',
             'create_time',
             'status'
-        ])->skip(($this->page - 1) * $this->perPage)->take($this->perPage)->orderBy('id', 'desc')->get()->toArray();
+            ]
+        )->skip(($this->page - 1) * $this->perPage)->take($this->perPage)->orderBy('id', 'desc')->get()->toArray();
         foreach ($data as $key => $value) {
             $data[$key]['create_time'] = date('Y-m-d', $value['create_time']);
         }
@@ -107,11 +109,13 @@ class Role extends Auth
      */
     public function updateRole($id)
     {
-        $data = RoleModel::select([
+        $data = RoleModel::select(
+            [
             'id',
             'name',
             'status'
-        ])->whereId($id)->get()->toArray();
+            ]
+        )->whereId($id)->get()->toArray();
         if (!$data) {
             call_back(2, '', '无此角色!');
         }
@@ -129,8 +133,10 @@ class Role extends Auth
             call_back(1, '', $this->errors);
         }
         $addData    = $this->request->getPost();
-        $agencyData = RoleModel::select('id')->whereName($addData['name'])->where('id', '!=',
-            $addData['id'])->get()->toArray();
+        $agencyData = RoleModel::select('id')->whereName($addData['name'])->where(
+            'id', '!=',
+            $addData['id']
+        )->get()->toArray();
         if ($agencyData) {
             call_back(2, '', '该角色已存在');
         }
@@ -172,7 +178,7 @@ class Role extends Auth
         $result = RoleModel::select(['id', 'permissions'])->whereId($rid)->get()->toArray();
         $result = $result ? $result[0] : [];
         if (!$result) {
-            call_back(2, '', '该记录不存在!');
+            callBack(2, '', '该记录不存在!');
         }
         $permissionArr = json_decode($result['permissions'], true);
         if (empty($permissionArr)) {
@@ -182,7 +188,8 @@ class Role extends Auth
             $permissionArr = [$permissionArr];
         }
         // 获得系统所有的菜单
-        $sysMenus = MenuModel::select([
+        $sysMenus = MenuModel::select(
+            [
             'id',
             'pid',
             'icon',
@@ -192,7 +199,8 @@ class Role extends Auth
             'description',
             'sort',
             'type'
-        ])->get()->toArray();
+            ]
+        )->get()->toArray();
         foreach ($sysMenus as $key => $value) {//添加type 值 与checked值
             if (in_array($value['id'], $permissionArr)) {
                 $checked = 1;
@@ -218,7 +226,7 @@ class Role extends Auth
         $result = RoleModel::select(['id', 'permissions'])->whereId($this->param['id'])->get()->toArray();
         $result = $result ? $result[0] : [];
         if (!$result) {
-            call_back(2, '', '该记录不存在!');
+            callBack(2, '', '该记录不存在!');
         }
         $permissionArr = json_decode($result['permissions'], true);
         if (empty($permissionArr)) {
@@ -228,7 +236,8 @@ class Role extends Auth
             $permissionArr = [$permissionArr];
         }
         // 获得系统所有的菜单
-        $sysMenus = MenuModel::select([
+        $sysMenus = MenuModel::select(
+            [
             'id',
             'pid',
             'icon',
@@ -237,7 +246,8 @@ class Role extends Auth
             'url',
             'description',
             'sort'
-        ])->get()->toArray();
+            ]
+        )->get()->toArray();
         //        $menuIds  = array_column($sysMenus, 'id');
         //        if ($result['name'] == 'Administrators') {
         //            // 获得超级管理员的所有的菜单
@@ -253,7 +263,7 @@ class Role extends Auth
         }
         unset($result['permissions']);
         $result['data'] = $this->menusModel->serializeMapList($sysMenus, 0);
-        call_back(0, $result);
+        callBack(0, $result);
     }
 
     /**
@@ -268,9 +278,11 @@ class Role extends Auth
         $menuIds = $menuIds ? array_unique(json_decode($menuIds, true)) : [];
         $node    = $node ? array_unique(json_decode($node, true)) : [];
         $node    = array_merge($node, $menuIds);
-        $status  = RoleModel::whereId($rid)->update(['menus'       => json_encode($menuIds),
+        $status  = RoleModel::whereId($rid)->update(
+            ['menus'       => json_encode($menuIds),
                                                      'permissions' => json_encode($node)
-        ]);
+            ]
+        );
         $status ? call_back(0) : call_back(2, '', '操作失败！');
     }
 

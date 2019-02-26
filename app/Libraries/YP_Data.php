@@ -21,11 +21,11 @@ final class YP_Data
      * 返回多层栏目
      *
      * @param $data     操作的数组
-     * @param int    $pid      一级PID的值
-     * @param string $html     栏目名称前缀
-     * @param string $fieldPri 唯一键名，如果是表则是表的主键
-     * @param string $fieldPid 父ID键名
-     * @param int    $level    不需要传参数（执行时调用）
+     * @param int                      $pid      一级PID的值
+     * @param string                   $html     栏目名称前缀
+     * @param string                   $fieldPri 唯一键名，如果是表则是表的主键
+     * @param string                   $fieldPid 父ID键名
+     * @param int                      $level    不需要传参数（执行时调用）
      *
      * @return array
      */
@@ -65,11 +65,11 @@ final class YP_Data
      * 获得所有子栏目
      *
      * @param $data     栏目数据
-     * @param int    $pid      操作的栏目
-     * @param string $html     栏目名前字符
-     * @param string $fieldPri 表主键
-     * @param string $fieldPid 父id
-     * @param int    $level    等级
+     * @param int                   $pid      操作的栏目
+     * @param string                $html     栏目名前字符
+     * @param string                $fieldPri 表主键
+     * @param string                $fieldPid 父id
+     * @param int                   $level    等级
      *
      * @return array
      */
@@ -152,8 +152,8 @@ final class YP_Data
      *
      * @param $data     数据
      * @param $title    字段名
-     * @param string $fieldPri 主键id
-     * @param string $fieldPid 父id
+     * @param string             $fieldPri 主键id
+     * @param string             $fieldPid 父id
      *
      * @return array
      */
@@ -195,8 +195,8 @@ final class YP_Data
      *
      * @param $data     栏目数据
      * @param $sid      子栏目
-     * @param string $fieldPri 唯一键名，如果是表则是表的主键
-     * @param string $fieldPid 父ID键名
+     * @param string                $fieldPri 唯一键名，如果是表则是表的主键
+     * @param string                $fieldPid 父ID键名
      *
      * @return array
      */
@@ -226,8 +226,8 @@ final class YP_Data
      * @param $data     栏目数据
      * @param $sid      子栏目id
      * @param $pid      父栏目id
-     * @param string $fieldPri 主键
-     * @param string $fieldPid 父id字段
+     * @param string                $fieldPri 主键
+     * @param string                $fieldPid 父id字段
      *
      * @return bool
      */
@@ -249,7 +249,7 @@ final class YP_Data
      *
      * @param $data     栏目数据
      * @param $cid      要判断的栏目cid
-     * @param string $fieldPid 父id表字段名
+     * @param string                         $fieldPid 父id表字段名
      *
      * @return bool
      */
@@ -268,7 +268,7 @@ final class YP_Data
      * 递归实现迪卡尔乘积
      *
      * @param $arr 操作的数组
-     * @param array $tmp
+     * @param array               $tmp
      *
      * @return array
      */

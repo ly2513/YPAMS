@@ -12,7 +12,6 @@ use Config\Email;
 
 /**
  * Class YP_Email
- *
  */
 class YP_Email
 {
@@ -77,8 +76,8 @@ class YP_Email
      * 发送邮件
      *
      * @param $message
-     * @param array  $user
-     * @param string $title
+     * @param array   $user
+     * @param string  $title
      *
      * @return bool
      */

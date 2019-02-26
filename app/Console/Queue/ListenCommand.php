@@ -24,9 +24,11 @@ class ListenCommand extends QueueCommand
      */
     protected function configure()
     {
-        $this->setName('queue:listen')->setDescription('Listen to a given queue.')->setDefinition([
+        $this->setName('queue:listen')->setDescription('Listen to a given queue.')->setDefinition(
+            [
             new InputOption('job-id', null, InputOption::VALUE_NONE, 'A queue job ID.'),
-        ]);
+            ]
+        );
     }
 
     /**
@@ -35,49 +37,49 @@ class ListenCommand extends QueueCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-       $a =  system('ps aux | grep php');
-//       $a =  system('ps -ef | grep php');
+        $a =  system('ps aux | grep php');
+        //       $a =  system('ps -ef | grep php');
         
-//       exec('ps aux | egrep php',$a,$b);
+        //       exec('ps aux | egrep php',$a,$b);
         var_dump($a);
         $b = explode('  ', $a);
         print_r($b);
-//        var_dump($b);
-//        $works = Worker::all();
+        //        var_dump($b);
+        //        $works = Worker::all();
 
-//        $pids = $work->workerPids('default');
-//        print_r($works);
-//        echo '<pre>';
-//        print_r($a);
-//        $jobId = $input->getOption('job-id');
-//        $jobId = $jobId ? $jobId : '';
-//        Worker::pruneDeadWorkers();
-//        $pid = getmypid();
-//        echo $pid;
-//        $redisServer = $_SERVER['REDIS_BACKEND'];
-//        $redisServer = $redisServer ? $redisServer : '127.0.0.1:6379';
-//        Resque::setBackend($redisServer);
-//        $length        = Resque::redis()->llen('failed');
-//        $failQueueList = Resque::redis()->lrange('failed', 0, $length - 1);
-//        foreach ($failQueueList as $keys => $values) {
-//            $failQueueList[$keys] = json_decode($values, true);
-//        }
-//        if ($jobId) {
-//            foreach ($failQueueList as $keys => $values) {
-//                if ($values['payload']['id'] === $jobId) {
-//                    echo $values['payload']['id'] . PHP_EOL;
-//                }
-//            }
-//        }
-//        foreach ($failQueueList as $key => $value) {
-//            $date   = date('Y-m-d H:i:s', strtotime($value['failed_at']));
-//            $id     = $value['payload']['id'];
-//            $class  = $value['payload']['class'];
-//            $queue  = $value['queue'];
-//            $error  = $value['error'];
-//            $string = 'QueueID: <info>%s</info>  ' . 'Queue: <info>%s</info>  ' . 'Class: <info>%s</info>  ' . 'Date: <info>%s</info>  ' . 'Error: <info>%s</info>';
-//            $output->writeln(sprintf($string, $id, $queue, $class, $date, $error));
-//        }
+        //        $pids = $work->workerPids('default');
+        //        print_r($works);
+        //        echo '<pre>';
+        //        print_r($a);
+        //        $jobId = $input->getOption('job-id');
+        //        $jobId = $jobId ? $jobId : '';
+        //        Worker::pruneDeadWorkers();
+        //        $pid = getmypid();
+        //        echo $pid;
+        //        $redisServer = $_SERVER['REDIS_BACKEND'];
+        //        $redisServer = $redisServer ? $redisServer : '127.0.0.1:6379';
+        //        Resque::setBackend($redisServer);
+        //        $length        = Resque::redis()->llen('failed');
+        //        $failQueueList = Resque::redis()->lrange('failed', 0, $length - 1);
+        //        foreach ($failQueueList as $keys => $values) {
+        //            $failQueueList[$keys] = json_decode($values, true);
+        //        }
+        //        if ($jobId) {
+        //            foreach ($failQueueList as $keys => $values) {
+        //                if ($values['payload']['id'] === $jobId) {
+        //                    echo $values['payload']['id'] . PHP_EOL;
+        //                }
+        //            }
+        //        }
+        //        foreach ($failQueueList as $key => $value) {
+        //            $date   = date('Y-m-d H:i:s', strtotime($value['failed_at']));
+        //            $id     = $value['payload']['id'];
+        //            $class  = $value['payload']['class'];
+        //            $queue  = $value['queue'];
+        //            $error  = $value['error'];
+        //            $string = 'QueueID: <info>%s</info>  ' . 'Queue: <info>%s</info>  ' . 'Class: <info>%s</info>  ' . 'Date: <info>%s</info>  ' . 'Error: <info>%s</info>';
+        //            $output->writeln(sprintf($string, $id, $queue, $class, $date, $error));
+        //        }
     }
 
 }

@@ -15,7 +15,8 @@ use RedisQueue\ResQueue;
  *
  * @package App\Libraries\Queue
  */
-class YP_Queue {
+class YP_Queue
+{
 
     /**
      * 队列驱动
@@ -79,7 +80,7 @@ class YP_Queue {
      *
      * @var array
      */
-    public static $instance = NULL;
+    public static $instance = null;
 
     /**
      * Queue constructor.

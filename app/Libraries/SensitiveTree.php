@@ -93,7 +93,7 @@ class SensitiveTree
     /**
      * 查找对应敏感词
      *
-     * @param       $txt
+     * @param $txt
      * @param bool  $hasReplace
      * @param array $replaceCodeList
      *

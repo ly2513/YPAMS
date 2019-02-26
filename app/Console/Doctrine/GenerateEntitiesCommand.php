@@ -26,7 +26,8 @@ class GenerateEntitiesCommand extends \Doctrine\ORM\Tools\Console\Command\Genera
         $this
             ->setName($this->name)
             ->setDescription('从映射信息生成实体类和方法.')
-            ->setDefinition(array(
+            ->setDefinition(
+                array(
                 new InputOption(
                     'filter',
                     null,
@@ -85,8 +86,10 @@ class GenerateEntitiesCommand extends \Doctrine\ORM\Tools\Console\Command\Genera
                     InputOption::VALUE_NONE,
                     'Flag to define if generator should avoid backuping existing entity file if it exists.'
                 ),
-            ))
-            ->setHelp(<<<EOT
+                )
+            )
+            ->setHelp(
+                <<<EOT
 Generate entity classes and method stubs from your mapping information.
 
 If you use the <comment>--update-entities</comment> or <comment>--regenerate-entities</comment> flags your existing

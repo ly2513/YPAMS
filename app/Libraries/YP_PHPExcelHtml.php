@@ -231,7 +231,9 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
         $css['.s']['text-align']    = 'left'; // STRING
         $css['.s']['padding-left']  = '5px'; // 列的padding
         $css['.s']['padding-right'] = '5px'; // 列的padding
-        /******  追加样式区域   *****/
+        /******
+  * 追加样式区域   
+*****/
         // body
         $css['body']['min-width'] = '1200px';
         $css['body']['max-width'] = '100vw';
@@ -378,15 +380,15 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     private function _mapVAlign($vAlign)
     {
         switch ($vAlign) {
-            case \PHPExcel_Style_Alignment::VERTICAL_BOTTOM:
-                return 'bottom';
-            case \PHPExcel_Style_Alignment::VERTICAL_TOP:
-                return 'top';
-            case \PHPExcel_Style_Alignment::VERTICAL_CENTER:
-            case \PHPExcel_Style_Alignment::VERTICAL_JUSTIFY:
-                return 'middle';
-            default:
-                return 'baseline';
+        case \PHPExcel_Style_Alignment::VERTICAL_BOTTOM:
+            return 'bottom';
+        case \PHPExcel_Style_Alignment::VERTICAL_TOP:
+            return 'top';
+        case \PHPExcel_Style_Alignment::VERTICAL_CENTER:
+        case \PHPExcel_Style_Alignment::VERTICAL_JUSTIFY:
+            return 'middle';
+        default:
+            return 'baseline';
         }
     }
 
@@ -400,19 +402,19 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     private function _mapHAlign($hAlign)
     {
         switch ($hAlign) {
-            case \PHPExcel_Style_Alignment::HORIZONTAL_GENERAL:
-                return false;
-            case \PHPExcel_Style_Alignment::HORIZONTAL_LEFT:
-                return 'left';
-            case \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT:
-                return 'right';
-            case \PHPExcel_Style_Alignment::HORIZONTAL_CENTER:
-            case \PHPExcel_Style_Alignment::HORIZONTAL_CENTER_CONTINUOUS:
-                return 'center';
-            case \PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY:
-                return 'justify';
-            default:
-                return false;
+        case \PHPExcel_Style_Alignment::HORIZONTAL_GENERAL:
+            return false;
+        case \PHPExcel_Style_Alignment::HORIZONTAL_LEFT:
+            return 'left';
+        case \PHPExcel_Style_Alignment::HORIZONTAL_RIGHT:
+            return 'right';
+        case \PHPExcel_Style_Alignment::HORIZONTAL_CENTER:
+        case \PHPExcel_Style_Alignment::HORIZONTAL_CENTER_CONTINUOUS:
+            return 'center';
+        case \PHPExcel_Style_Alignment::HORIZONTAL_JUSTIFY:
+            return 'justify';
+        default:
+            return false;
         }
     }
 
@@ -426,36 +428,36 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     private function _mapBorderStyle($borderStyle)
     {
         switch ($borderStyle) {
-            case \PHPExcel_Style_Border::BORDER_NONE:
-                return 'none';
-            case \PHPExcel_Style_Border::BORDER_DASHDOT:
-                return '1px dashed';
-            case \PHPExcel_Style_Border::BORDER_DASHDOTDOT:
-                return '1px dotted';
-            case \PHPExcel_Style_Border::BORDER_DASHED:
-                return '1px dashed';
-            case \PHPExcel_Style_Border::BORDER_DOTTED:
-                return '1px dotted';
-            case \PHPExcel_Style_Border::BORDER_DOUBLE:
-                return '3px double';
-            case \PHPExcel_Style_Border::BORDER_HAIR:
-                return '1px solid';
-            case \PHPExcel_Style_Border::BORDER_MEDIUM:
-                return '2px solid';
-            case \PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT:
-                return '2px dashed';
-            case \PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT:
-                return '2px dotted';
-            case \PHPExcel_Style_Border::BORDER_MEDIUMDASHED:
-                return '2px dashed';
-            case \PHPExcel_Style_Border::BORDER_SLANTDASHDOT:
-                return '2px dashed';
-            case \PHPExcel_Style_Border::BORDER_THICK:
-                return '3px solid';
-            case \PHPExcel_Style_Border::BORDER_THIN:
-                return '1px solid';
-            default:
-                return '1px solid'; // map others to thin
+        case \PHPExcel_Style_Border::BORDER_NONE:
+            return 'none';
+        case \PHPExcel_Style_Border::BORDER_DASHDOT:
+            return '1px dashed';
+        case \PHPExcel_Style_Border::BORDER_DASHDOTDOT:
+            return '1px dotted';
+        case \PHPExcel_Style_Border::BORDER_DASHED:
+            return '1px dashed';
+        case \PHPExcel_Style_Border::BORDER_DOTTED:
+            return '1px dotted';
+        case \PHPExcel_Style_Border::BORDER_DOUBLE:
+            return '3px double';
+        case \PHPExcel_Style_Border::BORDER_HAIR:
+            return '1px solid';
+        case \PHPExcel_Style_Border::BORDER_MEDIUM:
+            return '2px solid';
+        case \PHPExcel_Style_Border::BORDER_MEDIUMDASHDOT:
+            return '2px dashed';
+        case \PHPExcel_Style_Border::BORDER_MEDIUMDASHDOTDOT:
+            return '2px dotted';
+        case \PHPExcel_Style_Border::BORDER_MEDIUMDASHED:
+            return '2px dashed';
+        case \PHPExcel_Style_Border::BORDER_SLANTDASHDOT:
+            return '2px dashed';
+        case \PHPExcel_Style_Border::BORDER_THICK:
+            return '3px solid';
+        case \PHPExcel_Style_Border::BORDER_THIN:
+            return '1px solid';
+        default:
+            return '1px solid'; // map others to thin
         }
     }
 
@@ -618,7 +620,7 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
             $rowMax = $dimension[1][1];
             // calculate start of <tbody>, <thead>
             $tbodyStart = $rowMin;
-            $theadStart = $theadEnd = 0; // default: no <thead>	no </thead>
+            $theadStart = $theadEnd = 0; // default: no <thead>    no </thead>
             if ($sheet->getPageSetup()->isRowsToRepeatAtTopSet()) {
                 $rowsToRepeatAtTop = $sheet->getPageSetup()->getRowsToRepeatAtTop();
                 // we can only support repeating rows that start at top row
@@ -771,7 +773,7 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     /**
      * Generate image tag in cell
      *
-     * @param \PHPExcel_Worksheet $pSheet PHPExcel_Worksheet
+     * @param \PHPExcel_Worksheet $pSheet      PHPExcel_Worksheet
      * @param string              $coordinates Cell coordinates
      *
      * @return string
@@ -828,7 +830,7 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     /**
      * Generate chart tag in cell
      *
-     * @param \PHPExcel_Worksheet $pSheet PHPExcel_Worksheet
+     * @param \PHPExcel_Worksheet $pSheet      PHPExcel_Worksheet
      * @param string              $coordinates Cell coordinates
      *
      * @return string|void
@@ -979,7 +981,7 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
         }
         //@TODO 个性化定制颜色
         $css['color'] = '#' . ($pStyle->getColor()->getRGB() == '000000' ? '373737' : $pStyle->getColor()->getRGB());
-        //$css['color']		= '#' . $pStyle->getColor()->getRGB();
+        //$css['color']        = '#' . $pStyle->getColor()->getRGB();
         $css['font-family'] = '\'' . $pStyle->getName() . '\'';
         $css['font-size']   = $pStyle->getSize() . 'pt';
 
@@ -1019,7 +1021,7 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     {
         // Create CSS
         //      $css = $this->_mapBorderStyle($pStyle->getBorderStyle()) . ' #' . $pStyle->getColor()->getRGB();
-        //	Create CSS - add !important to non-none border styles for merged cells
+        //    Create CSS - add !important to non-none border styles for merged cells
         $borderStyle = $this->_mapBorderStyle($pStyle->getBorderStyle());
         //$css = $borderStyle . ' #' . $pStyle->getColor()->getRGB() . (($borderStyle == 'none') ? '' : ' !important');
         //@TODO 此处强制限定了 html table 的表格颜色
@@ -1232,9 +1234,9 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
     /**
      * Generate row
      *
-     * @param \PHPExcel_Worksheet $pSheet PHPExcel_Worksheet
-     * @param null                $pValues Array containing cells in a row
-     * @param int                 $pRow Row number (0-based)
+     * @param \PHPExcel_Worksheet $pSheet   PHPExcel_Worksheet
+     * @param null                $pValues  Array containing cells in a row
+     * @param int                 $pRow     Row number (0-based)
      * @param string              $cellType
      *
      * @return string
@@ -1391,8 +1393,8 @@ class YP_PHPExcelHtml extends \PHPExcel_Writer_HTML
                     $spans   = $this->_isBaseCell[$pSheet->getParent()->getIndex($pSheet)][$pRow + 1][$colNum];
                     $rowSpan = $spans['rowspan'];
                     $colSpan = $spans['colspan'];
-                    //	Also apply style from last cell in merge to fix borders -
-                    //		relies on !important for non-none border declarations in _createCSSStyleBorder
+                    //    Also apply style from last cell in merge to fix borders -
+                    //        relies on !important for non-none border declarations in _createCSSStyleBorder
                     $endCellCoord = PHPExcel_Cell::stringFromColumnIndex($colNum + $colSpan - 1) . ($pRow + $rowSpan);
                     if (! $this->_useInlineCss) {
                         $cssClass .= ' style' . $pSheet->getCell($endCellCoord)->getXfIndex();

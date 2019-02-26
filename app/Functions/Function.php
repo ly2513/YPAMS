@@ -32,10 +32,10 @@ if (!function_exists('call_back')) {
 /**
  * 设置分页
  *
- * @param     $row          总条数
- * @param     $url          跳转链接
- * @param     $uri_segment  当前页码
- * @param int $per_page     每页显示多少条
+ * @param $row          总条数
+ * @param $url          跳转链接
+ * @param $uri_segment  当前页码
+ * @param int                       $per_page 每页显示多少条
  *
  * @return mixed
  */
@@ -73,8 +73,8 @@ function set_page_config($row, $url, $uri_segment, $per_page = 10)
 /**
  * 并行查询 Post
  *
- * @param     $url_array
- * @param int $wait_usec
+ * @param $url_array
+ * @param int       $wait_usec
  *
  * @return array|bool
  */
@@ -99,10 +99,12 @@ function multi_curl_post($url_array, $wait_usec = 0)
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $url_info['data']);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        curl_setopt(
+            $ch, CURLOPT_HTTPHEADER, [
             'Content-Type: application/json',
             'Content-Length: ' . strlen($url_info['data']),
-        ]);
+            ]
+        );
         // 把 curl resource 放进 multi curl handler 里
         curl_multi_add_handle($mh, $ch);
         $handle[$i++] = $ch;
@@ -166,7 +168,7 @@ function get_password($length = 6)
  * 根据多维数组中的某个值 直接重构数据结构
  *
  * @param array $data
- * @param       $key
+ * @param $key
  *
  * @return array
  *
@@ -290,10 +292,10 @@ function get_quarter_range($startDate, $endDate)
 /**
  * 将数据格式化成树形结构
  *
- * @param         $items
- * @param  string $id
- * @param  string $pid
- * @param  string $child
+ * @param $items
+ * @param string $id
+ * @param string $pid
+ * @param string $child
  *
  * @return array
  */

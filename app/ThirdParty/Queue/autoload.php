@@ -28,11 +28,11 @@ function load_class($class)
         $file = $file . end($namespace) . '.php';
         if (strpos($className, 'Libraries') == 4) {
             if (file_exists($file) && !class_exists($className)) {
-                require_once $file;
+                include_once $file;
             }
-        }else if (strpos($className, 'Config') == 0){
+        }else if (strpos($className, 'Config') == 0) {
             if (file_exists($file) && !class_exists($className)) {
-                require_once $file;
+                include_once $file;
             }
         }
 

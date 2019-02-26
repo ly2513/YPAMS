@@ -51,13 +51,15 @@ class YP_DebugToolbar implements FilterInterface
             $toolbar = Services::toolbar(new App());
             $stats   = $app->getPerformanceStats();
 
-            return $response->appendBody($toolbar->run(
-                $stats['startTime'],
-                $stats['totalTime'],
-                $stats['startMemory'],
-                $request,
-                $response
-            ));
+            return $response->appendBody(
+                $toolbar->run(
+                    $stats['startTime'],
+                    $stats['totalTime'],
+                    $stats['startMemory'],
+                    $request,
+                    $response
+                )
+            );
         }
     }
 }

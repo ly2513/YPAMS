@@ -18,7 +18,7 @@ namespace Config;
 $routes = Services::routes(true);
 // 先加载系统的路由文件，以便应用程序和环境可以根据需要重写
 if (file_exists(SYSTEM_PATH . 'Config/Routes.php')) {
-    require SYSTEM_PATH . 'Config/Routes.php';
+    include SYSTEM_PATH . 'Config/Routes.php';
 }
 
 /**
@@ -55,5 +55,5 @@ $routes->add('/', 'Home::index');
  * 可根据不同环境设置不同的路由规则
  */
 if (file_exists(APP_PATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
-    require APP_PATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+    include APP_PATH . 'Config/' . ENVIRONMENT . '/Routes.php';
 }
