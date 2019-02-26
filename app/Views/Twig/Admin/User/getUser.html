@@ -144,7 +144,7 @@
                         <div class="controls col-md-6" >
                             <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
                                 {% for k,v in roleData %}
-                                <option value="{{v.id}}">{{v.id}}</option>
+                                <option value="{{v.id}}">{{v.name}}</option>
                                 {% endfor %}
 
                             </select>
@@ -204,9 +204,9 @@
                     <div class="form-group" style="">
                         <label style="text-align: right">角色</label>
                         <div class="controls col-md-6" >
-                            <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]">
+                            <select data-placeholder="请分配角色" class="chosen-select" multiple style="width: 417px;" tabindex="4" name="role_id[]" id="select_role">
                                 {% for k,v in roleData %}
-                                <option value="{{v.id}}">{{v.id}}</option>
+                                <option value="{{v.id}}">{{v.name}}</option>
                                 {% endfor %}
 
                             </select>
@@ -349,28 +349,22 @@
             success: function (re) {
                 if (re.code === 0) {
                     if (re.data) {
-//                        console.log(re.data);
                         $("#myModal1").find("input[name='id']").val(re.data.id);
                         $("#myModal1").find("input[name='name']").val(re.data.name);
                         $("#myModal1").find("input[name='nickname']").val(re.data.nickname);
-                        $.each(re.data.rid , function (i, n) {
-                            $("#myModal1").find("select[name='role_id[]']").val(n);
-//                            option["value='"+selValue[sel]+"']").attr("selected","selected");
-//                        $("select[name='"+obj.attr('id')+"'] option[value='"+selValue[sel]+"']").attr("selected","selected");
-                        $("#myModal1").find("select[name='role_id["+ n +"]'] option[value='"+n+"']").attr("selected","selected");
-                            $("#myModal1").find("select[name='role_id["+ n +"]'] option[value='"+n+"']").trigger("liszt:updated");
-                    });
-
-                        if(re.data.status == 1){
+//                        $("#myModal1").find("select[name='role_id[]']").attr("selected", "");
+//                        $("#select_role").trigger("chosen:updated");
+                        $.each(re.data.rid, function (i, n) {
+                            $("#select_role option[value='" + n + "']").attr("selected", "selected");
+                        });
+                        $("#select_role").trigger("chosen:updated");
+                        if (re.data.status == 1) {
                             $("#myModal1").find('input[name="status"]:eq(0)').iCheck('check');
-                        }else{
+                        } else {
                             $("#myModal1").find('input[name="status"]:eq(1)').iCheck('check');
                         }
                         $("#myModal1").modal();
-                    } else {
-
                     }
-
                 } else if (re.code === 1) {
                     $.each(re.msg, function (i, n) {
                         $().toastmessage('showErrorToast', n);
