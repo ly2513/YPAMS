@@ -55,6 +55,12 @@
                                         <input type="checkbox" class="i-checks subcheck" style="cursor: pointer;" {% if
                                                vv.checked==1 %} checked="" {% endif %} name="node" value="{{vv.id}}">{{v.name}}
                                     </li>
+                                    {% for kkk,vvv in vv.children %}
+                                    <li style="float:left;margin-right:40px;width:200px;">
+                                        <input type="checkbox" class="i-checks subcheck" style="cursor: pointer;" {% if
+                                               vvv.checked==1 %} checked="" {% endif %} name="node" value="{{vvv.id}}">{{vvv.name}}
+                                    </li>
+                                    {% endfor %}
                                     {% endfor %}
                                 </ul>
                             </li>
