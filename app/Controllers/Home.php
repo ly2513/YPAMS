@@ -6,6 +6,7 @@
  * Email: yong.li@szypwl.com
  * Copyright: 深圳优品未来科技有限公司
  */
+
 namespace App\Controllers;
 
 use Admin\DriverModel;
@@ -22,13 +23,19 @@ use Elasticsearch\ClientBuilder;
  */
 class Home extends Controller
 {
-    /**
-     * 框架首页信息
-     */
+
     public function index()
     {
-        $this->display();
+        if (!is_file(FRONT_PATH . 'install.lock')) { // 没有安装
+            
+            header("Location: /Install/Install/install");
+            exit;
+        } else {
+
+        }
+//        $this->display();
     }
+
 
     public function testElasticsearch()
     {
@@ -78,5 +85,5 @@ class Home extends Controller
 
 
     }
-    
+
 }

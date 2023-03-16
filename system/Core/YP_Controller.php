@@ -6,6 +6,7 @@
  * Email: yong.li@szypwl.com
  * Copyright: 深圳优品未来科技有限公司
  */
+
 namespace YP\Core;
 
 use YP\YP;
@@ -135,7 +136,7 @@ class YP_Controller
      */
     public function __construct(YP_RequestInterface $request, YP_Response $response, YP_Log $logger = null)
     {
-        $this->request  = is_cli() ?  $request : Services::request();
+        $this->request  = is_cli() ? $request : Services::request();
         $this->response = $response;
         $this->logger   = is_null($logger) ? Services::log(true) : $logger;
         $this->logger->info('Controller "' . get_class($this) . '" loaded.');
@@ -143,8 +144,8 @@ class YP_Controller
             $this->forceHTTPS($this->forceHTTPS);
         }
         // TODO 暂时注释 加载jsonSchema
-         $this->setJsonSchema();
-         $this->setInput();
+        $this->setJsonSchema();
+        $this->setInput();
         $this->initTwig();
         // 初始化子类构造方法
         $this->initialization();
@@ -232,20 +233,32 @@ class YP_Controller
      */
     public function display($htmlFile = null, $data = [])
     {
-        // 修改模板名称
-        $templateName = !is_null($htmlFile) ? $htmlFile : $this->method;
-        // 模板文件
-        $tempFile = $this->directory . $this->controller . DIRECTORY_SEPARATOR . $templateName . $this->extension;
-        // 模板路径
-        $htmlPath     = $this->tempPath . $this->directory . $this->controller;
-        // 自定义模板
-        if (strpos($htmlFile, '/')) {
+        if (is_null($htmlFile)) {
+            $tempFile = $this->directory . $this->controller . DIRECTORY_SEPARATOR . $this->method . $this->extension;
+        } else {
+            // 自定义模板
             $dirName = explode('/', $htmlFile);
-            array_pop($dirName);
-            $dirName  = implode('/', $dirName);
-            $tempFile = rtrim($htmlFile, '/') . $this->extension;
-            $htmlPath = $this->tempPath . ltrim($dirName, '/');
+            $count   = count($dirName);
+            switch ($count) {
+                case 2:
+                    $this->controller = $dirName[0];
+                    $this->method     = $dirName[1];
+                    break;
+                case 3:
+                    $this->directory  = $dirName[0] . DIRECTORY_SEPARATOR;
+                    $this->controller = $dirName[1];
+                    $this->method     = $dirName[2];
+                    break;
+                default :
+                    $this->method = $dirName[0];
+                    break;
+            }
+            // 模板文件
+            $tempFile = $this->directory . $this->controller . DIRECTORY_SEPARATOR . $this->method . $this->extension;
         }
+        // 模板路径
+        $htmlPath = $this->tempPath . $this->directory . $this->controller;
+        // 模板文件路径
         $tempFilePath = $this->tempPath . $tempFile;
         // 穿件模板目录
         is_dir($htmlPath) or mkdir($htmlPath, 0777, true);
@@ -297,7 +310,7 @@ class YP_Controller
     /**
      * 分配变量到模板中
      *
-     * @param $var
+     * @param      $var
      * @param null $value
      */
     public function assign($var, $value = NULL)
